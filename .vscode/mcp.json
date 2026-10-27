@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "tapetide": {
+      "type": "http",
+      "url": "https://mcp.tapetide.com/mcp"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: open-match-scanner
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/status
+    envVars:
+      - key: KITE_API_KEY
+        sync: false
+      - key: KITE_API_SECRET
+        sync: false
+      - key: KITE_ACCESS_TOKEN
+        sync: false
+      - key: KITE_REDIRECT_URL
+        sync: false
+      - key: APP_TIMEZONE
+        value: Asia/Kolkata
+      - key: MATCH_TOLERANCE
+        value: "0"
+      - key: MAX_DIFFERENCE
+        value: "10"
