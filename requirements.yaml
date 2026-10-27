@@ -1,0 +1,18 @@
+packages:
+  "framer-motion": "Animations for scroll reveals, hero staggering, and interactive states"
+  "lucide-react": "Icons for sections and interactive elements"
+  "clsx": "Utility for conditionally joining classNames"
+  "tailwind-merge": "Utility for merging tailwind classes safely"
+
+images:
+  - path: "artifacts/divine-code-369/public/images/hero-bg.png"
+    description: "Deep cosmic space background with subtle nebula clouds in dark blue and black, interspersed with tiny glowing gold stardust particles."
+    aspect_ratio: "16:9"
+  - path: "artifacts/divine-code-369/public/images/sacred-pattern.png"
+    description: "A very subtle, elegant geometric glowing gold mandala or sri yantra pattern on a completely transparent background."
+    aspect_ratio: "1:1"
+
+notes:
+  - "The app relies on Framer Motion for scroll animations and entry reveals."
+  - "Since this is a single page application, routing is mostly handled via anchor tags for smooth scrolling to sections."
+  - "Images requested will be placed in public/images/ and referenced using BASE_URL."

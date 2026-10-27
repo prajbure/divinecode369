@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: 'Poppins', sans-serif;
+  --font-display: 'Playfair Display', serif;
+
+  --color-background: hsl(240 10% 3%);
+  --color-foreground: hsl(0 0% 98%);
+  
+  --color-primary: hsl(43 96% 50%);
+  --color-primary-foreground: hsl(240 10% 4%);
+  
+  --color-secondary: hsl(43 100% 75%);
+  --color-secondary-foreground: hsl(240 10% 4%);
+  
+  --color-muted: hsl(240 5% 15%);
+  --color-muted-foreground: hsl(240 5% 70%);
+  
+  --color-accent: hsl(35 100% 55%);
+  --color-accent-foreground: hsl(0 0% 98%);
+  
+  --color-border: hsl(43 40% 25%);
+  --color-ring: hsl(43 96% 50%);
+  
+  --color-card: hsl(240 10% 6%);
+  --color-card-foreground: hsl(0 0% 98%);
+
+  --animate-spin-slow: spin 15s linear infinite;
+  --animate-pulse-glow: pulse-glow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-twinkle: twinkle 4s ease-in-out infinite;
+}
+
+:root {
+  --background: 240 10% 3%;
+  --foreground: 0 0% 98%;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground antialiased font-sans overflow-x-hidden selection:bg-primary/30 selection:text-primary;
+    background-color: #030305;
+    background-image: 
+      radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.05), transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.04), transparent 25%);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)];
+  }
+  
+  .glass-card {
+    @apply bg-gradient-to-b from-white/[0.08] to-transparent backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-300;
+  }
+  
+  .glass-card:hover {
+    @apply border-primary/40 shadow-[0_8px_32px_rgba(255,215,0,0.15)] -translate-y-1;
+  }
+
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#FFDF00] via-[#D4AF37] to-[#996515];
+  }
+
+  .text-gradient-logo {
+    background-image: url("/logo.jpeg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+  }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Base Stars Layer for Hero */
+.stars-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  animation: twinkle var(--duration, 4s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+html {
+  scroll-behavior: smooth;
+}
