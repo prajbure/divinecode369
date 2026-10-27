@@ -2,13 +2,13 @@ from contextlib import asynccontextmanager
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from . import config
 from .scanner import load_watchlist, save_watchlist, run_scan
-from .provider import ProviderError, create_kite_session, daily_history, equity_symbols, live_quotes
+from .provider import ProviderError, create_kite_session, daily_history, equity_symbols, live_quotes, stock_names
 
 scheduler = BackgroundScheduler(timezone=ZoneInfo(config.APP_TIMEZONE))
 latest_result = {"as_of": None, "rows": [], "matches": [], "message": "Waiting for the scheduled 09:15 scan or click Refresh now."}
@@ -34,7 +34,14 @@ app.mount("/static", StaticFiles(directory=str(config.ROOT / "static")), name="s
 
 @app.get("/")
 def home():
-    return FileResponse(config.ROOT / "static" / "index.html")
+    html = (config.ROOT / "static" / "index.html").read_text(encoding="utf-8")
+    html = html.replace("Up to 500 NSE + BSE instruments", "150 optionable NSE + BSE stocks")
+    html = html.replace("Up to 500 instruments · use NSE:SYMBOL or BSE:SYMBOL.", "150 optionable stocks · 75 NSE + 75 BSE.")
+    html = html.replace("Load 500 NSE + BSE stocks", "Load 150 NSE + BSE stocks")
+    return HTMLResponse(
+        content=html,
+        headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"},
+    )
 
 @app.get("/api/status")
 def status():
@@ -95,7 +102,22 @@ def scan():
 
 @app.get("/api/watchlist")
 def get_watchlist():
-    return {"symbols": load_watchlist()}
+    symbols = load_watchlist()
+    details = []
+    if config.KITE_ACCESS_TOKEN:
+        try:
+            details = stock_names(symbols)
+        except ProviderError:
+            details = []
+    return {"symbols": symbols, "details": details}
+
+
+@app.get("/api/watchlist/names")
+def get_watchlist_names():
+    try:
+        return {"details": stock_names(load_watchlist())}
+    except ProviderError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
 
 @app.put("/api/watchlist")
 def put_watchlist(body: dict):
@@ -108,10 +130,13 @@ def put_watchlist(body: dict):
 
 @app.post("/api/watchlist/universe")
 def put_market_universe():
-    """Load up to 250 equities from each exchange for a broad scan."""
+    """Load 150 optionable equities, balanced across NSE and BSE."""
     try:
-        symbols = save_watchlist("\n".join(equity_symbols("NSE") + equity_symbols("BSE")))
-        return {"symbols": symbols, "count": len(symbols), "nse_count": sum(s.startswith("NSE:") for s in symbols), "bse_count": sum(s.startswith("BSE:") for s in symbols)}
+        universe = equity_symbols("NSE", 75) + equity_symbols("BSE", 75)
+        if not universe:
+            raise ProviderError("Kite returned no optionable equity instruments. Please reconnect Kite and try again.")
+        symbols = save_watchlist("\n".join(universe))
+        return {"symbols": symbols, "count": len(symbols), "nse_count": sum(s.startswith("NSE:") for s in symbols), "bse_count": sum(s.startswith("BSE:") for s in symbols), "optionable_only": True}
     except ProviderError as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc
 

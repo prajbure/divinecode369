@@ -10,6 +10,7 @@ from . import config
 BASE_URL = "https://api.kite.trade"
 KITE_VERSION = "3"
 _instrument_tokens: dict[str, dict[str, int]] = {}
+_instrument_details: dict[str, dict[str, dict[str, str]]] = {}
 
 
 class ProviderError(RuntimeError):
@@ -94,12 +95,13 @@ def live_quotes(symbols: list[str]) -> dict:
         change_pct = None
         if isinstance(previous_close, (int, float)) and previous_close and isinstance(last_price, (int, float)):
             change_pct = (last_price - previous_close) / previous_close * 100
+        details = _load_instrument_details(exchange).get(name, {})
         rows.append({
             "found": True,
             "requested": requested,
             "symbol": name,
             "exchange": exchange,
-            "name": "",
+            "name": details.get("name") or name,
             "open": ohlc.get("open"),
             "prev_close": previous_close,
             "ltp": last_price,
@@ -110,9 +112,9 @@ def live_quotes(symbols: list[str]) -> dict:
     return {"data": rows, "meta": {"route": "kite:/quote"}}
 
 
-def _load_instrument_tokens(exchange: str = "NSE") -> dict[str, int]:
-    if exchange in _instrument_tokens:
-        return _instrument_tokens[exchange]
+def _load_instrument_details(exchange: str = "NSE") -> dict[str, dict[str, str]]:
+    if exchange in _instrument_details:
+        return _instrument_details[exchange]
     try:
         response = requests.get(f"{BASE_URL}/instruments/{exchange}", headers=_headers(), timeout=30)
     except requests.RequestException as exc:
@@ -121,27 +123,87 @@ def _load_instrument_tokens(exchange: str = "NSE") -> dict[str, int]:
         raise ProviderError(f"Kite instruments request failed (HTTP {response.status_code}).")
     try:
         rows = csv.DictReader(io.StringIO(response.text))
-        _instrument_tokens[exchange] = {
-            row["tradingsymbol"]: int(row["instrument_token"])
+        _instrument_details[exchange] = {
+            row["tradingsymbol"]: row
             for row in rows
             if row.get("segment") == exchange and row.get("instrument_type") == "EQ"
         }
     except (KeyError, ValueError) as exc:
         raise ProviderError("Kite returned an invalid instruments file.") from exc
+    return _instrument_details[exchange]
+
+
+def _load_instrument_tokens(exchange: str = "NSE") -> dict[str, int]:
+    if exchange not in _instrument_tokens:
+        try:
+            _instrument_tokens[exchange] = {
+                symbol: int(row["instrument_token"])
+                for symbol, row in _load_instrument_details(exchange).items()
+            }
+        except (KeyError, ValueError) as exc:
+            raise ProviderError("Kite returned an invalid instruments file.") from exc
     return _instrument_tokens[exchange]
 
 
-def equity_symbols(exchange: str, limit: int = 250) -> list[str]:
-    """Return a bounded equity universe for an exchange-qualified watchlist."""
+def _optionable_underlyings(exchange: str) -> set[str]:
+    """Return equity underlyings that have a listed futures/options contract."""
+    derivative_exchange = {"NSE": "NFO", "BSE": "BFO"}[exchange]
+    try:
+        response = requests.get(
+            f"{BASE_URL}/instruments/{derivative_exchange}", headers=_headers(), timeout=30
+        )
+    except requests.RequestException as exc:
+        raise ProviderError(f"Could not download Kite instruments: {exc}") from exc
+    if not response.ok:
+        raise ProviderError(
+            f"Kite {derivative_exchange} instruments request failed (HTTP {response.status_code})."
+        )
+    try:
+        rows = csv.DictReader(io.StringIO(response.text))
+        return {
+            row.get("name", "").strip().upper()
+            for row in rows
+            if row.get("segment", "").startswith(derivative_exchange)
+            and row.get("instrument_type") in {"FUT", "CE", "PE"}
+            and row.get("name")
+        }
+    except (KeyError, ValueError) as exc:
+        raise ProviderError("Kite returned an invalid derivatives instruments file.") from exc
+
+
+def equity_symbols(exchange: str, limit: int = 75) -> list[str]:
+    """Return optionable equities only for an exchange-qualified watchlist."""
     if exchange not in {"NSE", "BSE"}:
         raise ProviderError(f"Unsupported exchange {exchange}.")
-    # Kite's EQ segment also contains listed debt instruments with maturity-style
-    # symbols (for example, ``...-N0``). Prefer conventional equity symbols so
-    # the broad scanner is useful to clients looking for shares.
-    symbols = sorted(_load_instrument_tokens(exchange))
-    equity_like = [symbol for symbol in symbols if "-" not in symbol]
-    symbols = equity_like or symbols
+    equities = _load_instrument_details(exchange)
+    optionable = _optionable_underlyings(exchange)
+    symbols = sorted(
+        symbol for symbol in equities
+        if symbol.upper() in optionable and "-" not in symbol
+    )
     return [f"{exchange}:{symbol}" for symbol in symbols[: max(1, min(250, limit))]]
+
+
+def stock_names(symbols: list[str]) -> list[dict[str, str]]:
+    """Resolve exchange-qualified symbols to Kite's company names."""
+    grouped: dict[str, list[str]] = {"NSE": [], "BSE": []}
+    for requested in symbols:
+        exchange, name = requested.split(":", 1) if ":" in requested else ("NSE", requested)
+        if exchange in grouped:
+            grouped[exchange].append(name)
+
+    resolved: list[dict[str, str]] = []
+    for exchange, names in grouped.items():
+        details = _load_instrument_details(exchange)
+        for name in names:
+            row = details.get(name, {})
+            resolved.append({
+                "symbol": f"{exchange}:{name}",
+                "name": str(row.get("name") or name).strip(),
+                "exchange": exchange,
+                "is_equity": bool(row),
+            })
+    return resolved
 
 
 def daily_history(symbol: str, limit: int = 8) -> dict:
