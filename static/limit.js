@@ -74,6 +74,14 @@
     if (timestamp) timestamp.textContent = `Live via Kite · ${updated} IST`;
   };
   window.renderMarket = smoothRenderMarket;
+  const originalRenderRows = window.renderRows;
+  if (originalRenderRows) {
+    window.renderRows = (rows) => originalRenderRows([...rows].sort((left, right) => {
+      const matchOrder = Number(Boolean(right.match)) - Number(Boolean(left.match));
+      if (matchOrder) return matchOrder;
+      return Math.abs(Number(left.difference)) - Math.abs(Number(right.difference));
+    }));
+  }
   const refreshStaleWatchlist = async () => {
     try {
       const statusResponse = await fetch('/api/status');
@@ -94,7 +102,7 @@
   };
   applyLimitLabels();
   const style = document.createElement('style');
-  style.textContent = '.watchlist-names{display:grid;gap:8px;margin-top:14px;max-height:260px;overflow:auto}.watchlist-name-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid rgba(218,177,91,.18);border-radius:10px;background:rgba(255,255,255,.035)}.watchlist-name-row strong,.watchlist-name-row small{display:block}.watchlist-name-row strong{color:#f4e2b7}.watchlist-name-row small{margin-top:3px;color:#8f9bb1;font-size:11px}.watchlist-name-row b{color:#76d7ae;font-size:10px;letter-spacing:.08em}.watchlist-name-row b:not(:first-child){white-space:nowrap}.watchlist-empty{color:#8f9bb1;font-size:12px}.market-card,.market-card header span:last-child{animation:none!important}.market-card{transition:none!important}';
+  style.textContent = '.watchlist-names{display:grid;gap:8px;margin-top:14px;max-height:260px;overflow:auto}.watchlist-name-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid rgba(218,177,91,.18);border-radius:10px;background:rgba(255,255,255,.035)}.watchlist-name-row strong,.watchlist-name-row small{display:block}.watchlist-name-row strong{color:#f4e2b7}.watchlist-name-row small{margin-top:3px;color:#8f9bb1;font-size:11px}.watchlist-name-row b{color:#76d7ae;font-size:10px;letter-spacing:.08em}.watchlist-name-row b:not(:first-child){white-space:nowrap}.watchlist-empty{color:#8f9bb1;font-size:12px}.market-card,.market-card header span:last-child{animation:none!important}.market-card{transition:none!important}@media(max-width:700px){.table-wrap{overflow:visible}.table-wrap table,.table-wrap tbody{display:block}.table-wrap thead{display:none}.table-wrap tbody{display:grid;gap:12px}.table-wrap tbody tr{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px;border:1px solid #34333a;border-radius:12px;background:rgba(18,20,25,.86);animation:none!important}.table-wrap tbody td{display:flex;min-width:0;flex-direction:column;gap:3px;padding:0;border:0;text-align:left}.table-wrap tbody td:before{content:attr(data-label);color:#8f9bb1;font-size:9px;text-transform:uppercase;letter-spacing:.08em}.table-wrap tbody td:first-child,.table-wrap tbody td:last-child{grid-column:1/-1}.table-wrap tbody td:first-child:before{content:"Stock / Symbol"}.table-wrap tbody td:last-child{align-items:flex-start;margin-top:4px}.table-wrap tbody td.empty{display:block;grid-column:1/-1}.stock-name{font-size:14px}.stock-symbol{font-size:10px}.table-wrap tbody tr:has(td.empty){display:block}}';
   document.head.appendChild(style);
   loadWatchlistNames();
   refreshStaleWatchlist();
