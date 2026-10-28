@@ -1,4 +1,5 @@
 from datetime import datetime
+from decimal import Decimal, InvalidOperation
 from zoneinfo import ZoneInfo
 from . import config
 from .provider import live_quotes
@@ -37,18 +38,28 @@ def save_watchlist(raw: str) -> list[str]:
 def run_scan() -> dict:
     symbols = load_watchlist()
     if not symbols:
-        return {"as_of": datetime.now(ZoneInfo(config.APP_TIMEZONE)).isoformat(), "rows": [], "matches": [], "message": "Your watchlist is empty. Add stock symbols first."}
+        return {"as_of": datetime.now(ZoneInfo(config.APP_TIMEZONE)).isoformat(), "rows": [], "matches": [], "checked_count": 0, "message": "Your watchlist is empty. Add stock symbols first."}
     payload = live_quotes(symbols)
     rows = []
     matches = []
     for q in payload.get("data", []):
         open_price = q.get("open")
         prev_close = q.get("prev_close")
-        valid = q.get("found", True) and isinstance(open_price, (int, float)) and isinstance(prev_close, (int, float))
-        difference = round(float(open_price) - float(prev_close), 4) if valid else None
-        if not valid or abs(difference) > config.MAX_DIFFERENCE:
+        valid = q.get("found", True) and isinstance(open_price, (int, float)) and not isinstance(open_price, bool) and isinstance(prev_close, (int, float)) and not isinstance(prev_close, bool)
+        try:
+            open_decimal = Decimal(str(open_price)) if valid else None
+            close_decimal = Decimal(str(prev_close)) if valid else None
+            difference_decimal = open_decimal - close_decimal if open_decimal is not None and close_decimal is not None else None
+            valid = valid and open_decimal.is_finite() and close_decimal.is_finite()
+        except (InvalidOperation, TypeError, ValueError):
+            valid = False
+            difference_decimal = None
+        if not valid or difference_decimal is None:
             continue
-        matched = bool(valid and abs(difference) <= config.MATCH_TOLERANCE)
+        if abs(difference_decimal) > Decimal(str(config.MAX_DIFFERENCE)):
+            continue
+        difference = float(difference_decimal)
+        matched = difference_decimal.is_zero()
         row = {
             "symbol": f"{q.get('exchange', 'NSE')}:{q.get('symbol') or q.get('requested')}",
             "name": q.get("name") or "",
@@ -71,7 +82,8 @@ def run_scan() -> dict:
         "route": payload.get("meta", {}).get("route"),
         "rows": rows,
         "matches": matches,
-        "tolerance": config.MATCH_TOLERANCE,
+        "checked_count": len(symbols),
+        "tolerance": 0,
         "max_difference": config.MAX_DIFFERENCE,
         "message": f"Showing stocks within ₹{config.MAX_DIFFERENCE:g}; only an exact ₹0 difference is marked as MATCH.",
     }
