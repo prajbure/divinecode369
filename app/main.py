@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from . import config
-from .scanner import load_watchlist, save_watchlist, run_scan
+from .scanner import load_watchlist, save_watchlist, run_scan, reference_scan_symbols
 from .provider import ProviderError, create_kite_session, daily_history, equity_symbols, live_quotes, stock_names
 
 scheduler = BackgroundScheduler(timezone=ZoneInfo(config.APP_TIMEZONE))
@@ -17,7 +17,7 @@ last_error = None
 def scheduled_scan():
     global latest_result, last_error
     try:
-        latest_result = run_scan()
+        latest_result = run_scan(reference_scan_symbols(), universe="reference")
         last_error = None
     except Exception as exc:
         last_error = str(exc)
@@ -90,7 +90,7 @@ def kite_callback(request_token: str | None = None, status: str | None = None):
 def scan():
     global latest_result, last_error
     try:
-        latest_result = run_scan()
+        latest_result = run_scan(reference_scan_symbols(), universe="reference")
         last_error = None
         return latest_result
     except ProviderError as exc:

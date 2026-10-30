@@ -1,0 +1,293 @@
+{
+  "version": 2,
+  "groups": [
+    {
+      "id": "banking",
+      "name": "Banking & Financial Services",
+      "kind": "SECTOR",
+      "accent": "blue",
+      "stocks": [
+        ["HDFCBANK", "HDFC Bank"],
+        ["ICICIBANK", "ICICI Bank"],
+        ["KOTAKBANK", "Kotak Bank"],
+        ["AXISBANK", "Axis Bank"],
+        ["INDUSINDBK", "IndusInd Bank"],
+        ["SBIN", "SBI (State Bank of India)"],
+        ["BANKBARODA", "Bank of Baroda (BOB)"],
+        ["PNB", "Punjab National Bank (PNB)"],
+        ["AUBANK", "AU Small Finance Bank"],
+        ["BANDHANBNK", "Bandhan Bank"]
+      ]
+    },
+    {
+      "id": "it-services",
+      "name": "IT Services",
+      "kind": "SECTOR",
+      "accent": "violet",
+      "stocks": [
+        ["TCS", "TCS (Tata Consultancy Services)"],
+        ["INFY", "Infosys"],
+        ["HCLTECH", "HCL Technologies"],
+        ["WIPRO", "Wipro"],
+        ["TECHM", "Tech Mahindra"],
+        ["LTIM", "LTIMindtree"],
+        ["PERSISTENT", "Persistent Systems"],
+        ["COFORGE", "Coforge"],
+        ["MPHASIS", "Mphasis"],
+        ["OFSS", "Oracle Financial Services Software"]
+      ]
+    },
+    {
+      "id": "oil-gas",
+      "name": "Oil & Gas",
+      "kind": "SECTOR",
+      "accent": "orange",
+      "stocks": [
+        ["RELIANCE", "Reliance Industries"],
+        ["ONGC", "ONGC"],
+        ["IOC", "Indian Oil Corporation (IOC)"],
+        ["BPCL", "Bharat Petroleum Corporation (BPCL)"],
+        ["HINDPETRO", "Hindustan Petroleum Corporation (HPCL)"],
+        ["GAIL", "GAIL India"],
+        ["OIL", "Oil India"],
+        ["BPCL", "Bharat Petroleum", "Duplicate entry: same NSE symbol as Bharat Petroleum Corporation (BPCL)."],
+        ["IGL", "Indraprastha Gas"],
+        ["PETRONET", "Petronet LNG"]
+      ]
+    },
+    {
+      "id": "automobile",
+      "name": "Automobile",
+      "kind": "SECTOR",
+      "accent": "cyan",
+      "stocks": [
+        ["MARUTI", "Maruti Suzuki"],
+        ["M&M", "Mahindra & Mahindra (M&M)"],
+        ["TMPV", "Tata Motors", "Current NSE symbol is TMPV after the passenger-vehicle business demerger; this is not the old TATAMOTORS symbol."],
+        ["EICHERMOT", "Eicher Motors"],
+        ["BAJAJ-AUTO", "Bajaj Auto"],
+        ["HEROMOTOCO", "Hero MotoCorp"],
+        ["TVSMOTOR", "TVS Motor Company"],
+        ["ASHOKLEY", "Ashok Leyland"],
+        ["MOTHERSON", "Samvardhana Motherson International"],
+        ["BALKRISIND", "Balkrishna Industries"]
+      ]
+    },
+    {
+      "id": "fmcg",
+      "name": "FMCG",
+      "kind": "SECTOR",
+      "accent": "green",
+      "stocks": [
+        ["HINDUNILVR", "Hindustan Unilever (HUL)"],
+        ["ITC", "ITC"],
+        ["NESTLEIND", "Nestlé India"],
+        ["BRITANNIA", "Britannia Industries"],
+        ["DABUR", "Dabur India"],
+        ["GODREJCP", "Godrej Consumer Products"],
+        ["MARICO", "Marico"],
+        ["TATACONSUM", "Tata Consumer Products"],
+        ["UNITDSPR", "United Spirits"],
+        ["COLPAL", "Colgate-Palmolive India"]
+      ]
+    },
+    {
+      "id": "pharma-healthcare",
+      "name": "Pharma & Healthcare",
+      "kind": "SECTOR",
+      "accent": "pink",
+      "stocks": [
+        ["SUNPHARMA", "Sun Pharmaceutical Industries"],
+        ["CIPLA", "Cipla"],
+        ["DIVISLAB", "Divi's Laboratories"],
+        ["DRREDDY", "Dr. Reddy's Laboratories"],
+        ["LUPIN", "Lupin"],
+        ["AUROPHARMA", "Aurobindo Pharma"],
+        ["ZYDUSLIFE", "Zydus Lifesciences"],
+        ["BIOCON", "Biocon"],
+        ["TORNTPHARM", "Torrent Pharmaceuticals"],
+        ["GLENMARK", "Glenmark Pharmaceuticals"]
+      ]
+    },
+    {
+      "id": "metals-mining",
+      "name": "Metal & Mining",
+      "kind": "SECTOR",
+      "accent": "purple",
+      "stocks": [
+        ["TATASTEEL", "Tata Steel"],
+        ["JSWSTEEL", "JSW Steel"],
+        ["HINDALCO", "Hindalco Industries"],
+        ["VEDL", "Vedanta"],
+        ["SAIL", "Steel Authority of India (SAIL)"],
+        ["NMDC", "NMDC"],
+        ["JINDALSTEL", "Jindal Steel", "Current issuer name is Jindal Steel Limited; it was formerly Jindal Steel & Power Limited. NSE symbol remains JINDALSTEL."],
+        ["HINDZINC", "Hindustan Zinc"],
+        ["COALINDIA", "Coal India"],
+        ["NATIONALUM", "National Aluminium Company (NALCO)"]
+      ]
+    },
+    {
+      "id": "power-infra",
+      "name": "Power & Infrastructure",
+      "kind": "SECTOR",
+      "accent": "teal",
+      "stocks": [
+        ["NTPC", "NTPC"],
+        ["POWERGRID", "Power Grid Corporation"],
+        ["ADANIPOWER", "Adani Power"],
+        ["ADANIGREEN", "Adani Green Energy"],
+        ["LT", "Larsen & Toubro (L&T)"],
+        ["IRB", "IRB Infrastructure Developers"],
+        ["NHPC", "NHPC"],
+        ["REC", "REC"],
+        ["PFC", "Power Finance Corporation (PFC)"],
+        ["BHEL", "Bharat Heavy Electricals (BHEL)"]
+      ]
+    },
+    {
+      "id": "realty",
+      "name": "Realty (Real Estate)",
+      "kind": "SECTOR",
+      "accent": "indigo",
+      "stocks": [
+        ["DLF", "DLF"],
+        ["GODREJPROP", "Godrej Properties"],
+        ["OBEROIRLTY", "Oberoi Realty"],
+        ["PRESTIGE", "Prestige Estates Projects"],
+        ["BRIGADE", "Brigade Enterprises"],
+        ["PHOENIXLTD", "Phoenix Mills"],
+        ["SOBHA", "Sobha"],
+        ["LODHA", "Macrotech Developers", "Same listed issuer and NSE symbol as Lodha; retained as a separate requested entry."],
+        ["LODHA", "Lodha", "Same listed issuer and NSE symbol as Macrotech Developers; retained as a separate requested entry."],
+        ["EMBDL", "Indiabulls Real Estate", "Legacy name; current NSE symbol EMBDL and issuer name Embassy Developments Limited."]
+      ]
+    },
+    {
+      "id": "consumer-durables",
+      "name": "Consumer Durables",
+      "kind": "SECTOR",
+      "accent": "steel",
+      "stocks": [
+        ["TITAN", "Titan Company"],
+        ["VOLTAS", "Voltas"],
+        ["BLUESTARCO", "Blue Star"],
+        ["HAVELLS", "Havells India"],
+        ["CROMPTON", "Crompton Greaves Consumer Electricals"],
+        ["WHIRLPOOL", "Whirlpool of India"],
+        ["DIXON", "Dixon Technologies"],
+        ["AMBER", "Amber Enterprises India"],
+        ["POLYCAB", "Polycab India"],
+        ["SYMPHONY", "Symphony"]
+      ]
+    },
+    {
+      "id": "chemicals",
+      "name": "Chemicals",
+      "kind": "SECTOR",
+      "accent": "lime",
+      "stocks": [
+        ["UPL", "UPL"],
+        ["DEEPAKNTR", "Deepak Nitrite"],
+        ["SRF", "SRF"],
+        ["PIIND", "PI Industries"],
+        ["NAVINFLUOR", "Navin Fluorine International"],
+        ["TATACHEM", "Tata Chemicals"],
+        ["AARTIIND", "Aarti Industries"],
+        ["ATUL", "Atul"],
+        ["ALKYLAMINE", "Alkyl Amines Chemicals"],
+        ["FLUOROCHEM", "Gujarat Fluorochemicals"]
+      ]
+    },
+    {
+      "id": "telecom",
+      "name": "Telecom",
+      "kind": "SECTOR",
+      "accent": "magenta",
+      "stocks": [
+        ["BHARTIARTL", "Bharti Airtel"],
+        ["IDEA", "Vodafone Idea"],
+        ["INDUSTOWER", "Indus Towers"],
+        ["MTNL", "Mahanagar Telephone Nigam (MTNL)"],
+        ["TEJASNET", "Tejas Networks"],
+        ["HFCL", "HFCL"],
+        ["RAILTEL", "RailTel Corporation of India"],
+        ["TATACOMM", "Tata Communications"],
+        ["SPICEJET", "SpiceJet", "Displayed under Telecom exactly as supplied; the company is an airline."],
+        ["STLTECH", "Sterlite Technologies"]
+      ]
+    },
+    {
+      "id": "media",
+      "name": "Media & Entertainment",
+      "kind": "SECTOR",
+      "accent": "red",
+      "stocks": [
+        ["ZEEL", "Zee Entertainment Enterprises"],
+        ["SUNTV", "Sun TV Network"],
+        ["PVRINOX", "PVR INOX"],
+        ["NAZARA", "Nazara Technologies"],
+        ["SAREGAMA", "Saregama India"],
+        ["NETWORK18", "Network18 Media & Investments"],
+        ["BALAJITELE", "Balaji Telefilms"],
+        ["TV18BRDCST", "TV18 Broadcast", "NSE currently marks this security permanently suspended; retained in the requested list and not sent for quotes.", "suspended"],
+        ["DEN", "Den Networks"],
+        ["DISHTV", "Dish TV India"]
+      ]
+    },
+    {
+      "id": "textiles",
+      "name": "Textiles",
+      "kind": "SECTOR",
+      "accent": "emerald",
+      "stocks": [
+        ["ARVIND", "Arvind"],
+        ["WELSPUNLIV", "Welspun India", "Legacy name and ticker; current issuer is Welspun Living Limited and NSE symbol WELSPUNLIV replaced WELSPUNIND."],
+        ["TRIDENT", "Trident"],
+        ["RAYMOND", "Raymond", "NSE symbol remains RAYMOND; issuer announced a name change to Raymond Aerospace, Defence & Engineering in October 2026."],
+        ["VTL", "Vardhman Textiles"],
+        ["KPRMILL", "KPR Mill"],
+        ["PAGEIND", "Page Industries"],
+        ["GOKEX", "Gokaldas Exports"],
+        ["ALOKINDS", "Alok Industries"],
+        ["RUPA", "Rupa & Company"]
+      ]
+    },
+    {
+      "id": "defence",
+      "name": "Defence",
+      "kind": "SECTOR",
+      "accent": "gold",
+      "stocks": [
+        ["HAL", "Hindustan Aeronautics (HAL)"],
+        ["BDL", "Bharat Dynamics"],
+        ["BEL", "Bharat Electronics (BEL)"],
+        ["MAZDOCK", "Mazagon Dock Shipbuilders"],
+        ["DATAPATTNS", "Data Patterns (India)"],
+        ["BEML", "BEML"],
+        ["PARAS", "Paras Defence and Space Technologies"],
+        ["ZENTEC", "Zen Technologies"],
+        ["MTARTECH", "MTAR Technologies"],
+        ["PREMIERENE", "Premier Explosives"]
+      ]
+    },
+    {
+      "id": "nifty-top-liquid",
+      "name": "Nifty Top Liquid Stocks (F&O)",
+      "kind": "INDEX",
+      "accent": "gold",
+      "stocks": [
+        ["RELIANCE", "Reliance Industries"],
+        ["HDFCBANK", "HDFC Bank"],
+        ["ICICIBANK", "ICICI Bank"],
+        ["INFY", "Infosys"],
+        ["TCS", "TCS (Tata Consultancy Services)"],
+        ["BHARTIARTL", "Bharti Airtel"],
+        ["ITC", "ITC"],
+        ["LT", "Larsen & Toubro (L&T)"],
+        ["SBIN", "State Bank of India (SBI)"],
+        ["TMPV", "Tata Motors", "Current NSE symbol is TMPV after the passenger-vehicle business demerger; this is not the old TATAMOTORS symbol."]
+      ]
+    }
+  ]
+}
