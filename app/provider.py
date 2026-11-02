@@ -2,6 +2,7 @@ import csv
 import hashlib
 import io
 import json
+import math
 from functools import lru_cache
 from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
@@ -119,6 +120,25 @@ def _json_payload(response: requests.Response) -> dict:
     return payload
 
 
+def quote_intelligence(quote: dict, *, streaming=False) -> dict:
+    """Normalize optional fields actually returned by Kite; no inferred VWAP."""
+    def valid(value):
+        return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+    ohlc = quote.get("ohlc") or {}
+    average = quote.get("average_traded_price" if streaming else "average_price")
+    depth = quote.get("depth") or {}
+    bids = [r for r in depth.get("buy", []) if valid(r.get("price")) and r["price"] > 0 and valid(r.get("quantity")) and r["quantity"] >= 0]
+    asks = [r for r in depth.get("sell", []) if valid(r.get("price")) and r["price"] > 0 and valid(r.get("quantity")) and r["quantity"] >= 0]
+    return {"vwap": average if valid(average) and average > 0 else None,
+            "vwap_source": "Kite average traded price" if valid(average) and average > 0 else None,
+            "day_high": ohlc.get("high") if valid(ohlc.get("high")) and ohlc["high"] > 0 else None,
+            "day_low": ohlc.get("low") if valid(ohlc.get("low")) and ohlc["low"] > 0 else None,
+            "best_bid": max((r["price"] for r in bids), default=None),
+            "best_ask": min((r["price"] for r in asks), default=None),
+            "depth_bid_quantity": sum(r["quantity"] for r in bids) if bids else None,
+            "depth_ask_quantity": sum(r["quantity"] for r in asks) if asks else None}
+
+
 def live_quotes(symbols: list[str]) -> dict:
     if not symbols:
         return {"data": [], "meta": {"route": "kite:/quote"}}
@@ -142,6 +162,7 @@ def live_quotes(symbols: list[str]) -> dict:
         if isinstance(previous_close, (int, float)) and previous_close and isinstance(last_price, (int, float)):
             change_pct = (last_price - previous_close) / previous_close * 100
         rows.append({
+            **quote_intelligence(quote),
             "found": True,
             "requested": requested,
             "symbol": name,

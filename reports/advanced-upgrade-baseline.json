@@ -1,0 +1,1214 @@
+{
+  "checkpoint_commit": "a85f4bb2d076c931286c8745818e5f253db9a488",
+  "active_application": "FastAPI app.main:app; static/index.html and static/app.js",
+  "groups": [
+    {
+      "id": "banking",
+      "name": "Banking & Financial Services",
+      "kind": "SECTOR",
+      "accent": "blue",
+      "stocks": [
+        [
+          "HDFCBANK",
+          "HDFC Bank"
+        ],
+        [
+          "ICICIBANK",
+          "ICICI Bank"
+        ],
+        [
+          "KOTAKBANK",
+          "Kotak Bank"
+        ],
+        [
+          "AXISBANK",
+          "Axis Bank"
+        ],
+        [
+          "INDUSINDBK",
+          "IndusInd Bank"
+        ],
+        [
+          "SBIN",
+          "SBI (State Bank of India)"
+        ],
+        [
+          "BANKBARODA",
+          "Bank of Baroda (BOB)"
+        ],
+        [
+          "PNB",
+          "Punjab National Bank (PNB)"
+        ],
+        [
+          "AUBANK",
+          "AU Small Finance Bank"
+        ],
+        [
+          "BANDHANBNK",
+          "Bandhan Bank"
+        ]
+      ]
+    },
+    {
+      "id": "it-services",
+      "name": "IT Services",
+      "kind": "SECTOR",
+      "accent": "violet",
+      "stocks": [
+        [
+          "TCS",
+          "TCS (Tata Consultancy Services)"
+        ],
+        [
+          "INFY",
+          "Infosys"
+        ],
+        [
+          "HCLTECH",
+          "HCL Technologies"
+        ],
+        [
+          "WIPRO",
+          "Wipro"
+        ],
+        [
+          "TECHM",
+          "Tech Mahindra"
+        ],
+        [
+          "LTIM",
+          "LTIMindtree"
+        ],
+        [
+          "PERSISTENT",
+          "Persistent Systems"
+        ],
+        [
+          "COFORGE",
+          "Coforge"
+        ],
+        [
+          "MPHASIS",
+          "Mphasis"
+        ],
+        [
+          "OFSS",
+          "Oracle Financial Services Software"
+        ]
+      ]
+    },
+    {
+      "id": "oil-gas",
+      "name": "Oil & Gas",
+      "kind": "SECTOR",
+      "accent": "orange",
+      "stocks": [
+        [
+          "RELIANCE",
+          "Reliance Industries"
+        ],
+        [
+          "ONGC",
+          "ONGC"
+        ],
+        [
+          "IOC",
+          "Indian Oil Corporation (IOC)"
+        ],
+        [
+          "BPCL",
+          "Bharat Petroleum Corporation (BPCL)"
+        ],
+        [
+          "HINDPETRO",
+          "Hindustan Petroleum Corporation (HPCL)"
+        ],
+        [
+          "GAIL",
+          "GAIL India"
+        ],
+        [
+          "OIL",
+          "Oil India"
+        ],
+        [
+          "BPCL",
+          "Bharat Petroleum",
+          "Duplicate entry: same NSE symbol as Bharat Petroleum Corporation (BPCL)."
+        ],
+        [
+          "IGL",
+          "Indraprastha Gas"
+        ],
+        [
+          "PETRONET",
+          "Petronet LNG"
+        ]
+      ]
+    },
+    {
+      "id": "automobile",
+      "name": "Automobile",
+      "kind": "SECTOR",
+      "accent": "cyan",
+      "stocks": [
+        [
+          "MARUTI",
+          "Maruti Suzuki"
+        ],
+        [
+          "M&M",
+          "Mahindra & Mahindra (M&M)"
+        ],
+        [
+          "TMPV",
+          "Tata Motors",
+          "Current NSE symbol is TMPV after the passenger-vehicle business demerger; this is not the old TATAMOTORS symbol."
+        ],
+        [
+          "EICHERMOT",
+          "Eicher Motors"
+        ],
+        [
+          "BAJAJ-AUTO",
+          "Bajaj Auto"
+        ],
+        [
+          "HEROMOTOCO",
+          "Hero MotoCorp"
+        ],
+        [
+          "TVSMOTOR",
+          "TVS Motor Company"
+        ],
+        [
+          "ASHOKLEY",
+          "Ashok Leyland"
+        ],
+        [
+          "MOTHERSON",
+          "Samvardhana Motherson International"
+        ],
+        [
+          "BALKRISIND",
+          "Balkrishna Industries"
+        ]
+      ]
+    },
+    {
+      "id": "fmcg",
+      "name": "FMCG",
+      "kind": "SECTOR",
+      "accent": "green",
+      "stocks": [
+        [
+          "HINDUNILVR",
+          "Hindustan Unilever (HUL)"
+        ],
+        [
+          "ITC",
+          "ITC"
+        ],
+        [
+          "NESTLEIND",
+          "Nestlé India"
+        ],
+        [
+          "BRITANNIA",
+          "Britannia Industries"
+        ],
+        [
+          "DABUR",
+          "Dabur India"
+        ],
+        [
+          "GODREJCP",
+          "Godrej Consumer Products"
+        ],
+        [
+          "MARICO",
+          "Marico"
+        ],
+        [
+          "TATACONSUM",
+          "Tata Consumer Products"
+        ],
+        [
+          "UNITDSPR",
+          "United Spirits"
+        ],
+        [
+          "COLPAL",
+          "Colgate-Palmolive India"
+        ]
+      ]
+    },
+    {
+      "id": "pharma-healthcare",
+      "name": "Pharma & Healthcare",
+      "kind": "SECTOR",
+      "accent": "pink",
+      "stocks": [
+        [
+          "SUNPHARMA",
+          "Sun Pharmaceutical Industries"
+        ],
+        [
+          "CIPLA",
+          "Cipla"
+        ],
+        [
+          "DIVISLAB",
+          "Divi's Laboratories"
+        ],
+        [
+          "DRREDDY",
+          "Dr. Reddy's Laboratories"
+        ],
+        [
+          "LUPIN",
+          "Lupin"
+        ],
+        [
+          "AUROPHARMA",
+          "Aurobindo Pharma"
+        ],
+        [
+          "ZYDUSLIFE",
+          "Zydus Lifesciences"
+        ],
+        [
+          "BIOCON",
+          "Biocon"
+        ],
+        [
+          "TORNTPHARM",
+          "Torrent Pharmaceuticals"
+        ],
+        [
+          "GLENMARK",
+          "Glenmark Pharmaceuticals"
+        ]
+      ]
+    },
+    {
+      "id": "metals-mining",
+      "name": "Metal & Mining",
+      "kind": "SECTOR",
+      "accent": "purple",
+      "stocks": [
+        [
+          "TATASTEEL",
+          "Tata Steel"
+        ],
+        [
+          "JSWSTEEL",
+          "JSW Steel"
+        ],
+        [
+          "HINDALCO",
+          "Hindalco Industries"
+        ],
+        [
+          "VEDL",
+          "Vedanta"
+        ],
+        [
+          "SAIL",
+          "Steel Authority of India (SAIL)"
+        ],
+        [
+          "NMDC",
+          "NMDC"
+        ],
+        [
+          "JINDALSTEL",
+          "Jindal Steel",
+          "Current issuer name is Jindal Steel Limited; it was formerly Jindal Steel & Power Limited. NSE symbol remains JINDALSTEL."
+        ],
+        [
+          "HINDZINC",
+          "Hindustan Zinc"
+        ],
+        [
+          "COALINDIA",
+          "Coal India"
+        ],
+        [
+          "NATIONALUM",
+          "National Aluminium Company (NALCO)"
+        ]
+      ]
+    },
+    {
+      "id": "power-infra",
+      "name": "Power & Infrastructure",
+      "kind": "SECTOR",
+      "accent": "teal",
+      "stocks": [
+        [
+          "NTPC",
+          "NTPC"
+        ],
+        [
+          "POWERGRID",
+          "Power Grid Corporation"
+        ],
+        [
+          "ADANIPOWER",
+          "Adani Power"
+        ],
+        [
+          "ADANIGREEN",
+          "Adani Green Energy"
+        ],
+        [
+          "LT",
+          "Larsen & Toubro (L&T)"
+        ],
+        [
+          "IRB",
+          "IRB Infrastructure Developers"
+        ],
+        [
+          "NHPC",
+          "NHPC"
+        ],
+        [
+          "REC",
+          "REC"
+        ],
+        [
+          "PFC",
+          "Power Finance Corporation (PFC)"
+        ],
+        [
+          "BHEL",
+          "Bharat Heavy Electricals (BHEL)"
+        ]
+      ]
+    },
+    {
+      "id": "realty",
+      "name": "Realty (Real Estate)",
+      "kind": "SECTOR",
+      "accent": "indigo",
+      "stocks": [
+        [
+          "DLF",
+          "DLF"
+        ],
+        [
+          "GODREJPROP",
+          "Godrej Properties"
+        ],
+        [
+          "OBEROIRLTY",
+          "Oberoi Realty"
+        ],
+        [
+          "PRESTIGE",
+          "Prestige Estates Projects"
+        ],
+        [
+          "BRIGADE",
+          "Brigade Enterprises"
+        ],
+        [
+          "PHOENIXLTD",
+          "Phoenix Mills"
+        ],
+        [
+          "SOBHA",
+          "Sobha"
+        ],
+        [
+          "LODHA",
+          "Macrotech Developers",
+          "Same listed issuer and NSE symbol as Lodha; retained as a separate requested entry."
+        ],
+        [
+          "LODHA",
+          "Lodha",
+          "Same listed issuer and NSE symbol as Macrotech Developers; retained as a separate requested entry."
+        ],
+        [
+          "EMBDL",
+          "Indiabulls Real Estate",
+          "Legacy name; current NSE symbol EMBDL and issuer name Embassy Developments Limited."
+        ]
+      ]
+    },
+    {
+      "id": "consumer-durables",
+      "name": "Consumer Durables",
+      "kind": "SECTOR",
+      "accent": "steel",
+      "stocks": [
+        [
+          "TITAN",
+          "Titan Company"
+        ],
+        [
+          "VOLTAS",
+          "Voltas"
+        ],
+        [
+          "BLUESTARCO",
+          "Blue Star"
+        ],
+        [
+          "HAVELLS",
+          "Havells India"
+        ],
+        [
+          "CROMPTON",
+          "Crompton Greaves Consumer Electricals"
+        ],
+        [
+          "WHIRLPOOL",
+          "Whirlpool of India"
+        ],
+        [
+          "DIXON",
+          "Dixon Technologies"
+        ],
+        [
+          "AMBER",
+          "Amber Enterprises India"
+        ],
+        [
+          "POLYCAB",
+          "Polycab India"
+        ],
+        [
+          "SYMPHONY",
+          "Symphony"
+        ]
+      ]
+    },
+    {
+      "id": "chemicals",
+      "name": "Chemicals",
+      "kind": "SECTOR",
+      "accent": "lime",
+      "stocks": [
+        [
+          "UPL",
+          "UPL"
+        ],
+        [
+          "DEEPAKNTR",
+          "Deepak Nitrite"
+        ],
+        [
+          "SRF",
+          "SRF"
+        ],
+        [
+          "PIIND",
+          "PI Industries"
+        ],
+        [
+          "NAVINFLUOR",
+          "Navin Fluorine International"
+        ],
+        [
+          "TATACHEM",
+          "Tata Chemicals"
+        ],
+        [
+          "AARTIIND",
+          "Aarti Industries"
+        ],
+        [
+          "ATUL",
+          "Atul"
+        ],
+        [
+          "ALKYLAMINE",
+          "Alkyl Amines Chemicals"
+        ],
+        [
+          "FLUOROCHEM",
+          "Gujarat Fluorochemicals"
+        ]
+      ]
+    },
+    {
+      "id": "telecom",
+      "name": "Telecom",
+      "kind": "SECTOR",
+      "accent": "magenta",
+      "stocks": [
+        [
+          "BHARTIARTL",
+          "Bharti Airtel"
+        ],
+        [
+          "IDEA",
+          "Vodafone Idea"
+        ],
+        [
+          "INDUSTOWER",
+          "Indus Towers"
+        ],
+        [
+          "MTNL",
+          "Mahanagar Telephone Nigam (MTNL)"
+        ],
+        [
+          "TEJASNET",
+          "Tejas Networks"
+        ],
+        [
+          "HFCL",
+          "HFCL"
+        ],
+        [
+          "RAILTEL",
+          "RailTel Corporation of India"
+        ],
+        [
+          "TATACOMM",
+          "Tata Communications"
+        ],
+        [
+          "SPICEJET",
+          "SpiceJet",
+          "Displayed under Telecom exactly as supplied; the company is an airline."
+        ],
+        [
+          "STLTECH",
+          "Sterlite Technologies"
+        ]
+      ]
+    },
+    {
+      "id": "media",
+      "name": "Media & Entertainment",
+      "kind": "SECTOR",
+      "accent": "red",
+      "stocks": [
+        [
+          "ZEEL",
+          "Zee Entertainment Enterprises"
+        ],
+        [
+          "SUNTV",
+          "Sun TV Network"
+        ],
+        [
+          "PVRINOX",
+          "PVR INOX"
+        ],
+        [
+          "NAZARA",
+          "Nazara Technologies"
+        ],
+        [
+          "SAREGAMA",
+          "Saregama India"
+        ],
+        [
+          "NETWORK18",
+          "Network18 Media & Investments"
+        ],
+        [
+          "BALAJITELE",
+          "Balaji Telefilms"
+        ],
+        [
+          "TV18BRDCST",
+          "TV18 Broadcast",
+          "NSE currently marks this security permanently suspended; retained in the requested list and not sent for quotes.",
+          "suspended"
+        ],
+        [
+          "DEN",
+          "Den Networks"
+        ],
+        [
+          "DISHTV",
+          "Dish TV India"
+        ]
+      ]
+    },
+    {
+      "id": "textiles",
+      "name": "Textiles",
+      "kind": "SECTOR",
+      "accent": "emerald",
+      "stocks": [
+        [
+          "ARVIND",
+          "Arvind"
+        ],
+        [
+          "WELSPUNLIV",
+          "Welspun India",
+          "Legacy name and ticker; current issuer is Welspun Living Limited and NSE symbol WELSPUNLIV replaced WELSPUNIND."
+        ],
+        [
+          "TRIDENT",
+          "Trident"
+        ],
+        [
+          "RAYMOND",
+          "Raymond",
+          "NSE symbol remains RAYMOND; issuer announced a name change to Raymond Aerospace, Defence & Engineering in October 2026."
+        ],
+        [
+          "VTL",
+          "Vardhman Textiles"
+        ],
+        [
+          "KPRMILL",
+          "KPR Mill"
+        ],
+        [
+          "PAGEIND",
+          "Page Industries"
+        ],
+        [
+          "GOKEX",
+          "Gokaldas Exports"
+        ],
+        [
+          "ALOKINDS",
+          "Alok Industries"
+        ],
+        [
+          "RUPA",
+          "Rupa & Company"
+        ]
+      ]
+    },
+    {
+      "id": "defence",
+      "name": "Defence",
+      "kind": "SECTOR",
+      "accent": "gold",
+      "stocks": [
+        [
+          "HAL",
+          "Hindustan Aeronautics (HAL)"
+        ],
+        [
+          "BDL",
+          "Bharat Dynamics"
+        ],
+        [
+          "BEL",
+          "Bharat Electronics (BEL)"
+        ],
+        [
+          "MAZDOCK",
+          "Mazagon Dock Shipbuilders"
+        ],
+        [
+          "DATAPATTNS",
+          "Data Patterns (India)"
+        ],
+        [
+          "BEML",
+          "BEML"
+        ],
+        [
+          "PARAS",
+          "Paras Defence and Space Technologies"
+        ],
+        [
+          "ZENTEC",
+          "Zen Technologies"
+        ],
+        [
+          "MTARTECH",
+          "MTAR Technologies"
+        ],
+        [
+          "PREMIERENE",
+          "Premier Explosives"
+        ]
+      ]
+    },
+    {
+      "id": "nifty-top-liquid",
+      "name": "Nifty Top Liquid Stocks (F&O)",
+      "kind": "INDEX",
+      "accent": "gold",
+      "stocks": [
+        [
+          "RELIANCE",
+          "Reliance Industries"
+        ],
+        [
+          "HDFCBANK",
+          "HDFC Bank"
+        ],
+        [
+          "ICICIBANK",
+          "ICICI Bank"
+        ],
+        [
+          "INFY",
+          "Infosys"
+        ],
+        [
+          "TCS",
+          "TCS (Tata Consultancy Services)"
+        ],
+        [
+          "BHARTIARTL",
+          "Bharti Airtel"
+        ],
+        [
+          "ITC",
+          "ITC"
+        ],
+        [
+          "LT",
+          "Larsen & Toubro (L&T)"
+        ],
+        [
+          "SBIN",
+          "State Bank of India (SBI)"
+        ],
+        [
+          "TMPV",
+          "Tata Motors",
+          "Current NSE symbol is TMPV after the passenger-vehicle business demerger; this is not the old TATAMOTORS symbol."
+        ]
+      ]
+    }
+  ],
+  "memberships": 160,
+  "unique_symbols": [
+    "AARTIIND",
+    "ADANIGREEN",
+    "ADANIPOWER",
+    "ALKYLAMINE",
+    "ALOKINDS",
+    "AMBER",
+    "ARVIND",
+    "ASHOKLEY",
+    "ATUL",
+    "AUBANK",
+    "AUROPHARMA",
+    "AXISBANK",
+    "BAJAJ-AUTO",
+    "BALAJITELE",
+    "BALKRISIND",
+    "BANDHANBNK",
+    "BANKBARODA",
+    "BDL",
+    "BEL",
+    "BEML",
+    "BHARTIARTL",
+    "BHEL",
+    "BIOCON",
+    "BLUESTARCO",
+    "BPCL",
+    "BRIGADE",
+    "BRITANNIA",
+    "CIPLA",
+    "COALINDIA",
+    "COFORGE",
+    "COLPAL",
+    "CROMPTON",
+    "DABUR",
+    "DATAPATTNS",
+    "DEEPAKNTR",
+    "DEN",
+    "DISHTV",
+    "DIVISLAB",
+    "DIXON",
+    "DLF",
+    "DRREDDY",
+    "EICHERMOT",
+    "EMBDL",
+    "FLUOROCHEM",
+    "GAIL",
+    "GLENMARK",
+    "GODREJCP",
+    "GODREJPROP",
+    "GOKEX",
+    "HAL",
+    "HAVELLS",
+    "HCLTECH",
+    "HDFCBANK",
+    "HEROMOTOCO",
+    "HFCL",
+    "HINDALCO",
+    "HINDPETRO",
+    "HINDUNILVR",
+    "HINDZINC",
+    "ICICIBANK",
+    "IDEA",
+    "IGL",
+    "INDUSINDBK",
+    "INDUSTOWER",
+    "INFY",
+    "IOC",
+    "IRB",
+    "ITC",
+    "JINDALSTEL",
+    "JSWSTEEL",
+    "KOTAKBANK",
+    "KPRMILL",
+    "LODHA",
+    "LT",
+    "LTIM",
+    "LUPIN",
+    "M&M",
+    "MARICO",
+    "MARUTI",
+    "MAZDOCK",
+    "MOTHERSON",
+    "MPHASIS",
+    "MTARTECH",
+    "MTNL",
+    "NATIONALUM",
+    "NAVINFLUOR",
+    "NAZARA",
+    "NESTLEIND",
+    "NETWORK18",
+    "NHPC",
+    "NMDC",
+    "NTPC",
+    "OBEROIRLTY",
+    "OFSS",
+    "OIL",
+    "ONGC",
+    "PAGEIND",
+    "PARAS",
+    "PERSISTENT",
+    "PETRONET",
+    "PFC",
+    "PHOENIXLTD",
+    "PIIND",
+    "PNB",
+    "POLYCAB",
+    "POWERGRID",
+    "PREMIERENE",
+    "PRESTIGE",
+    "PVRINOX",
+    "RAILTEL",
+    "RAYMOND",
+    "REC",
+    "RELIANCE",
+    "RUPA",
+    "SAIL",
+    "SAREGAMA",
+    "SBIN",
+    "SOBHA",
+    "SPICEJET",
+    "SRF",
+    "STLTECH",
+    "SUNPHARMA",
+    "SUNTV",
+    "SYMPHONY",
+    "TATACHEM",
+    "TATACOMM",
+    "TATACONSUM",
+    "TATASTEEL",
+    "TCS",
+    "TECHM",
+    "TEJASNET",
+    "TITAN",
+    "TMPV",
+    "TORNTPHARM",
+    "TRIDENT",
+    "TV18BRDCST",
+    "TVSMOTOR",
+    "UNITDSPR",
+    "UPL",
+    "VEDL",
+    "VOLTAS",
+    "VTL",
+    "WELSPUNLIV",
+    "WHIRLPOOL",
+    "WIPRO",
+    "ZEEL",
+    "ZENTEC",
+    "ZYDUSLIFE"
+  ],
+  "protected_sha256": {
+    "app/scanner.py": "cedf41dd728d97b9221261fc8af7772ca005d016e542f7f5c86983b76e699f6d",
+    "data/instrument-aliases.json": "e1f74eb940ab587c0edc3e4b53ee8c794539a9a3bbc05f39dbc95f9f7f7fb891",
+    "data/nse-calendar-2026.json": "b5a0cf384f7d51d927055b9fe1988a0ee243ffe9caa4e00333b3734cce717fc7",
+    "data/watchlist.txt": "519d54c86f0e9ea52af384f50e7b612f4bb7e6a919bdec98a573f0a65014a29d",
+    "static/brand.svg": "b56af572d75e071361b7539cc7237a5285e416aff74f833014786c427e18938a",
+    "static/divine-code-369.png": "22eabeb0f10dddae3b1fbf6a060a7932bdf84d2bf55dca19b26d3acffe9c76f8",
+    "static/hero-art.svg": "98ff617bab63f06d093237b3c20be7e9bbb98747db5c0194d0b26f190a58b6d8",
+    "static/hero/bear-premium-small.webp": "6aa94fa951c836c0c43831219f6365b1b60f85572a197364ff712428e9571a56",
+    "static/hero/bear-premium.webp": "c9477c8246db7b020d5b8b83032a570e78851144ab181eb2b669abb0f1821291",
+    "static/hero/bull-premium-small.webp": "264a1f585307195323a0ec8db2eba16d0b52474709c4a7bfbae321c92b3ca0e0",
+    "static/hero/bull-premium.webp": "e42e7e89de268f790eedd10ce65fb511a8475df662d389686624ed8c223fef30",
+    "static/market-art/india-vix.png": "498a9c55673c2742fc48eefb25038c2a75e03a26988cadfe6296bfe84fb7ea9b",
+    "static/market-art/nifty-50.png": "8684670d9c5620524c5f580176ed201e9b4e1d79347047242f024f4756cb1ecc",
+    "static/market-art/nifty-auto.png": "b757050a29f7d21805f4a788c94f2656cc5029f703cc15fcd7da3d3361ce9d4c",
+    "static/market-art/nifty-bank.png": "8cba7e56c2cf4ec51bea4b27a3fc463fcd2aff01881e566ab0fdba0c84a71f20",
+    "static/market-art/nifty-fmcg.png": "65245c902b1d24722ce65563bdda9e29c37c56fe9a61919d52e89469d4260fef",
+    "static/market-art/nifty-it.png": "601ec8dfea13664b2d22e7ff83cea0e43ff405e3bc47095fa0a2f15e276e737d",
+    "static/market-art/nifty-metal.png": "5478fbe476217d4666d0f9b93564bbae9178c43142e3f3eec231dd8ac5a5fb7e",
+    "static/market-art/nifty-midcap-50.png": "e896536712f283c329c7499100a7931af219e3147fbdb3ab4374287459f52e22",
+    "static/market-art/nifty-pharma.png": "88f56d4c6b707931f53141994627664cbbdaa9723efa8608389fc1bcb7ccb494",
+    "static/market-art/nifty-psu-bank.png": "6f2291f7dda5d91670c08322b5f9f151fc94874af98acff04d24649dd1f7670a",
+    "static/market-art/nifty-realty.png": "b933fa73a09c98dd0892c96a6e6e9aed88d3e30c31abd3e929a2ce114271e4dd",
+    "static/market-art/sensex.png": "f121eca4612135a6447bb154324093764db69c7d1bfcd42465084fe3051bb35c",
+    "static/market-intelligence-bg.png": "daecf1a4a657d0255c3539a4ea40b177f9b333551ecf88ee04fe3855a3252a06",
+    "static/sector-universe.json": "61a211782942ffa56623e6dcf552f9952847300f07fdb157b61399e8bf564cad",
+    "static/sectors/automobile.webp": "9682a815bee5fdfd95faacc52e687ff428b3b093cbd05bb3ae8f53a91e5c79cb",
+    "static/sectors/banking.webp": "b3d0935d0830b2c48a1915a503775631584541832adc18ffcd08bfc6d282dcf4",
+    "static/sectors/chemicals.webp": "658a5878bd27ea34c52e6b1baf4941d96e6daaae0085f535b1ea4b6bef09682e",
+    "static/sectors/consumer-durables.webp": "05a2ddab2bcf4c0f568162d1d02b0a97c44d54fc5a59166472cd6c8f6ae19df8",
+    "static/sectors/defence.webp": "4527d568d950fdc381a1947adb9bf89d8b307e63eec8f83109b1a60b4d2177a0",
+    "static/sectors/fmcg.webp": "8450cebb8b87ab224ea8c39ed11ebc75cbf7e9ba4a91e0f19562bef648e6b484",
+    "static/sectors/it-services.webp": "9c5eb7bd383ef4b789b97d8f57b1c8eeec625907a5ee28dfb4c3ef4d4c7000d1",
+    "static/sectors/media.webp": "e4126c15a4b82b8625d6a0dd6aef4619a60b76c6c770313a872ec4403bcbda2b",
+    "static/sectors/metals-mining.webp": "f88a82064837f511ec859903cdaf58131a889c7a690eac53f90ae6261723e076",
+    "static/sectors/nifty-top-liquid.webp": "28c5a03425dbc0e2889faf794033100ba3539469beccd0aba4e88259009378e8",
+    "static/sectors/oil-gas.webp": "d6102e1020fe1fb3c583427698e2957682d0a91dd60d48ccf6a9e77c9fc5a1d3",
+    "static/sectors/pharma-healthcare.webp": "8e0504910d53a4200d22e81171fef1e627a143bccbfdeef0df56a576a48c424e",
+    "static/sectors/power-infra.webp": "2c32d3a89c085327969a99c60ee3c75278cd7aabcccb4f27f682d183f97e80fb",
+    "static/sectors/realty.webp": "c2489b47f1efc20b9e1534d03cf73ff7b3ed4d19daa932366015af727426ac15",
+    "static/sectors/telecom.webp": "da65905ca4df47002707a07d81f4fd3587d69c3c2b40f9b843e4fce8eb4004df",
+    "static/sectors/textiles.webp": "87323d791abc4a39f757079be04f15eabb92041a21ef702194e4b2f0287fc29a"
+  },
+  "routes": [
+    {
+      "path": "/openapi.json",
+      "methods": [
+        "GET",
+        "HEAD"
+      ]
+    },
+    {
+      "path": "/docs",
+      "methods": [
+        "GET",
+        "HEAD"
+      ]
+    },
+    {
+      "path": "/docs/oauth2-redirect",
+      "methods": [
+        "GET",
+        "HEAD"
+      ]
+    },
+    {
+      "path": "/redoc",
+      "methods": [
+        "GET",
+        "HEAD"
+      ]
+    },
+    {
+      "path": "/static",
+      "methods": []
+    },
+    {
+      "path": "/settings",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/history",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/ai-predictions",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/live-market",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/scanner",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/sectors",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/dashboard",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/sectors/{sector_id}",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/stocks/{symbol}",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/status",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/quotes",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/stream",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/market-overview",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/auth/kite/login",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/auth/kite/callback",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/scan",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/watchlist",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/watchlist/names",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/watchlist",
+      "methods": [
+        "PUT"
+      ]
+    },
+    {
+      "path": "/api/watchlist/universe",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/history/imports",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/history/{symbol}",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/settings",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/instruments/reconciliation",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/instruments/reconcile",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/calendar",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/history/imports/{job_id}/{operation}",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/history/import",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/ai/status",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/api/ai/train",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
+      "path": "/api/ai/predict",
+      "methods": [
+        "POST"
+      ]
+    }
+  ],
+  "formulas": {
+    "difference": "Decimal(str(open)) - Decimal(str(previous_close))",
+    "exact": "valid positive finite opening/reference prices AND difference.is_zero()",
+    "near": "not exact AND abs(difference) <= Decimal(str(MAX_DIFFERENCE))"
+  },
+  "runtime_dependencies": "fastapi==0.115.12\nuvicorn[standard]==0.34.2\nrequests==2.32.3\npython-dotenv==1.1.0\napscheduler==3.11.0\nnumpy>=2.1,<3\nscikit-learn>=1.6,<2\njoblib>=1.4,<2\nkiteconnect>=5,<6\n",
+  "retention_authorized": false,
+  "auto_retrain_enabled": false
+}

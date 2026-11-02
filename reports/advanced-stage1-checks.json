@@ -1,0 +1,20 @@
+{
+  "stage": "stage1",
+  "checks": [
+    {
+      "name": "python",
+      "passed": true,
+      "exit": 0
+    },
+    {
+      "name": "frontend",
+      "passed": true,
+      "exit": 0
+    },
+    {
+      "name": "browser",
+      "passed": true,
+      "exit": 0
+    }
+  ]
+}

@@ -12,21 +12,24 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/terminal.css?v=369">
   <link rel="stylesheet" href="/static/dashboard-upgrade.css?v=370">
-  <script type="module" src="/static/app.js?v=370"></script>
+  <link rel="stylesheet" href="/static/command-center.css?v=371">
+  <script type="module" src="/static/app.js?v=371"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <header class="topbar">
     <a href="/" class="brand" data-route aria-label="DIVINE CODE 369 home"><img src="/static/brand.svg" width="42" height="42" alt=""><span><strong>DIVINE CODE <em>369</em></strong><small>MARKET INTELLIGENCE BY SHUBHAM DK</small></span></a>
+    <div class="header-clock" aria-label="Current India time" aria-live="off"><small>LIVE IST</small><time id="headerClock">--:--:--</time></div>
     <button class="icon-button menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navigation">☰</button>
     <nav id="navigation" aria-label="Main navigation">
       <a href="/" data-route>Dashboard</a><a href="/sectors" data-route>Sectors</a><a href="/scanner" data-route>Scanner</a><a href="/live-market" data-route>Live Market</a><a href="/ai-predictions" data-route>AI Predictions <span class="nav-new">LAB</span></a><a href="/history" data-route>History</a><a href="/settings" data-route>Settings</a>
     </nav>
-    <div class="header-connection"><span id="navMarketStatus" class="nav-market-status">NSE · Checking session</span><a class="connect" href="/auth/kite/login"><span class="dot" id="kiteDot"></span><span id="kiteLabel">Connect Kite</span><span aria-hidden="true">↗</span></a></div>
+    <div class="header-connection"><span id="navMarketStatus" class="nav-market-status">NSE · Checking session</span><a class="connect" href="/auth/kite/login" aria-label="Connect or renew Zerodha Kite session"><span class="dot" id="kiteDot"></span><span id="kiteLabel">Connect Kite</span><span aria-hidden="true">↗</span></a></div>
   </header>
   <section class="market-clock-strip" aria-label="Live India market time and NSE session">
     <div class="shell market-clock-inner"><span class="clock-label"><span class="clock-glyph" aria-hidden="true">◷</span> INDIA MARKET TIME</span><time id="liveDate" class="clock-date">Loading date…</time><span class="digital-time"><time id="liveClock">--:--:--</time><small>IST</small></span><span id="sessionStatus" class="market-session">Checking NSE session…</span><span id="feedStatus" class="feed-status">Connecting to server</span></div>
   </section>
+  <div class="shell display-preference"><label for="displayDensity">Display density</label><select id="displayDensity" data-density><option value="compact">Compact</option><option value="comfortable" selected>Comfortable</option><option value="large">Large</option></select></div>
   <section class="ticker" aria-label="Top performing approved stocks">
     <div class="ticker-label"><span class="dot"></span> MARKET PULSE</div>
     <div class="ticker-window"><div class="ticker-track" id="tickerTrack"><span class="ticker-empty">Awaiting verified Kite quotes · No sample market data</span></div></div>

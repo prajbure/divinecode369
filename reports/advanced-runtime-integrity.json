@@ -1,0 +1,58 @@
+{
+  "universe_sha256": "61a211782942ffa56623e6dcf552f9952847300f07fdb157b61399e8bf564cad",
+  "protected_files": 41,
+  "all_protected_files_unchanged": true,
+  "env_unchanged": true,
+  "retention_authorized": false,
+  "auto_retrain_enabled": false,
+  "database": {
+    "candles": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "quote_snapshots": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "scan_results": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "history_imports": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "model_versions": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "model_metrics": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "predictions": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "training_evaluations": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "instruments": {
+      "after": 148
+    },
+    "sector_memberships": {
+      "after": 160
+    },
+    "database_integrity": "ok",
+    "manual_journal_records": 0
+  }
+}

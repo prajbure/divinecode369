@@ -64,7 +64,8 @@ class MarketTests(StoreCase):
         return {'symbol':symbol,'exchange':'NSE','name':symbol,'open':100,'prev_close':100,'ltp':101,'quote_timestamp':datetime.now(TZ).replace(hour=10,minute=0,second=0,microsecond=0).isoformat(),**changes}
 
     def test_ticks_update_prices_but_never_recompute_official_open(self):
-        stamp=datetime.now(TZ)-timedelta(days=1)
+        # Use a known trading day, rather than yesterday (which may be Sunday).
+        stamp=datetime(2026,10,30,tzinfo=TZ)
         stamp=stamp.replace(hour=10,minute=0,second=0,microsecond=0).isoformat()
         with patch('app.market.run_scan',wraps=run_scan) as scan:
             self.service.ingest([self.quote(quote_timestamp=stamp)])
@@ -100,7 +101,7 @@ class MarketTests(StoreCase):
             self.assertEqual(self.service.snapshot()['rows'][0]['quote_status'],'closed')
 
     def test_session_rollover_restores_new_open_and_rejects_old_packets(self):
-        before=(datetime.now(TZ)-timedelta(days=3)).replace(hour=10)
+        before=datetime(2026,10,29,10,tzinfo=TZ)
         after=before+timedelta(days=1)
         self.service.ingest([self.quote(quote_timestamp=before.isoformat())])
         self.service.ingest([self.quote(open=102,quote_timestamp=after.isoformat())])

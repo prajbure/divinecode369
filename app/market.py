@@ -46,6 +46,8 @@ class MarketService:
         self.stream_error = None
         self.transport = "unavailable"
         self.stream_connected = False
+        self.last_tick_at = None
+        self.subscription_count = 0
         self.last_stream_tick = 0.0
         self.token = None
         self.stream_attempt = 0.0
@@ -137,12 +139,19 @@ class MarketService:
                     self.rows = {}
                 row = {**prior, "symbol": qualified, "name": quote.get("name") or prior.get("name") or qualified,
                        "ltp": quote.get("ltp") if finite(quote.get("ltp")) and quote["ltp"] > 0 else None,
-                       "volume": quote.get("volume") if finite(quote.get("volume")) else None, "quote_timestamp": stamp.isoformat() if stamp else None,
+                       "volume": quote.get("volume") if finite(quote.get("volume")) and quote["volume"] >= 0 else None, "quote_timestamp": stamp.isoformat() if stamp else None,
                        "quote_symbol": quote.get("quote_symbol") or prior.get("quote_symbol") or qualified,
                        "resolution_note": quote.get("resolution_note") or prior.get("resolution_note") or "",
                        "tick_size": quote.get("tick_size") or prior.get("tick_size"),
                        "last_trade_at": str(quote.get("last_trade_at") or ""), "received_at": now.isoformat()}
-                if qualified not in self.anchors and stamp and stamp.time().replace(tzinfo=None) >= dt_time(9, 15):
+                for field in ("vwap", "day_high", "day_low", "best_bid", "best_ask", "depth_bid_quantity", "depth_ask_quantity"):
+                    value = quote.get(field)
+                    row[field] = value if finite(value) and value >= 0 else None
+                row["vwap_source"] = quote.get("vwap_source") if row["vwap"] else None
+                calendar = session_state(stamp) if stamp else None
+                opening_time = dt_time.fromisoformat(calendar['opening_time']) if calendar else dt_time(9, 15)
+                eligible_session = calendar and (not calendar['calendar_verified'] or calendar['is_trading_day'])
+                if qualified not in self.anchors and stamp and eligible_session and stamp.time().replace(tzinfo=None) >= opening_time:
                     scan_candidates.append({**quote, "symbol": qualified.split(":", 1)[1]})
                 anchor = self.anchors.get(qualified)
                 if anchor:
@@ -186,6 +195,7 @@ class MarketService:
                     "as_of": self.updated_at, "scan_as_of": self.scan_result.get("as_of"), "opening_date": self.anchor_date,
                     "market": market, "transport": self.transport, "stream_connected": self.stream_connected,
                     "stream_error": self.stream_error, "error": self.error,
+                    "last_received_tick": self.last_tick_at, "active_subscriptions": self.subscription_count if self.stream_connected else 0,
                     "quote_poll_seconds": config.QUOTE_POLL_SECONDS, "stale_seconds": config.QUOTE_STALE_SECONDS,
                     "token_configured": bool(config.KITE_ACCESS_TOKEN), "max_difference": config.MAX_DIFFERENCE,
                     "instrument_status": {d["symbol"]: "valid" if d["is_equity"] else "unavailable" for d in self.details or []},
@@ -209,14 +219,20 @@ class MarketService:
             ticker = KiteTicker(config.KITE_API_KEY, config.KITE_ACCESS_TOKEN, reconnect=True, reconnect_max_tries=20, reconnect_max_delay=60)
 
             def connected(ws, response):
+                if self.ticker is not ticker:
+                    return
                 ws.subscribe(list(mapping))
                 ws.set_mode(ws.MODE_FULL, list(mapping))
                 self.stream_connected = True
+                self.subscription_count = len(mapping)
                 self.stream_error = None
                 self.store.capability("streaming", "verified", "Kite WebSocket connected and subscribed.")
 
             def ticks(ws, values):
+                if self.ticker is not ticker:
+                    return
                 self.last_stream_tick = time.monotonic()
+                self.last_tick_at = datetime.now(TZ).isoformat()
                 quotes = []
                 for tick in values:
                     detail = mapping.get(tick.get("instrument_token"))
@@ -224,6 +240,7 @@ class MarketService:
                         continue
                     ohlc = tick.get("ohlc", {})
                     quotes.append({"symbol": detail["symbol"].split(":", 1)[1], "exchange": "NSE", "name": detail["name"],
+                                   **provider.quote_intelligence(tick, streaming=True),
                                    "quote_symbol": detail.get("quote_symbol"), "resolution_note": detail.get("resolution_note"), "tick_size": detail.get("tick_size"),
                                    "ltp": tick.get("last_price"), "open": ohlc.get("open"), "prev_close": ohlc.get("close"),
                                    "volume": tick.get("volume_traded"), "quote_timestamp": tick.get("exchange_timestamp"),
@@ -231,6 +248,8 @@ class MarketService:
                 self.ingest(quotes, "streaming")
 
             def failed(ws, code, reason):
+                if self.ticker is not ticker:
+                    return
                 self.stream_connected = False
                 self.transport = "polling"
                 self.stream_error = "Streaming disconnected or unavailable; using batched REST quotes."
@@ -241,7 +260,14 @@ class MarketService:
             ticker.on_error = failed
             ticker.on_close = failed
             ticker.on_reconnect = lambda ws, attempts: failed(ws, None, None)
-            ticker.on_noreconnect = lambda ws: failed(ws, None, None)
+            def exhausted(ws):
+                if self.ticker is not ticker:
+                    return
+                failed(ws, None, None)
+                self.ticker = None
+                self.subscription_count = 0
+                self.stream_attempt = time.monotonic()
+            ticker.on_noreconnect = exhausted
             self.ticker = ticker
             ticker.connect(threaded=True)
         except Exception:

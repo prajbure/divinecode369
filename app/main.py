@@ -143,6 +143,10 @@ def home_response():
     return HTMLResponse((config.ROOT / "static" / "index.html").read_text(encoding="utf-8"), headers={"Cache-Control": "no-store"})
 
 
+from .advanced import create_router
+app.include_router(create_router(store, require_admin))
+
+
 @app.get("/", response_class=HTMLResponse)
 @app.get("/dashboard", response_class=HTMLResponse)
 @app.get("/sectors", response_class=HTMLResponse)

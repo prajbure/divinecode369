@@ -29,6 +29,7 @@ try {
   const wait=async expression=>{for(let i=0;i<100;i++){if(await evaluate(expression))return;await sleep(100);}throw new Error('DOM condition timed out: '+expression);};
   const check=(label,condition)=>{assert.ok(condition,label);passed++;console.log('PASS '+label);};
   await send('Page.enable');await send('Runtime.enable');await send('Network.enable');
+  await send('Page.addScriptToEvaluateOnNewDocument',{source:"window.clockIntervals=0;const originalInterval=window.setInterval;window.setInterval=function(fn,delay,...args){if(delay===1000)window.clockIntervals++;return originalInterval(fn,delay,...args);};"});
   await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
   await send('Page.navigate',{url:base+'/'});
   await wait("document.querySelectorAll('.sector-card').length===16");
@@ -42,6 +43,12 @@ try {
   check('two new original hero assets replace the old artwork',await evaluate("document.querySelectorAll('.premium-hero img').length===2&&document.querySelectorAll('img[src*=\"hero-art.svg\"]').length===0"));
   check('bullish and bearish headings have matching arrows',await evaluate("document.querySelector('.stat-card.green .market-heading-arrow').textContent.includes('▲')&&document.querySelector('.stat-card.red .market-heading-arrow').textContent.includes('▼')&&getComputedStyle(document.querySelector('.stat-card.green>strong')).color==='rgb(0, 230, 138)'&&getComputedStyle(document.querySelector('.stat-card.red>strong')).color==='rgb(255, 69, 101)'"));
   check('dashboard includes the opening scanner',await evaluate("!!document.querySelector('.dashboard-scanner .scanner-panel')"));
+  check('persistent header clock beside unchanged brand',await evaluate("!!document.querySelector('.topbar .brand + .header-clock #headerClock')&&document.querySelector('.header-clock').getAttribute('aria-live')==='off'"));
+  check('only one clock interval',await evaluate('window.clockIntervals===1'));
+  await send('Emulation.setTimezoneOverride',{timezoneId:'America/Los_Angeles'});
+  await sleep(1100);
+  check('header clock uses IST in a different browser timezone',await evaluate("(()=>{const clock=document.querySelector('#headerClock'),instant=new Date(clock.dateTime);return clock.textContent===new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).format(instant)&&Date.now()-instant.getTime()<2000;})()"));
+  await send('Emulation.setTimezoneOverride',{timezoneId:'Asia/Kolkata'});
   const before=await evaluate("({clock:document.querySelector('#liveClock').textContent,origin:performance.timeOrigin,ticker:document.querySelector('#tickerTrack').textContent})");
   await sleep(4000);
   const after=await evaluate("({clock:document.querySelector('#liveClock').textContent,origin:performance.timeOrigin,ticker:document.querySelector('#tickerTrack').textContent})");
@@ -66,10 +73,11 @@ try {
   await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
   await evaluate("document.querySelector('a[href=\"/sectors/banking\"].sector-card').click()");
   await wait("location.pathname==='/sectors/banking'&&!!document.querySelector('#stockBody')");
-  check('sector route has eight financial columns',await evaluate("document.querySelectorAll('thead th').length===8"));
+  check('sector route has eight financial columns',await evaluate("document.querySelectorAll('.scanner-panel thead th').length===8"));
   check('ten configured sector entries',await evaluate("document.querySelectorAll('#stockBody tr').length===10"));
   check('sticky table headings',await evaluate("getComputedStyle(document.querySelector('th')).position==='sticky'"));
   check('desktop headings are larger and high contrast',await evaluate("parseFloat(getComputedStyle(document.querySelector('th')).fontSize)>=15&&Number(getComputedStyle(document.querySelector('th')).fontWeight)>=700"));
+  check('stock name links have their own readable font size',await evaluate("parseFloat(getComputedStyle(document.querySelector('#stockBody td:first-child a')).fontSize)>=17"));
   check('Difference column is wide with large tabular numbers',await evaluate("parseFloat(getComputedStyle(document.querySelector('th[data-column=difference]')).minWidth)>=180&&parseFloat(getComputedStyle(document.querySelector('.difference-value')).fontSize)>=16&&getComputedStyle(document.querySelector('.difference-value')).fontVariantNumeric.includes('tabular-nums')"));
   check('Difference movement badges have correct colors',await evaluate("[...document.querySelectorAll('.difference-value')].every(n=>getComputedStyle(n).color===(n.classList.contains('positive')?'rgb(0, 230, 138)':n.classList.contains('negative')?'rgb(255, 69, 101)':n.classList.contains('exact')?'rgb(0, 216, 255)':'rgb(154, 171, 196)'))"));
   const scannerDesktop=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});await writeFile(path.join(qa,'scanner-desktop.png'),Buffer.from(scannerDesktop.data,'base64'));
@@ -86,14 +94,17 @@ try {
   await evaluate("document.querySelector('[data-action=reset]').click()");
   await send('Emulation.setDeviceMetricsOverride',{width:375,height:812,deviceScaleFactor:1,mobile:false});
   check('mobile stock table scrolls within page',await evaluate("document.documentElement.scrollWidth<=innerWidth&&document.querySelector('.table-wrap').scrollWidth>document.querySelector('.table-wrap').clientWidth"));
-  check('mobile headings remain readable',await evaluate("parseFloat(getComputedStyle(document.querySelector('th')).fontSize)>=13&&parseFloat(getComputedStyle(document.querySelector('th')).fontSize)<=14"));
+  check('mobile headings remain readable',await evaluate("parseFloat(getComputedStyle(document.querySelector('th')).fontSize)>=16"));
   await evaluate("document.querySelector('.scanner-panel').scrollIntoView();document.querySelector('.table-wrap').scrollLeft=650");
   const scannerMobile=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});await writeFile(path.join(qa,'scanner-mobile.png'),Buffer.from(scannerMobile.data,'base64'));
   const groups=await evaluate("fetch('/static/sector-universe.json').then(r=>r.json()).then(u=>u.groups.map(g=>g.id))");
   for(const id of groups){
     await evaluate(`history.pushState({},'',${JSON.stringify('/sectors/')}+${JSON.stringify(id)});dispatchEvent(new PopStateEvent('popstate'))`);
     await wait("document.querySelectorAll('#stockBody tr').length===10");
-    check('sector route '+id,await evaluate(`location.pathname===${JSON.stringify('/sectors/'+id)}&&document.querySelectorAll('thead th').length===8&&document.documentElement.scrollWidth<=innerWidth`));
+    await evaluate("scrollTo(0,document.body.scrollHeight)");
+    check('sticky header clock at sector bottom '+id,await evaluate("(()=>{const h=document.querySelector('.topbar').getBoundingClientRect(),c=document.querySelector('#headerClock').getBoundingClientRect();return h.top===0&&c.top>=0&&c.bottom<=innerHeight&&c.left>=0&&c.right<=innerWidth;})()"));
+    await evaluate('scrollTo(0,0)');
+    check('sector route '+id,await evaluate(`location.pathname===${JSON.stringify('/sectors/'+id)}&&document.querySelectorAll('.scanner-panel thead th').length===8&&document.documentElement.scrollWidth<=innerWidth`));
   }
   await evaluate("document.querySelector('nav a[href=\"/ai-predictions\"]').click()");
   await wait("!!document.querySelector('#aiContent .ai-empty')||!!document.querySelector('#aiContent table')");
@@ -103,12 +114,70 @@ try {
   await wait("!!document.querySelector('#importSummary .metric')");
   check('durable history import controls and policy',await evaluate("fetch('/api/history/imports').then(r=>r.json()).then(s=>!!document.querySelector('[data-action=incremental]')&&(!s.retention_authorized?document.querySelector('[data-action=import]').disabled:true)&&document.querySelector('#importSummary').textContent.includes('Last successful import'))"));
   check('mobile history page fits viewport',await evaluate('document.documentElement.scrollWidth<=innerWidth'));
+  check('history table headings are comfortably readable',await evaluate("[...document.querySelectorAll('.table-wrap th')].every(th=>parseFloat(getComputedStyle(th).fontSize)>=16)"));
   await evaluate("document.querySelector('nav a[href=\"/settings\"]').click()");
   await wait("!!document.querySelector('#reconciliationContent .metric')");
   check('complete reconciliation report is available',await evaluate("fetch('/api/instruments/reconciliation').then(r=>r.json()).then(r=>r.total_configured_entries===160&&r.unique_requested_instruments===148&&r.duplicate_membership_count===12&&r.instruments.length===148)"));
   check('mobile settings page fits viewport',await evaluate('document.documentElement.scrollWidth<=innerWidth'));
   await send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
   check('reduced motion disables ticker animation',await evaluate("getComputedStyle(document.querySelector('#tickerTrack')).animationName==='none'"));
+  await evaluate("document.querySelector('nav a[href=\"/\"]').click()");
+  await wait("!!document.querySelector('.hero')");
+  check('new command panels preserve the original scanner',await evaluate("!!document.querySelector('#opportunityRadar')&&!!document.querySelector('#openingIntelligence')&&!!document.querySelector('#qualityCommandCenter')&&!!document.querySelector('.dashboard-scanner .scanner-panel')"));
+  check('personal alerts start disabled',await evaluate("!document.querySelector('#alertForm [name=enabled]').checked"));
+  await evaluate("document.querySelector('#riskCalculator').open=true;const form=document.querySelector('#riskForm');for(const [key,value]of Object.entries({capital:100000,risk_percent:1,entry:100,stop:95,target:110,brokerage:20,slippage:0.1}))form.elements.namedItem(key).value=value;form.requestSubmit()");
+  check('risk calculator includes costs in actual browser form',await evaluate("document.querySelector('#riskResult').textContent.includes('192')&&document.querySelector('#riskResult').textContent.includes('999.20')"));
+  await evaluate("document.querySelector('#personalJournal').open=true;document.querySelector('#loadJournal').click()");
+  await wait("!!document.querySelector('#journalAnalytics .metric')");
+  check('private local journal and analytics load',await evaluate("document.querySelector('#journalRecords').textContent.includes('manual entries')"));
+  await evaluate("document.querySelector('#openingIntelligence').open=true;document.querySelector('#loadCandleContext').click()");
+  await wait("document.querySelector('#contextNotice').textContent.includes('retention remains disabled')");
+  check('stored candle context does not bypass retention authorization',await evaluate("document.querySelector('#contextNotice').textContent.includes('No candle data was requested or stored')"));
+  await evaluate("document.querySelector('#opportunityRadar').open=true;document.querySelector('#radarCondition').value='exact';document.querySelector('#radarCondition').dispatchEvent(new Event('change'))");
+  check('advanced radar filters work without changing original scanner',await evaluate("!!document.querySelector('#opportunityRows table')&&!!document.querySelector('#stockBody')"));
+  for(const width of [1440,768,375,320]){
+    await send('Emulation.setDeviceMetricsOverride',{width,height:900,deviceScaleFactor:1,mobile:false});
+    await sleep(100);
+    check(width+'px expanded personal tools fit viewport',await evaluate('document.documentElement.scrollWidth<=innerWidth'));
+  }
+  await evaluate("document.querySelectorAll('details').forEach(d=>d.open=false);document.querySelector('.scanner-panel .table-wrap').scrollIntoView({block:'start'});document.querySelector('.scanner-panel .table-wrap').scrollTop=200");
+  check('sticky scanner headings stay below global header',await evaluate("document.querySelector('.scanner-panel th').getBoundingClientRect().top>=document.querySelector('.topbar').getBoundingClientRect().bottom-1"));
+  const offlineBefore=await evaluate("document.querySelector('#headerClock').textContent");
+  await send('Network.emulateNetworkConditions',{offline:true,latency:0,downloadThroughput:0,uploadThroughput:0});
+  await sleep(2100);
+  check('IST clock keeps ticking while network is disconnected',offlineBefore!==await evaluate("document.querySelector('#headerClock').textContent"));
+  await send('Network.emulateNetworkConditions',{offline:false,latency:0,downloadThroughput:-1,uploadThroughput:-1});
+  check('route navigation did not create duplicate clock timers',await evaluate('window.clockIntervals===1'));
+  for(const width of [1440,768,375,320]){
+    await send('Emulation.setDeviceMetricsOverride',{width,height:900,deviceScaleFactor:1,mobile:false});
+    await evaluate('scrollTo(0,document.body.scrollHeight)');
+    check(width+'px sticky clock visible during deep scrolling',await evaluate("(()=>{const c=document.querySelector('#headerClock').getBoundingClientRect();return c.top>=0&&c.bottom<=innerHeight&&c.left>=0&&c.right<=innerWidth&&document.documentElement.scrollWidth<=innerWidth;})()"));
+  }
+  await evaluate("document.querySelector('#displayDensity').value='large';document.querySelector('#displayDensity').dispatchEvent(new Event('change'))");
+  check('density preference saved locally',await evaluate("localStorage.getItem('divine-density')==='large'&&document.documentElement.dataset.density==='large'"));
+  await send('Page.reload');await wait("!!document.querySelector('.hero')");
+  check('large density persists through a full reload',await evaluate("document.documentElement.dataset.density==='large'&&document.querySelector('#displayDensity').value==='large'"));
+  await evaluate("document.querySelector('#displayDensity').value='compact';document.querySelector('#displayDensity').dispatchEvent(new Event('change'))");
+  check('compact density changes actual typography',await evaluate("getComputedStyle(document.documentElement).fontSize==='15px'"));
+  await evaluate("document.querySelector('#displayDensity').value='comfortable';document.querySelector('#displayDensity').dispatchEvent(new Event('change'))");
+  await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
+  await evaluate('scrollTo(0,0)');
+  await sleep(150);
+  const topShot=await send('Page.captureScreenshot',{format:'png'});await writeFile('reports/advanced-dashboard-desktop.png',Buffer.from(topShot.data,'base64'));
+  await evaluate("document.querySelector('a[href=\"/sectors/banking\"]').click()");
+  await wait("!!document.querySelector('#stockBody')");
+  await evaluate('scrollTo(0,0)');
+  const sectorShot=await send('Page.captureScreenshot',{format:'png'});await writeFile('reports/advanced-sector-desktop.png',Buffer.from(sectorShot.data,'base64'));
+  await evaluate('scrollTo(0,document.body.scrollHeight)');
+  const stickyShot=await send('Page.captureScreenshot',{format:'png'});await writeFile('reports/advanced-sticky-clock.png',Buffer.from(stickyShot.data,'base64'));
+  await send('Emulation.setDeviceMetricsOverride',{width:375,height:900,deviceScaleFactor:1,mobile:false});
+  await evaluate('scrollTo(0,0)');
+  const mobileSector=await send('Page.captureScreenshot',{format:'png'});await writeFile('reports/advanced-sector-mobile.png',Buffer.from(mobileSector.data,'base64'));
+  await evaluate("document.querySelector('nav a[href=\"/\"]').click()");await wait("!!document.querySelector('.hero')");
+  const mobileDashboard=await send('Page.captureScreenshot',{format:'png'});await writeFile('reports/advanced-dashboard-mobile.png',Buffer.from(mobileDashboard.data,'base64'));
+  await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
+  await evaluate("history.pushState({},'','/sectors/it-services');dispatchEvent(new PopStateEvent('popstate'));document.querySelector('#sectorIntelligence').closest('details').open=true");
+  const intelligenceShot=await send('Page.captureScreenshot',{format:'png'});await writeFile('reports/advanced-sector-intelligence.png',Buffer.from(intelligenceShot.data,'base64'));
   check('no JavaScript or failed resource errors',errors.length===0);
   console.log(JSON.stringify({passed,provider:snapshot,errors,screenshots:['.qa/dashboard-desktop.png','.qa/dashboard-mobile.png']}));
 } finally {
