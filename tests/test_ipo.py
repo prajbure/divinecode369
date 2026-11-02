@@ -253,5 +253,7 @@ class IPORouteTests(unittest.TestCase):
         for route in main.app.routes:routes.setdefault(route.path,set()).update(getattr(route,'methods',[]) or [])
         for route in baseline['routes']:self.assertTrue(set(route['methods'])<=routes[route['path']])
         for path,expected in baseline['sha256'].items():
-            if path in ('app/scanner.py','app/provider.py','app/market.py','app/storage.py','static/sector-universe.json') or path.endswith(('.webp','.png','.svg','.jpg')):
+            # V2.1 explicitly upgrades provider/session lifecycle; scanner, storage,
+            # mappings and original artwork remain protected byte-for-byte.
+            if path in ('app/scanner.py','app/storage.py','static/sector-universe.json') or path.endswith(('.webp','.png','.svg','.jpg')):
                 self.assertEqual(hashlib.sha256((config.ROOT/path).read_bytes()).hexdigest(),expected,path)

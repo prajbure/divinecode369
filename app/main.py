@@ -23,6 +23,10 @@ from .scanner import load_watchlist, save_watchlist, reference_groups
 from .storage import Store
 from .imports import ImportService
 from .reconciliation import reconciliation_report
+from .ipoguru import IPOGuruClient
+from .ipo_service import IPOService
+from .connections import ConnectionManager
+from .logging_filters import install as install_credential_filters,remember_secret
 
 
 class RedactAuthAccessLog(logging.Filter):
@@ -35,9 +39,12 @@ class RedactAuthAccessLog(logging.Filter):
 
 
 logging.getLogger("uvicorn.access").addFilter(RedactAuthAccessLog())
+install_credential_filters()
 
 store = Store()
 market = MarketService(store)
+ipo_service = IPOService(IPOGuruClient())
+connections = ConnectionManager(market,ipo_service)
 lab = PredictionLab(store)
 scheduler = BackgroundScheduler(timezone=ZoneInfo(config.APP_TIMEZONE))
 history_lock = threading.Lock()
@@ -81,14 +88,16 @@ async def lifespan(app):
     scheduler.add_job(incremental_maintenance, CronTrigger(hour=18, minute=20, timezone=ZoneInfo(config.APP_TIMEZONE)), id="incremental_history", replace_existing=True)
     scheduler.add_job(daily_maintenance, CronTrigger(hour=18, minute=30, timezone=ZoneInfo(config.APP_TIMEZONE)), id="maintenance", replace_existing=True)
     scheduler.start()
+    connections.start()
     market.start()
     yield
+    connections.stop()
     app.state.imports.stop()
     market.stop()
     scheduler.shutdown(wait=False)
 
 
-app = FastAPI(title="DIVINE CODE 369 — Market Intelligence", version="2.0.0", lifespan=lifespan)
+app = FastAPI(title="DIVINE CODE 369 — Market Intelligence", version="2.1.0", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory=str(config.ROOT / "static")), name="static")
 
 
@@ -147,7 +156,29 @@ from .advanced import create_router
 app.include_router(create_router(store, require_admin))
 
 from .ipo_routes import create_ipo_router
-app.include_router(create_ipo_router(require_admin, home_response))
+app.include_router(create_ipo_router(require_admin, home_response, service=ipo_service, manager=connections))
+
+@app.get('/connections',response_class=HTMLResponse)
+@app.get('/health',response_class=HTMLResponse)
+def connection_page():return home_response()
+
+@app.get('/api/connections/status')
+def connection_status():return connections.snapshot()
+
+@app.post('/api/connections/kite/disconnect')
+def disconnect_kite(request:Request):
+    require_admin(request)
+    try:connections.disconnect_kite()
+    except Exception:raise HTTPException(503,'Kite stopped locally. Protected session cleanup could not be confirmed; check local file permissions.') from None
+    response=JSONResponse(connections.snapshot())
+    response.delete_cookie('divine_scan_session')
+    return response
+
+@app.post('/api/connections/kite/recheck')
+def recheck_kite(request:Request):
+    require_admin(request)
+    connections.kite.next_check=0
+    return connections.snapshot()
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -181,7 +212,7 @@ def status():
     snap = market.snapshot()
     return {"watchlist": load_watchlist(), "latest": {**market.scan_result, "rows": snap["rows"], "universe": "reference"},
             "error": snap["error"], "scheduled_time": "Official NSE session opening, including published special sessions, Asia/Kolkata",
-            "tolerance": 0, "max_difference": config.MAX_DIFFERENCE, "token_configured": bool(config.KITE_ACCESS_TOKEN), "market": snap}
+            "tolerance": 0, "max_difference": config.MAX_DIFFERENCE, "token_configured": bool(config.KITE_ACCESS_TOKEN), "market": snap,"connections":connections.snapshot()}
 
 
 @app.get("/api/quotes")
@@ -196,13 +227,16 @@ async def stream(request: Request):
         previous = None
         counter = 0
         while not await request.is_disconnected():
-            snap = market.snapshot()
+            snap = await asyncio.to_thread(market.snapshot)
             key = (snap["sequence"], tuple(r["quote_status"] for r in snap["rows"]), snap["market"]["status"])
             if previous != key:
                 yield f"id: {snap['sequence']}\nevent: quotes\ndata: {json.dumps(snap, allow_nan=False)}\n\n"
                 previous = key
             if counter % 7 == 0:
                 yield ': heartbeat\nevent: heartbeat\ndata: {"connected":true}\n\n'
+            if counter % 5 == 0:
+                health=await asyncio.to_thread(connections.snapshot)
+                yield f'event: connections\ndata: {json.dumps(health,allow_nan=False)}\n\n'
             counter += 1
             await asyncio.sleep(2)
     return StreamingResponse(events(), media_type="text/event-stream", headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
@@ -241,7 +275,9 @@ def kite_callback(request: Request, request_token: str | None = None, status: st
     if status != "success" or not request_token or not state or not cookie or not hmac.compare_digest(state, cookie):
         raise HTTPException(400, "Kite login was not completed or the login state expired. Start login again.")
     try:
-        provider.create_kite_session(request_token)
+        remember_secret(request_token)
+        token=provider.create_kite_session(request_token)
+        connections.accept_kite(token)
     except provider.ProviderError as exc:
         raise HTTPException(502, str(exc)) from exc
     response = RedirectResponse("/")

@@ -5,9 +5,9 @@ from .ipo_service import IPOService
 from .ipoguru import IPOGuruClient
 
 
-def create_ipo_router(require_admin, home_response, client=None):
+def create_ipo_router(require_admin, home_response, client=None, service=None, manager=None):
     router=APIRouter()
-    service=IPOService(client or IPOGuruClient())
+    service=service or IPOService(client or IPOGuruClient())
 
     def slug_checked(slug):
         if len(slug)>150 or not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*',slug):
@@ -28,11 +28,13 @@ def create_ipo_router(require_admin, home_response, client=None):
     def verify(request:Request):
         require_admin(request)
         result=service.client.get('/me','account',verify=True)
+        if manager:
+            manager.ipo_next=0;manager.wake.set()
         return {'provider':service.client.status(),'meta':result['meta']}
 
     @router.get('/api/ipo/overview')
     def overview():
-        return service.overview()
+        return manager.get_overview() if manager else service.overview()
 
     @router.get('/api/ipo/details/{slug}')
     def detail(slug:str):
@@ -42,6 +44,8 @@ def create_ipo_router(require_admin, home_response, client=None):
     def resource(slug:str,kind:str):
         if kind not in ('history','subscription','anchors'):
             raise HTTPException(404,'Unavailable in the Standard integration.')
-        return service.resource(slug_checked(slug),kind)
+        slug=slug_checked(slug)
+        if manager:manager.interest(slug,kind)
+        return service.resource(slug,kind)
 
     return router

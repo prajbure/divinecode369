@@ -43,4 +43,8 @@ def verify():
     print(json.dumps({k:v for k,v in report.items() if k!='tables'}))
 
 
-if __name__=='__main__':verify()
+if __name__=='__main__':
+    if (config.ROOT/'reports/v21-baseline.json').exists():
+        from scripts.verify_v21_integrity import verify as verify_current
+        verify_current()
+    else:verify()

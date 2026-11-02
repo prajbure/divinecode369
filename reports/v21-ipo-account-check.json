@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-11-02T15:58:51.011686+00:00",
+  "endpoint": "IPO Guru /me",
+  "success": true,
+  "plan": "free",
+  "scopes": [
+    "calendar",
+    "details",
+    "gmp"
+  ],
+  "limits": {
+    "per_minute": 1,
+    "per_day": 10,
+    "gmp_history_days": 0
+  },
+  "error": null,
+  "application_enabled": false
+}

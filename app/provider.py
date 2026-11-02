@@ -22,21 +22,23 @@ _request_lock = threading.Lock()
 _last_request = 0.0
 
 
-def _get(url, *, params=None):
+def _get(url, *, params=None, access_token=None):
     """One shared REST budget, including history/import requests."""
     global _last_request
     with _request_lock:
         time.sleep(max(0, 1.05 - (time.monotonic() - _last_request)))
         _last_request = time.monotonic()
         try:
-            return requests.get(url, params=params, headers=_headers(), timeout=25)
+            return requests.get(url, params=params, headers=_headers(access_token), timeout=(5,20), allow_redirects=False)
         except requests.RequestException as exc:
             # Do not interpolate request URLs/headers which can carry credentials.
             raise ProviderError("Kite connection failed. Check connectivity and reconnect your session.") from exc
 
 
 class ProviderError(RuntimeError):
-    pass
+    def __init__(self,message,*,code='provider_error',status_code=None):
+        super().__init__(message)
+        self.code,self.status_code=code,status_code
 
 
 @lru_cache(maxsize=1)
@@ -72,11 +74,15 @@ def _credentials_required() -> None:
         raise ProviderError("Kite session expired. Open /auth/kite/login and sign in again.")
 
 
-def _headers() -> dict[str, str]:
-    _credentials_required()
+def _headers(access_token=None) -> dict[str, str]:
+    if not config.KITE_API_KEY or not config.KITE_API_SECRET:
+        raise ProviderError('Kite API credentials are missing.',code='key_missing')
+    token=config.KITE_ACCESS_TOKEN if access_token is None else access_token
+    if not token:
+        raise ProviderError('Official Kite login is required.',code='authentication_failed')
     return {
         "X-Kite-Version": KITE_VERSION,
-        "Authorization": f"token {config.KITE_API_KEY}:{config.KITE_ACCESS_TOKEN}",
+        "Authorization": f"token {config.KITE_API_KEY}:{token}",
     }
 
 
@@ -112,12 +118,26 @@ def _json_payload(response: requests.Response) -> dict:
     if not isinstance(payload, dict):
         raise ProviderError("Kite returned an unexpected response.")
     if not response.ok or payload.get("status") == "error":
-        message = payload.get("message") or payload.get("error_type") or f"HTTP {response.status_code}"
-        for secret in (config.KITE_ACCESS_TOKEN, config.KITE_API_SECRET, config.KITE_API_KEY):
-            if secret:
-                message = str(message).replace(secret, "[redacted]")
-        raise ProviderError(f"Kite API error: {message}")
+        code='authentication_failed' if payload.get('error_type')=='TokenException' or response.status_code==401 else 'rate_limited' if response.status_code==429 else 'provider_error'
+        message='Kite Login Required. The session expired or was revoked.' if code=='authentication_failed' else 'Kite request limit reached; recovery is deferred.' if code=='rate_limited' else f'Kite request unavailable (HTTP {response.status_code}). Check provider access and connectivity.'
+        raise ProviderError(message,code=code,status_code=response.status_code)
     return payload
+
+
+def validate_session(access_token):
+    """Authenticated profile proves authorization without exposing profile details."""
+    payload=_json_payload(_get(f'{BASE_URL}/user/profile',access_token=access_token))
+    if not isinstance(payload.get('data'),dict) or not payload['data'].get('user_id'):
+        raise ProviderError('Kite profile verification returned incomplete data.',code='provider_response')
+    return True
+
+
+def revoke_session(access_token):
+    try:
+        response=requests.delete(f'{BASE_URL}/session/token',headers=_headers(access_token),params={'api_key':config.KITE_API_KEY,'access_token':access_token},timeout=(5,15),allow_redirects=False)
+    except requests.RequestException:
+        raise ProviderError('Local Kite session cleared; provider logout could not be confirmed.') from None
+    _json_payload(response)
 
 
 def quote_intelligence(quote: dict, *, streaming=False) -> dict:

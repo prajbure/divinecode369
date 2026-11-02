@@ -25,7 +25,7 @@ class ScanAuthorizationTests(unittest.TestCase):
 
     def login(self):
         login = self.client.get('/auth/kite/login', follow_redirects=False)
-        with patch('app.provider.create_kite_session', return_value='test-kite-session'):
+        with patch('app.provider.create_kite_session', return_value='test-kite-session'), patch.object(main.connections,'accept_kite'):
             return self.client.get('/auth/kite/callback', params={
                 'request_token': 'test-request', 'status': 'success',
                 'state': login.cookies['kite_oauth_state'],

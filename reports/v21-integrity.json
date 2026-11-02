@@ -1,0 +1,114 @@
+{
+  "checkpoint": "aa082bec866dc647356214589d14ab7f1821823c",
+  "protected_files_checked": 62,
+  "protected_files_unchanged": true,
+  "all_original_routes_preserved": true,
+  "sector_definitions_unchanged": true,
+  "sectors": 16,
+  "memberships": 160,
+  "unique_symbols": 148,
+  "universe_sha256": "61a211782942ffa56623e6dcf552f9952847300f07fdb157b61399e8bf564cad",
+  "database_integrity": "ok",
+  "database_instruments": 148,
+  "database_memberships": 160,
+  "tables": {
+    "instruments": {
+      "before": 148,
+      "after": 148,
+      "all_original_records_preserved": true,
+      "unchanged": true,
+      "normal_provider_metadata": true
+    },
+    "sector_memberships": {
+      "before": 160,
+      "after": 160,
+      "all_original_records_preserved": true,
+      "unchanged": true,
+      "normal_provider_metadata": false
+    },
+    "candles": {
+      "before": 0,
+      "after": 0,
+      "all_original_records_preserved": true,
+      "unchanged": true,
+      "normal_provider_metadata": false
+    },
+    "quote_snapshots": {
+      "before": 0,
+      "after": 0,
+      "all_original_records_preserved": true,
+      "unchanged": true,
+      "normal_provider_metadata": false
+    },
+    "scan_results": {
+      "before": 0,
+      "after": 0,
+      "all_original_records_preserved": true,
+      "unchanged": true,
+      "normal_provider_metadata": false
+    },
+    "model_versions": {
+      "before": 0,
+      "after": 0,
+      "all_original_records_preserved": true,
+      "unchanged": true,
+      "normal_provider_metadata": false
+    },
+    "model_metrics": {
+      "before": 0,
+      "after": 0,
+      "all_original_records_preserved": true,
+      "unchanged": true,
+      "normal_provider_metadata": false
+    },
+    "predictions": {
+      "before": 0,
+      "after": 0,
+      "all_original_records_preserved": true,
+      "unchanged": true,
+      "normal_provider_metadata": false
+    },
+    "capabilities": {
+      "before": 4,
+      "after": 4,
+      "all_original_records_preserved": true,
+      "unchanged": false,
+      "normal_provider_metadata": true
+    },
+    "training_evaluations": {
+      "before": 0,
+      "after": 0,
+      "all_original_records_preserved": true,
+      "unchanged": true,
+      "normal_provider_metadata": false
+    },
+    "instrument_resolutions": {
+      "before": 147,
+      "after": 147,
+      "all_original_records_preserved": true,
+      "unchanged": false,
+      "normal_provider_metadata": true
+    },
+    "history_imports": {
+      "before": 0,
+      "after": 0,
+      "all_original_records_preserved": true,
+      "unchanged": true,
+      "normal_provider_metadata": false
+    },
+    "personal_journal_v1": {
+      "before": 0,
+      "after": 0,
+      "all_original_records_preserved": true,
+      "unchanged": true,
+      "normal_provider_metadata": false
+    }
+  },
+  "env_matches_original_checkpoint": false,
+  "external_configuration_update_recorded": true,
+  "env_matches_latest_recorded_observation": true,
+  "ipo_key_present": true,
+  "ipo_enabled": false,
+  "retention_authorized": false,
+  "auto_training": false
+}

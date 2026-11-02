@@ -2,6 +2,7 @@
 from copy import deepcopy
 from datetime import datetime, timedelta, time as dt_time
 import math
+import random
 import threading
 import time
 from zoneinfo import ZoneInfo
@@ -52,41 +53,72 @@ class MarketService:
         self.token = None
         self.stream_attempt = 0.0
         self.sequence = 0
+        self.authorization = None
+        self.on_provider_error = None
+        self.session_generation = 0
+        self.stream_retry_at = 0.0
+        self.stream_failures = 0
+        self.closed_fetch_phase = None
         self.symbols = reference_scan_symbols()
         self.allowed_symbols = set(self.symbols)
 
     def start(self):
+        if self.thread and self.thread.is_alive():return
+        self.stop_event.clear()
         self.thread = threading.Thread(target=self._run, name="divine-market", daemon=True)
         self.thread.start()
 
     def stop(self):
         self.stop_event.set()
-        if self.ticker:
-            self.ticker.close()
+        self.close_stream()
+        with self.lock:self.session_generation+=1
         if self.thread:
             self.thread.join(timeout=3)
+
+    def close_stream(self):
+        with self.lock:
+            ticker=self.ticker
+            self.ticker=None;self.stream_connected=False;self.subscription_count=0
+        if ticker:
+            try:ticker.close()
+            except Exception:pass
+
+    def reset_session(self):
+        self.close_stream()
+        with self.lock:
+            self.session_generation+=1;self.token=None;self.details=None;self.last_fetch=0
+            self.stream_attempt=0;self.stream_retry_at=0;self.stream_failures=0
+            self.closed_fetch_phase=None
+            self.transport='unavailable';self.sequence+=1
+            self.error=None if self.authorization is None or self.authorization() else 'Kite Login Required. Cached prices are not a connected feed.'
 
     def _run(self):
         failures = 0
         last_snapshot = 0.0
         while not self.stop_event.is_set():
             try:
-                if config.KITE_ACCESS_TOKEN:
+                authorized=self.authorization is None or self.authorization()
+                if not authorized or not config.KITE_ACCESS_TOKEN:
+                    if self.ticker:self.close_stream()
+                if config.KITE_ACCESS_TOKEN and authorized:
                     # A new daily session invalidates the previous socket and token map.
                     if self.token != config.KITE_ACCESS_TOKEN:
-                        if self.ticker:
-                            self.ticker.close()
-                        self.ticker = None
-                        self.stream_connected = False
+                        self.close_stream()
                         self.token = config.KITE_ACCESS_TOKEN
                         self.details = None
                         self.last_fetch = 0
-                    active = session_state()["is_open"]
+                        self.closed_fetch_phase=None
+                    session=session_state()
+                    active = session["is_open"]
                     healthy_stream = self.stream_connected and time.monotonic() - self.last_stream_tick < config.QUOTE_STALE_SECONDS
-                    interval = (60 if healthy_stream else config.QUOTE_POLL_SECONDS) if active else 300
-                    if time.monotonic() - self.last_fetch >= interval:
+                    interval = 60 if healthy_stream else config.QUOTE_POLL_SECONDS
+                    phase=(session.get('trading_date'),session.get('status'))
+                    due=time.monotonic()-self.last_fetch>=interval if active else phase!=self.closed_fetch_phase
+                    if due:
                         self.refresh()
-                    if active and config.STREAMING_ENABLED and not self.ticker and time.monotonic() - self.stream_attempt > 120:
+                        if not active:self.closed_fetch_phase=phase
+                    if active:self.closed_fetch_phase=None
+                    if active and config.STREAMING_ENABLED and not self.ticker and time.monotonic()>=self.stream_retry_at and time.monotonic() - self.stream_attempt > 3:
                         self._start_stream()
                     if time.monotonic() - last_snapshot >= config.SNAPSHOT_INTERVAL_SECONDS:
                         self.store.snapshot(self.snapshot()["rows"])
@@ -97,20 +129,35 @@ class MarketService:
                     self.error = str(exc) if isinstance(exc, provider.ProviderError) else "Market update unavailable; reconnect Kite or check the server."
                     self.sequence += 1
                 failures += 1
-            self.stop_event.wait(min(120, max(1, config.QUOTE_POLL_SECONDS * 2 ** min(failures, 4))) if failures else 1)
+            delay=min(900,max(1,config.QUOTE_POLL_SECONDS*2**min(failures,6))) if failures else 1
+            self.stop_event.wait(delay+random.uniform(0,min(5,delay*.1)) if failures else 1)
 
     def refresh(self):
+        generation=self.session_generation
+        if self.authorization is not None and not self.authorization():
+            raise provider.ProviderError('Kite Login Required. Restore a validated official session first.',code='authentication_failed')
+        try:return self._refresh()
+        except provider.ProviderError as error:
+            if self.on_provider_error and generation==self.session_generation:self.on_provider_error(error)
+            raise
+
+    def _refresh(self):
         with self.fetch_lock:
+            generation=self.session_generation
             if time.monotonic() - self.last_fetch < 3:
                 return
             self.last_fetch = time.monotonic()
             if self.details is None:
-                self.details = provider.stock_names(self.symbols)
+                details = provider.stock_names(self.symbols)
+                if generation!=self.session_generation:return
+                self.details=details
                 self.store.instrument_details(self.details)
                 self.store.capability("instrument_master", "verified", "Approved NSE symbols validated.")
             symbols = [d["symbol"] for d in self.details if d["is_equity"]]
             payload = provider.live_quotes(symbols)
-            self.ingest(payload.get("data", []), transport="polling")
+            with self.lock:
+                if generation!=self.session_generation or (self.authorization is not None and not self.authorization()):return
+                self.ingest(payload.get("data", []), transport="polling")
             self.store.capability("quotes", "verified", "Kite REST quote request succeeded.")
 
     def ingest(self, quotes, transport="polling"):
@@ -182,12 +229,13 @@ class MarketService:
         with self.lock:
             now = datetime.now(TZ)
             market = session_state(now)
+            authorized=self.authorization is None or self.authorization()
             rows = deepcopy(list(self.rows.values()))
             for row in rows:
                 stamp = parse_time(row.get("quote_timestamp"))
                 age = (now - stamp).total_seconds() if stamp else None
                 row["quote_age_seconds"] = round(age) if age is not None else None
-                row["quote_status"] = "unavailable" if row.get("ltp") is None else "unknown" if stamp is None or market.get("status") == "unknown" else "closed" if not market["is_open"] else "stale" if age > config.QUOTE_STALE_SECONDS or self.error else "live"
+                row["quote_status"] = "unavailable" if row.get("ltp") is None else "unknown" if stamp is None or market.get("status") == "unknown" else "closed" if not market["is_open"] else "stale" if age > config.QUOTE_STALE_SECONDS or self.error or not authorized else "live"
                 row["opening_date"] = self.anchor_date
             verified = [r for r in rows if r["change_pct"] is not None and r["quote_status"] in {"live", "closed", "stale"}]
             performers = sorted(verified, key=lambda r: (-r["change_pct"], r["symbol"]))[:15]
@@ -195,6 +243,7 @@ class MarketService:
                     "as_of": self.updated_at, "scan_as_of": self.scan_result.get("as_of"), "opening_date": self.anchor_date,
                     "market": market, "transport": self.transport, "stream_connected": self.stream_connected,
                     "stream_error": self.stream_error, "error": self.error,
+                    "stream_retry_after":max(0,round(self.stream_retry_at-time.monotonic())),"stream_failures":self.stream_failures,
                     "last_received_tick": self.last_tick_at, "active_subscriptions": self.subscription_count if self.stream_connected else 0,
                     "quote_poll_seconds": config.QUOTE_POLL_SECONDS, "stale_seconds": config.QUOTE_STALE_SECONDS,
                     "token_configured": bool(config.KITE_ACCESS_TOKEN), "max_difference": config.MAX_DIFFERENCE,
@@ -210,26 +259,32 @@ class MarketService:
                 "reference_entry_count": 160}
 
     def _start_stream(self):
+        if self.ticker is not None or (self.authorization is not None and not self.authorization()):return
         self.stream_attempt = time.monotonic()
         try:
             from kiteconnect import KiteTicker
             mapping = {d["instrument_token"]: d for d in self.details or [] if d.get("is_equity") and d.get("instrument_token")}
             if not mapping:
                 return
-            ticker = KiteTicker(config.KITE_API_KEY, config.KITE_ACCESS_TOKEN, reconnect=True, reconnect_max_tries=20, reconnect_max_delay=60)
+            token=config.KITE_ACCESS_TOKEN
+            ticker = KiteTicker(config.KITE_API_KEY, token, reconnect=True, reconnect_max_tries=8, reconnect_max_delay=60)
 
             def connected(ws, response):
                 if self.ticker is not ticker:
                     return
+                if token!=config.KITE_ACCESS_TOKEN or (self.authorization is not None and not self.authorization()):
+                    self.close_stream();return
+                if self.stream_connected:return
                 ws.subscribe(list(mapping))
                 ws.set_mode(ws.MODE_FULL, list(mapping))
                 self.stream_connected = True
                 self.subscription_count = len(mapping)
                 self.stream_error = None
+                self.stream_failures=0;self.stream_retry_at=0
                 self.store.capability("streaming", "verified", "Kite WebSocket connected and subscribed.")
 
             def ticks(ws, values):
-                if self.ticker is not ticker:
+                if self.ticker is not ticker or not values:
                     return
                 self.last_stream_tick = time.monotonic()
                 self.last_tick_at = datetime.now(TZ).isoformat()
@@ -245,12 +300,14 @@ class MarketService:
                                    "ltp": tick.get("last_price"), "open": ohlc.get("open"), "prev_close": ohlc.get("close"),
                                    "volume": tick.get("volume_traded"), "quote_timestamp": tick.get("exchange_timestamp"),
                                    "last_trade_at": tick.get("last_trade_time")})
-                self.ingest(quotes, "streaming")
+                with self.lock:
+                    if self.ticker is ticker and token==config.KITE_ACCESS_TOKEN and (self.authorization is None or self.authorization()):self.ingest(quotes, "streaming")
 
             def failed(ws, code, reason):
                 if self.ticker is not ticker:
                     return
                 self.stream_connected = False
+                self.subscription_count = 0
                 self.transport = "polling"
                 self.stream_error = "Streaming disconnected or unavailable; using batched REST quotes."
                 self.store.capability("streaming", "unavailable", self.stream_error)
@@ -267,6 +324,8 @@ class MarketService:
                 self.ticker = None
                 self.subscription_count = 0
                 self.stream_attempt = time.monotonic()
+                self.stream_failures+=1
+                self.stream_retry_at=time.monotonic()+min(900,30*2**min(self.stream_failures-1,5))+random.uniform(0,10)
             ticker.on_noreconnect = exhausted
             self.ticker = ticker
             ticker.connect(threaded=True)

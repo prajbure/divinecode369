@@ -16,6 +16,10 @@ export function sectorMetrics(group,rows){
   const concentration=absolute?topTwo/absolute:null;
   return {id:group.id,name:group.name,total:symbols.size,available:valid.length,advancing,declining,unchanged:valid.length-advancing-declining,
     average,median:mid,breadth,concentration,
+    dispersion:movements.length>=2?Math.sqrt(movements.reduce((sum,value)=>sum+(value-average)**2,0)/movements.length):null,
+    volume_participation:symbols.size?observed.filter(r=>positive(r.volume)).length/symbols.size:null,
+    above_vwap:observed.filter(r=>positive(r.vwap)&&positive(r.ltp)&&positive(r.volume)&&r.vwap_source==='Kite average traded price'&&r.ltp>r.vwap).length,
+    below_vwap:observed.filter(r=>positive(r.vwap)&&positive(r.ltp)&&positive(r.volume)&&r.vwap_source==='Kite average traded price'&&r.ltp<r.vwap).length,
     strength:valid.length?clamp(50+(advancing-declining)/valid.length*35+clamp(mid,-3,3)*5,0,100):null,
     participation:!valid.length?'Unavailable':breadth>=.65&&valid.length>=4&&concentration<.65?'Broad-based':concentration>=.65?'Concentrated in one or two stocks':'Mixed participation',
     strongest:[...valid].sort((a,b)=>b.change_pct-a.change_pct)[0]||null,weakest:[...valid].sort((a,b)=>a.change_pct-b.change_pct)[0]||null,

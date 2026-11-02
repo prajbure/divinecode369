@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-11-02T15:56:39.051Z",
+  "kite_state": "connected",
+  "authentication": "valid",
+  "network": "reachable",
+  "persistence": "encrypted",
+  "last_authenticated": "2026-11-02T15:43:51.552682+00:00",
+  "last_validated": "2026-11-02T15:55:23.457793+00:00",
+  "market": "closed",
+  "websocket": false,
+  "ipo_state": "disconnected",
+  "ipo_enabled": false
+}

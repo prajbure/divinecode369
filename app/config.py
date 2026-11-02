@@ -71,3 +71,4 @@ IPOGURU_BASE_URL = os.getenv("IPOGURU_BASE_URL", "https://www.ipoguru.in/api/v2"
 IPOGURU_ENABLED = enabled("IPOGURU_ENABLED")
 IPOGURU_CACHE_SECONDS = integer("IPOGURU_CACHE_SECONDS", 900, 300)
 IPOGURU_QUOTA_PATH = DATABASE_PATH.parent / "ipoguru-quota.sqlite3"
+KITE_SESSION_PATH = DATABASE_PATH.parent / ".private" / "kite-session.bin"

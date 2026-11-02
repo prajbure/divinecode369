@@ -8,6 +8,8 @@ check('sector duplicates count once',()=>{const s=sectorMetrics(group,rows);asse
 check('missing quotes excluded from breadth denominator',()=>assert.equal(sectorMetrics(group,rows).breadth,1/3));
 check('median and mean are distinct',()=>{const s=sectorMetrics(group,rows);assert.equal(s.median,0);assert.equal(s.average,1/3);});
 check('unavailable sector stays unavailable',()=>assert.equal(sectorMetrics(group,[]).strength,null));
+check('sector dispersion uses unique observed constituents in percentage points',()=>{const s=sectorMetrics(group,[row('A',1),row('A',1),row('B',3)]);assert.equal(s.dispersion,1);assert.equal(sectorMetrics(group,[row('A',1)]).dispersion,null);});
+check('sector volume and VWAP participation only use supplied valid fields',()=>{const s=sectorMetrics(group,[row('A',1,{volume:100,vwap:99,vwap_source:'Kite average traded price'}),row('B',2,{volume:0,vwap:101,vwap_source:'Kite average traded price'})]);assert.equal(s.volume_participation,.25);assert.equal(s.above_vwap,1);assert.equal(s.below_vwap,0);});
 check('median does not mutate observations',()=>{const a=[3,1,2,4];assert.equal(median(a),2.5);assert.deepEqual(a,[3,1,2,4]);});
 check('opening gap percentage uses official open and reference close',()=>assert.equal(gapPercent({open:102,prev_close:100}),2));
 check('zero or missing reference cannot create a gap',()=>assert.equal(gapPercent({open:100,prev_close:0}),null));

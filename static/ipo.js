@@ -35,12 +35,14 @@ function resourceNotice(resource){return resource?.meta?.error?`<div class="noti
 
 export function ipoShell(){
   const screen=location.pathname.split('/')[2]||'';
-  return `<div id="ipoTerminal" class="ipo-terminal"><div class="ipo-topline"><div><p class="kicker">DIVINE CODE 369 · PRIMARY MARKETS</p><h1>IPO Intelligence</h1><p>Your dedicated IPO research terminal. Mainboard &amp; SME.</p></div><div class="ipo-actions"><button class="secondary" id="ipoVerify">Verify provider</button><button class="primary" id="ipoRefresh">Refresh data</button></div></div><nav class="ipo-nav" aria-label="IPO screens">${tabs.map(([path,label])=>`<a href="/ipo${path?'/'+path:''}" data-route class="${screen===path?'active':''}" ${screen===path?'aria-current="page"':''}>${label}</a>`).join('')}</nav>${warning}<div id="ipoHealth" class="ipo-health" role="status">Checking IPO provider configuration…</div><div id="ipoContent">${empty('Loading the IPO workspace…')}</div><footer class="ipo-credit"><a href="https://www.ipoguru.in/" target="_blank" rel="noopener noreferrer">Data by IPO Guru — https://www.ipoguru.in/</a><span>Developed by ER PRAJWAL AMBURE · Personal research</span></footer></div>`;
+  return `<div id="ipoTerminal" class="ipo-terminal"><div class="ipo-topline"><div><p class="kicker">DIVINE CODE 369 · PRIMARY MARKETS</p><h1>IPO Intelligence</h1><p>Your dedicated IPO research terminal. Mainboard &amp; SME.</p></div><div class="ipo-actions"><button class="primary" id="ipoRefresh">Refresh data</button></div></div><nav class="ipo-nav" aria-label="IPO screens">${tabs.map(([path,label])=>`<a href="/ipo${path?'/'+path:''}" data-route class="${screen===path?'active':''}" ${screen===path?'aria-current="page"':''}>${label}</a>`).join('')}</nav>${warning}<div id="ipoHealth" class="ipo-health" role="status">Checking IPO provider configuration…</div><div id="ipoContent">${empty('Loading the IPO workspace…')}</div><footer class="ipo-credit"><a href="https://www.ipoguru.in/" target="_blank" rel="noopener noreferrer">Data by IPO Guru — https://www.ipoguru.in/</a><span>Developed by ER PRAJWAL AMBURE · Personal research</span></footer></div>`;
 }
 
+let refreshCurrentIPO=null;
+export function refreshIPOFromBackend(){refreshCurrentIPO?.();}
 export function mountIPO({api,notice}){
   const root=document.getElementById('ipoTerminal');
-  if(!root)return;
+  if(!root){refreshCurrentIPO=null;return;}
   const screen=location.pathname.split('/')[2]||'';
   const content=root.querySelector('#ipoContent');
   let overview,focusSlug='',filter='',query='',board='',sort='schedule',generation=0;
@@ -51,7 +53,7 @@ export function mountIPO({api,notice}){
   }
   function health(provider,meta){
     if(!alive())return;
-    root.querySelector('#ipoHealth').innerHTML=`<span><strong>${provider?.verified?'Verified '+esc(provider.plan||'plan'):provider?.configured?'Awaiting account verification':'Provider not configured'}</strong></span><span>${provider?.quota?`${esc(provider.quota.remaining)} requests remaining · ${esc(provider.limits.per_day)}/day · ${esc(provider.limits.per_minute)}/minute`:'Request budget available after /me verification'}</span><span>${meta?.fetched_at?'Last successful fetch: '+esc(istStamp(meta.fetched_at)):'No successful IPO data refresh yet'}</span><span>${meta?.cache_stale?'Stale cached response':meta?.cache_hit?'Shared cached response':'On-demand backend refresh'} · ${esc(Math.round((provider?.cache_seconds||900)/60))} min cache</span>`;
+    root.querySelector('#ipoHealth').innerHTML=`<span><strong>${provider?.verified?'Verified '+esc(provider.plan||'plan'):provider?.configured?'Awaiting account verification':'Provider not configured'}</strong></span><span>${provider?.quota?`${esc(provider.quota.remaining)} requests remaining · ${esc(provider.limits.per_day)}/day · ${esc(provider.limits.per_minute)}/minute`:'Request budget available after /me verification'}</span><span>${meta?.fetched_at?'Last successful fetch: '+esc(istStamp(meta.fetched_at)):'No successful IPO data refresh yet'}</span><span>${meta?.cache_stale?'Stale cached response':meta?.cache_hit?'Shared cached response':'Automatic backend refresh'} · ${esc(Math.round((provider?.cache_seconds||900)/60))} min baseline cache</span>`;
   }
   function runAlerts(rows){
     const updates=alerts.evaluate(rows,preferences);
@@ -174,5 +176,6 @@ export function mountIPO({api,notice}){
     if(![preferences.cooldown,preferences.gmp,preferences.subscription].every(num)||preferences.cooldown<60){notice('Provide valid alert thresholds.',true);return;}
     saveLocal('divine-ipo-alerts',preferences);notice('IPO alert preferences saved.');runAlerts(overview.rows);alertsView();
   };
+  refreshCurrentIPO=()=>{if(root.isConnected&&!document.hidden)load();};
   load();
 }

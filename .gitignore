@@ -6,6 +6,7 @@ __pycache__/
 node_modules
 data/*.sqlite3*
 data/models/
+data/.private/
 .pytest_cache/
 coverage/
 .qa/

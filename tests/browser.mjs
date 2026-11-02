@@ -37,8 +37,8 @@ try {
   check('16 original sector cards',await evaluate("document.querySelectorAll('.sector-card').length===16"));
   check('desktop layout fits viewport',await evaluate('document.documentElement.scrollWidth<=innerWidth'));
   check('four-column desktop sector grid',await evaluate("getComputedStyle(document.querySelector('.sector-grid')).gridTemplateColumns.split(' ').length===4"));
-  check('one compact IST clock above the ticker and hero',await evaluate("document.querySelectorAll('#liveClock').length===1&&!!(document.querySelector('header').compareDocumentPosition(document.querySelector('.market-clock-strip'))&4)&&!!(document.querySelector('.market-clock-strip').compareDocumentPosition(document.querySelector('.ticker'))&4)&&!!(document.querySelector('.ticker').compareDocumentPosition(document.querySelector('.hero'))&4)"));
-  check('IST date includes actual weekday and date',await evaluate("document.querySelector('#liveDate').textContent===new Intl.DateTimeFormat('en-IN',{timeZone:'Asia/Kolkata',weekday:'short',day:'2-digit',month:'short',year:'numeric'}).format(new Date()).toUpperCase()"));
+  check('only one IST clock and duplicate strip removed',await evaluate("document.querySelectorAll('#headerClock').length===1&&!document.querySelector('.market-clock-strip')&&!document.querySelector('#liveClock')&&!document.querySelector('#liveDate')"));
+  check('two organized navigation levels',await evaluate("!!document.querySelector('.header-primary .brand')&&!!document.querySelector('.topbar>#navigation')&&!!document.querySelector('#navMore a[href=\"/history\"]')"));
   await wait("[...document.querySelectorAll('.premium-hero img')].every(i=>i.complete&&i.naturalWidth>0)");
   check('two new original hero assets replace the old artwork',await evaluate("document.querySelectorAll('.premium-hero img').length===2&&document.querySelectorAll('img[src*=\"hero-art.svg\"]').length===0"));
   check('bullish and bearish headings have matching arrows',await evaluate("document.querySelector('.stat-card.green .market-heading-arrow').textContent.includes('▲')&&document.querySelector('.stat-card.red .market-heading-arrow').textContent.includes('▼')&&getComputedStyle(document.querySelector('.stat-card.green>strong')).color==='rgb(0, 230, 138)'&&getComputedStyle(document.querySelector('.stat-card.red>strong')).color==='rgb(255, 69, 101)'"));
@@ -49,14 +49,14 @@ try {
   await sleep(1100);
   check('header clock uses IST in a different browser timezone',await evaluate("(()=>{const clock=document.querySelector('#headerClock'),instant=new Date(clock.dateTime);return clock.textContent===new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).format(instant)&&Date.now()-instant.getTime()<2000;})()"));
   await send('Emulation.setTimezoneOverride',{timezoneId:'Asia/Kolkata'});
-  const before=await evaluate("({clock:document.querySelector('#liveClock').textContent,origin:performance.timeOrigin,ticker:document.querySelector('#tickerTrack').textContent})");
+  const before=await evaluate("({clock:document.querySelector('#headerClock').textContent,origin:performance.timeOrigin,ticker:document.querySelector('#tickerTrack').textContent})");
   await sleep(4000);
-  const after=await evaluate("({clock:document.querySelector('#liveClock').textContent,origin:performance.timeOrigin,ticker:document.querySelector('#tickerTrack').textContent})");
+  const after=await evaluate("({clock:document.querySelector('#headerClock').textContent,origin:performance.timeOrigin,ticker:document.querySelector('#tickerTrack').textContent})");
   check('clock advances without reloading',before.clock!==after.clock&&before.origin===after.origin);
   const snapshot=await evaluate("fetch('/api/quotes').then(r=>r.json()).then(q=>({count:q.rows.length,transport:q.transport,live:q.rows.filter(r=>r.quote_status==='live').length,top:q.top_performers.length,sorted:q.top_performers.every((r,i,a)=>i===0||a[i-1].change_pct>=r.change_pct)}))");
   check('verified ticker is sorted by percentage change',snapshot.sorted);
   if(snapshot.live){check('real Kite values update through SSE without reloading',before.ticker!==after.ticker&&before.origin===after.origin);}else if(snapshot.top){check('non-live quotes are explicitly labeled',await evaluate("[...document.querySelectorAll('.ticker-stock small')].every(n=>/closed|stale/.test(n.textContent))"));}else{check('disconnected quotes remain explicitly unavailable',await evaluate("document.querySelector('#tickerTrack').textContent.includes('Awaiting verified Kite quotes')"));}
-  check('NSE calendar label agrees across navigation clock and ticker',await evaluate("fetch('/api/calendar').then(r=>r.json()).then(c=>['navMarketStatus','sessionStatus','tickerMarketStatus'].every(id=>document.getElementById(id).textContent.includes(c.label)))"));
+  check('NSE calendar label agrees across navigation clock and ticker',await evaluate("fetch('/api/calendar').then(r=>r.json()).then(c=>['navMarketStatus','tickerMarketStatus'].every(id=>document.getElementById(id).textContent.includes(c.label)))"));
   await evaluate("document.querySelector('#tickerPause').click()");
   check('ticker pause control',await evaluate("(getComputedStyle(document.querySelector('#tickerTrack')).animationPlayState==='paused'||getComputedStyle(document.querySelector('#tickerTrack')).animationName==='none')&&document.querySelector('#tickerPause').getAttribute('aria-pressed')==='true'"));
   await evaluate("document.querySelector('#tickerPause').click()");
@@ -67,7 +67,7 @@ try {
     await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});await sleep(150);
     check(`${width}px dashboard has no horizontal overflow`,await evaluate('document.documentElement.scrollWidth<=innerWidth'));
     check(`${width}px sector columns`,await evaluate(`getComputedStyle(document.querySelector('.sector-grid')).gridTemplateColumns.split(' ').length===${columns}`));
-    check(`${width}px Connect Kite is reachable`,await evaluate("(()=>{const e=document.querySelector('.connect'),r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))})()"));
+    check(`${width}px connection control is reachable`,await evaluate("(()=>{const e=document.querySelector('#providerMenu>summary'),r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))})()"));
   }
   const mobile=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});await writeFile(path.join(qa,'dashboard-mobile.png'),Buffer.from(mobile.data,'base64'));
   await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});

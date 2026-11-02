@@ -191,7 +191,7 @@ class ApiTests(unittest.TestCase):
         cls.store=Store(Path(cls.tmp.name)/'api.sqlite3')
         cls.market=MarketService(cls.store)
         cls.lab=PredictionLab(cls.store)
-        cls.patches=[patch.object(main,'store',cls.store),patch.object(main,'market',cls.market),patch.object(main,'lab',cls.lab),patch.object(cls.market,'start'),patch.object(config,'KITE_ACCESS_TOKEN',''),patch.object(config,'DATA_RETENTION_AUTHORIZED',False),patch.object(config,'HISTORICAL_ENABLED',False)]
+        cls.patches=[patch.object(main,'store',cls.store),patch.object(main,'market',cls.market),patch.object(main,'lab',cls.lab),patch.object(cls.market,'start'),patch.object(main.connections,'start'),patch.object(main.connections,'stop'),patch.object(config,'KITE_ACCESS_TOKEN',''),patch.object(config,'DATA_RETENTION_AUTHORIZED',False),patch.object(config,'HISTORICAL_ENABLED',False)]
         for p in cls.patches:p.start()
         cls.client=TestClient(main.app)
         cls.client.__enter__()
@@ -231,7 +231,7 @@ class ApiTests(unittest.TestCase):
             cookie=login.cookies['kite_oauth_state']
             self.assertIn('redirect_params=state%3D',login.headers['location'])
             self.assertEqual(self.client.get('/auth/kite/callback?request_token=test&status=success&state=invalid').status_code,400)
-            with patch('app.provider.create_kite_session',return_value='server-only') as exchange:
+            with patch('app.provider.create_kite_session',return_value='server-only') as exchange, patch.object(self.main.connections,'accept_kite'):
                 response=self.client.get('/auth/kite/callback',params={'request_token':'test','status':'success','state':cookie},follow_redirects=False)
                 self.assertEqual(response.status_code,307)
                 exchange.assert_called_once_with('test')
@@ -252,6 +252,9 @@ class ApiTests(unittest.TestCase):
             self.market.sequence+=1
             with patch('app.main.asyncio.sleep',new=AsyncMock()):
                 update=await anext(iterator)
+                if 'event: connections' in update:
+                    self.assertNotIn('access_token',update)
+                    update=await anext(iterator)
             self.assertIn(f'id: {self.market.sequence}',update)
             await iterator.aclose()
         asyncio.run(check())

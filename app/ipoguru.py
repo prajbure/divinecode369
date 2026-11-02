@@ -83,6 +83,7 @@ class IPOGuruClient:
         self.daily_limit, self.minute_limit = 1000, 20
         self._quota = None
         self._day = None
+        self.subscription_updates = {}
 
     @property
     def configured(self):
@@ -91,14 +92,16 @@ class IPOGuruClient:
                     and url.path=='/api/v2' and not url.query and not url.fragment)
 
     def status(self):
-        with self.lock:
-            return {'enabled':bool(self.enabled), 'configured':self.configured, 'verified':bool(self.account) and not self.auth_failed,
-                    'plan':self.account.get('plan') if self.account else None,
-                    'scopes':sorted((set(self.account.get('scopes',[])) & STANDARD_SCOPES)-self.blocked) if self.account else [],
-                    'limits':{'per_day':self.daily_limit,'per_minute':self.minute_limit},
-                    'quota':deepcopy(self._quota), 'error':self.last_error,
-                    'cache_seconds':self.ttl, 'retry_after':max(0,round(self.next_request-self.clock())),
-                    'message': 'Configure the backend key and enable IPO Guru to load verified IPO data.' if not self.configured else 'Shared backend cache; refreshes only on demand.'}
+        # Metadata references are replaced atomically; never wait on the HTTP/cache
+        # lock here. Health/SSE must keep running during a slow provider request.
+        account=self.account or {}
+        return {'enabled':bool(self.enabled), 'configured':self.configured, 'verified':bool(account) and not self.auth_failed,
+                'plan':account.get('plan'),
+                'scopes':sorted((set(account.get('scopes',[])) & STANDARD_SCOPES)-self.blocked.copy()),
+                'limits':{'per_day':self.daily_limit,'per_minute':self.minute_limit},
+                'quota':deepcopy(self._quota), 'error':deepcopy(self.last_error),
+                'cache_seconds':self.ttl, 'retry_after':max(0,round(self.next_request-self.clock())),
+                'message': 'Configure the backend key and enable IPO Guru to load verified IPO data.' if not self.configured else 'Shared backend cache; automatic refresh is managed by the backend.'}
 
     def _request(self, path, scope):
         now = self.clock()
@@ -207,6 +210,11 @@ class IPOGuruClient:
                         self._quota=self.ledger.transact(now,self.minute_limit,self.daily_limit,remaining=usage['remaining'])
                 cached = (now,data)
                 self.cache[path] = cached
+                if path.endswith('/subscription'):
+                    summary=data.get('summary')
+                    stamp=summary.get('updated_at') if isinstance(summary,dict) else None
+                    if isinstance(stamp,str):self.subscription_updates[path]=stamp
+                    while len(self.subscription_updates)>128:self.subscription_updates.pop(next(iter(self.subscription_updates)))
                 self.cache.move_to_end(path)
                 while len(self.cache)>256:
                     self.cache.popitem(last=False)

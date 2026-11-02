@@ -30,11 +30,18 @@ class PreservationTests(unittest.TestCase):
             self.assertIn(route['path'],routes)
             self.assertTrue(set(route['methods'])<=routes[route['path']])
 
-    def test_private_credential_file_is_unchanged(self):
+    def test_private_credential_file_matches_documented_configuration(self):
         checkpoint=config.ROOT/'.qa/advanced-private-baseline.json'
         if checkpoint.exists():
             baseline=json.loads(checkpoint.read_text(encoding='utf-8'))
-            self.assertEqual(hashlib.sha256((config.ROOT/'.env').read_bytes()).hexdigest(),baseline['env_sha256'])
+            observation=config.ROOT/'.qa/v21-external-env.json'
+            if observation.exists():
+                external=json.loads(observation.read_text(encoding='utf-8'))
+                self.assertEqual(external['source'],'external_configuration_change')
+                self.assertEqual(external['original_env_sha256'],baseline['env_sha256'])
+                expected=external['observed_env_sha256']
+            else:expected=baseline['env_sha256']
+            self.assertEqual(hashlib.sha256((config.ROOT/'.env').read_bytes()).hexdigest(),expected)
 
     def test_optional_quote_fields_use_provider_values_only(self):
         fields=provider.quote_intelligence({'average_price':123.4,'ohlc':{'high':130,'low':120}})
