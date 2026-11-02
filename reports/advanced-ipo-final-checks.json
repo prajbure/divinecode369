@@ -1,0 +1,25 @@
+{
+  "stage": "ipo-final",
+  "checks": [
+    {
+      "name": "python",
+      "passed": true,
+      "exit": 0
+    },
+    {
+      "name": "frontend",
+      "passed": true,
+      "exit": 0
+    },
+    {
+      "name": "intelligence",
+      "passed": true,
+      "exit": 0
+    },
+    {
+      "name": "browser",
+      "passed": true,
+      "exit": 0
+    }
+  ]
+}

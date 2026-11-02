@@ -64,3 +64,10 @@ TRAINING_MIN_NEW_SESSIONS = integer("TRAINING_MIN_NEW_SESSIONS", 20, 5)
 BACKTEST_COST_BPS = integer("BACKTEST_COST_BPS", 20, 0)
 HISTORY_AUTO_UPDATE_ENABLED = enabled("HISTORY_AUTO_UPDATE_ENABLED")
 IMPORT_RETRY_LIMIT = integer("IMPORT_RETRY_LIMIT", 3, 1)
+
+# Separate, opt-in IPO provider. Never use or change Kite credentials here.
+IPOGURU_API_KEY = os.getenv("IPOGURU_API_KEY", "").strip()
+IPOGURU_BASE_URL = os.getenv("IPOGURU_BASE_URL", "https://www.ipoguru.in/api/v2").rstrip("/")
+IPOGURU_ENABLED = enabled("IPOGURU_ENABLED")
+IPOGURU_CACHE_SECONDS = integer("IPOGURU_CACHE_SECONDS", 900, 300)
+IPOGURU_QUOTA_PATH = DATABASE_PATH.parent / "ipoguru-quota.sqlite3"

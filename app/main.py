@@ -146,6 +146,9 @@ def home_response():
 from .advanced import create_router
 app.include_router(create_router(store, require_admin))
 
+from .ipo_routes import create_ipo_router
+app.include_router(create_ipo_router(require_admin, home_response))
+
 
 @app.get("/", response_class=HTMLResponse)
 @app.get("/dashboard", response_class=HTMLResponse)

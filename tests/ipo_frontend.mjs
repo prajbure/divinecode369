@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import {fmt,rupees,percent,istStamp,dayLabel,dailyChart,escapeHTML,IPOAlerts,DEFAULT_IPO_ALERTS,sourceFreshness,listingComparison} from '../static/ipo-core.js';
+let passed=0;
+function check(name,fn){fn();passed++;console.log('PASS '+name);}
+check('null is unavailable; an actual zero remains zero',()=>{assert.equal(fmt(null),'Unavailable');assert.equal(rupees(0),'₹0');assert.equal(percent(0),'0%');});
+check('nonfinite values remain unavailable',()=>assert.equal(fmt(NaN),'Unavailable'));
+check('provider content is escaped',()=>assert.equal(escapeHTML('<img onerror="x">'),'&lt;img onerror=&quot;x&quot;&gt;'));
+check('UTC timestamps are rendered as IST',()=>assert.match(istStamp('2026-11-02T04:00:00Z'),/09:30.*IST/));
+check('date-only schedule stays on the Indian date',()=>assert.match(dayLabel('2026-11-02'),/02 Nov 2026/));
+check('daily chart requires two valid observations',()=>assert.match(dailyChart([{date:'2026-11-01',price:1}]),/two verified/));
+check('chart displays daily prices and preserves missing-reading gaps',()=>{const markup=dailyChart([{date:'2026-11-01',price:1},{date:'2026-11-02',price:null},{date:'2026-11-03',price:3}]);assert.match(markup,/Day-wise GMP/);assert.equal((markup.match(/M\d/g)||[]).length,2);assert.doesNotMatch(markup,/NaN/);});
+const now=Date.parse('2026-11-02T05:00:00Z');
+check('freshness ages without provider requests and future dates stay unknown',()=>{assert.equal(sourceFreshness('2026-11-02T04:55:00Z',now),'recent');assert.equal(sourceFreshness('2026-11-02T04:00:00Z',now),'delayed');assert.equal(sourceFreshness('2026-11-01T04:00:00Z',now),'stale');assert.equal(sourceFreshness('2026-11-02T06:00:00Z',now),'unknown');});
+const ipo={slug:'test-ipo',name:'TEST FIXTURE',timeline:{open_date:'2026-11-02'},gmp:{percentage:25,freshness:{status:'recent',as_of:'2026-11-02T04:55:00Z'}}};
+check('alerts are opt-in',()=>assert.equal(new IPOAlerts().evaluate([ipo],DEFAULT_IPO_ALERTS,now).length,0));
+check('duplicate events stay suppressed beyond cooldown',()=>{const engine=new IPOAlerts(),prefs={...DEFAULT_IPO_ALERTS,enabled:true};assert.equal(engine.evaluate([ipo],prefs,now).length,2);assert.equal(engine.evaluate([ipo],prefs,now+3600000).length,0);});
+check('stale GMP cannot trigger sentiment alert',()=>{const value=structuredClone(ipo);value.gmp.freshness.status='stale';assert.equal(new IPOAlerts().evaluate([value],{...DEFAULT_IPO_ALERTS,enabled:true,events:['gmp']},now).length,0);});
+check('subscription alert requires timestamped category totals',()=>{const value={...ipo,subscription_total:9};assert.equal(new IPOAlerts().evaluate([value],{...DEFAULT_IPO_ALERTS,enabled:true,events:['subscription']},now).length,0);});
+check('subscription update alerts deduplicate source stamps',()=>{const engine=new IPOAlerts(),prefs={...DEFAULT_IPO_ALERTS,enabled:true,events:['subscription']},value={...ipo,alert_subscription:{total:3,freshness:{status:'recent',as_of:'2026-11-02T04:55:00Z'}}};assert.equal(engine.evaluate([value],prefs,now).length,1);assert.equal(engine.evaluate([value],prefs,now+1000000).length,0);});
+check('old cached recent labels cannot trigger new alerts hours later',()=>assert.equal(new IPOAlerts().evaluate([ipo],{...DEFAULT_IPO_ALERTS,enabled:true,events:['gmp']},now+7200000).length,0));
+const listingIPO={is_listed:true,listing:{price:250},issue:{issue_price:200,price_max:200},timeline:{listing_date:'2026-11-02'}};
+check('listing comparison only uses archived GMP before actual listing',()=>{const v=listingComparison(listingIPO,{issue_price:200,trend:[{date:'2026-11-01',price:30},{date:'2026-11-02',price:100}]});assert.equal(v.estimate,230);assert.equal(v.actual_gain,25);assert.equal(v.estimate_gain,15);});
+check('listing comparison rejects incompatible issue bases',()=>assert.equal(listingComparison(listingIPO,{issue_price:100,trend:[{date:'2026-11-01',price:30}]}).available,false));
+check('listing comparison never uses post-listing GMP or invents an archive cap',()=>{assert.equal(listingComparison(listingIPO,{issue_price:200,trend:[{date:'2026-11-03',price:30}]}).available,false);assert.equal(listingComparison(listingIPO,{trend:[{date:'2026-11-01',price:30}]}).available,false);});
+console.log(JSON.stringify({passed}));

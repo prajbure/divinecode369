@@ -4,7 +4,7 @@ import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-for (const module of ['app.js', 'financial-format.js','command-center.js','intelligence-core.js','personal-tools.js']) {
+for (const module of ['app.js', 'financial-format.js','command-center.js','intelligence-core.js','personal-tools.js','ipo.js','ipo-core.js']) {
   const check = spawnSync(process.execPath, ['--check', path.join(root, 'static', module)], { stdio: 'inherit' });
   if (check.status !== 0) process.exit(check.status || 1);
 }

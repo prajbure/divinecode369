@@ -1,0 +1,84 @@
+{
+  "checkpoint": "a7ac0338d7f7c1ce85ef6825ef0625876784ca25",
+  "protected_files_checked": 63,
+  "protected_files_unchanged": true,
+  "original_routes_preserved": true,
+  "env_unchanged": true,
+  "universe_sha256": "61a211782942ffa56623e6dcf552f9952847300f07fdb157b61399e8bf564cad",
+  "sector_definitions_unchanged": true,
+  "sectors": 16,
+  "memberships": 160,
+  "unique_symbols": 148,
+  "database_integrity": "ok",
+  "tables": {
+    "instruments": {
+      "before": 148,
+      "after": 148,
+      "unchanged": true
+    },
+    "sector_memberships": {
+      "before": 160,
+      "after": 160,
+      "unchanged": true
+    },
+    "candles": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "quote_snapshots": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "scan_results": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "model_versions": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "model_metrics": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "predictions": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "capabilities": {
+      "before": 4,
+      "after": 4,
+      "unchanged": true
+    },
+    "training_evaluations": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "instrument_resolutions": {
+      "before": 147,
+      "after": 147,
+      "unchanged": true
+    },
+    "history_imports": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    },
+    "personal_journal_v1": {
+      "before": 0,
+      "after": 0,
+      "unchanged": true
+    }
+  },
+  "ipo_enabled": false,
+  "ipo_key_configured": false,
+  "retention_authorized": false,
+  "auto_training": false
+}
