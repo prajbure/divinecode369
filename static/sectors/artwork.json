@@ -1,0 +1,103 @@
+{
+  "generator": "Built-in image_gen, 16 individually generated original illustrations",
+  "transparent_background": true,
+  "prompt_template": "Use case: logo-brand. One original premium sector icon for an Indian fintech terminal. Subject: {subject}. Exquisite polished 3D illustration, electric blue #147DFF and cyan #00D8FF luminous edges, transparent glass and brushed midnight titanium, subtle turquoise highlights. Isometric three-quarter view, centered on square canvas, subject occupies 78%, ample padding. Strong recognizable silhouette legible at 96px. No text, letters, brand marks, frames or copyrighted logos. Genuine transparent background. Consistent family of futuristic financial sector icons.",
+  "assets": [
+    {
+      "id": "banking",
+      "subject": "futuristic bank building",
+      "source_filename": "exec-b952ae41-70b5-4443-9818-f00c9892daad.png",
+      "output": "banking.webp"
+    },
+    {
+      "id": "it-services",
+      "subject": "microchip with tiny circuit traces and luminous central processor",
+      "source_filename": "exec-b0bc46da-8b66-471e-9394-b2133e2f817b.png",
+      "output": "it-services.webp"
+    },
+    {
+      "id": "oil-gas",
+      "subject": "sculptural oil refinery with distillation columns and pipelines",
+      "source_filename": "exec-14fc6440-8c85-408a-b68f-9b4ee3f9997a.png",
+      "output": "oil-gas.webp"
+    },
+    {
+      "id": "automobile",
+      "subject": "sleek original unbranded sports car",
+      "source_filename": "exec-fd4dc2c9-1c32-4766-a3f2-e712d02735b4.png",
+      "output": "automobile.webp"
+    },
+    {
+      "id": "fmcg",
+      "subject": "shopping basket containing abstract consumer groceries, bottle and carton",
+      "source_filename": "exec-87910a4b-ebad-4437-a5ff-dd25b5d2e330.png",
+      "output": "fmcg.webp"
+    },
+    {
+      "id": "pharma-healthcare",
+      "subject": "medical capsule with luminous healthcare cross",
+      "source_filename": "exec-d40a1ae0-29d2-43d4-b5f6-c73a6b99c16d.png",
+      "output": "pharma-healthcare.webp"
+    },
+    {
+      "id": "metals-mining",
+      "subject": "steel ingots with a sculptural mining pickaxe",
+      "source_filename": "exec-a19eeeff-34a5-4a20-b674-435dc6cb95d4.png",
+      "output": "metals-mining.webp"
+    },
+    {
+      "id": "power-infra",
+      "subject": "two elegant electricity transmission towers with luminous power arcs",
+      "source_filename": "exec-3963cbc4-68f1-4111-ab9a-ea8db4bd436f.png",
+      "output": "power-infra.webp"
+    },
+    {
+      "id": "realty",
+      "subject": "three modern glass skyscrapers of varying heights",
+      "source_filename": "exec-bdb41d9e-2240-4e9a-ae8a-8d7124eaebb6.png",
+      "output": "realty.webp"
+    },
+    {
+      "id": "consumer-durables",
+      "subject": "premium electronics appliances: refrigerator and washing machine with small television",
+      "source_filename": "exec-5b1a941e-293c-49e7-9086-06bd8c1fe453.png",
+      "output": "consumer-durables.webp"
+    },
+    {
+      "id": "chemicals",
+      "subject": "two laboratory flasks containing luminous cyan liquid and small molecular spheres",
+      "source_filename": "exec-f35814ba-940c-4d64-a40e-8277dcac87b6.png",
+      "output": "chemicals.webp"
+    },
+    {
+      "id": "telecom",
+      "subject": "communications tower with concentric signal arcs",
+      "source_filename": "exec-00421580-0300-46dd-a459-356c7b49a2de.png",
+      "output": "telecom.webp"
+    },
+    {
+      "id": "media",
+      "subject": "cinema clapperboard with a small luminous film reel",
+      "source_filename": "exec-d8f77a19-e718-41ce-8d6e-b2553cbc1f8c.png",
+      "output": "media.webp"
+    },
+    {
+      "id": "textiles",
+      "subject": "three fabric rolls with flowing folded woven textile, sculptural material",
+      "source_filename": "exec-896a43ec-de27-43d3-ba41-bab341e7df62.png",
+      "output": "textiles.webp"
+    },
+    {
+      "id": "defence",
+      "subject": "original unbranded futuristic fighter aircraft seen isometrically from above",
+      "source_filename": "exec-801f9aab-9901-4415-a53b-97f085a354e6.png",
+      "output": "defence.webp"
+    },
+    {
+      "id": "nifty-top-liquid",
+      "subject": "sculptural bullish bull beside stock exchange building and three candlestick bars",
+      "source_filename": "exec-be78cdf6-0862-4de1-83db-f186440fe97f.png",
+      "output": "nifty-top-liquid.webp"
+    }
+  ]
+}

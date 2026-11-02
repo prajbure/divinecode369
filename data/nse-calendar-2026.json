@@ -1,0 +1,43 @@
+{
+  "exchange": "NSE",
+  "segment": "Capital Market",
+  "timezone": "Asia/Kolkata",
+  "valid_from": "2026-01-01",
+  "valid_through": "2026-12-31",
+  "reviewed_on": "2026-11-02",
+  "sources": [
+    {"id": "NSE/CMTR/71775", "url": "https://nsearchives.nseindia.com/content/circulars/CMTR71775.pdf", "purpose": "2026 capital-market holidays"},
+    {"id": "NSE/CMTR/72260", "url": "https://nsearchives.nseindia.com/content/circulars/CMTR72260.pdf", "purpose": "Additional January 15 trading holiday"},
+    {"id": "NSE/CMTR/72349", "url": "https://nsearchives.nseindia.com/content/circulars/CMTR72349.pdf", "purpose": "February 1 Sunday Budget session"},
+    {"id": "NSE/CMTR/76941", "url": "https://nsearchives.nseindia.com/content/circulars/CMTR76941.pdf", "purpose": "November 8 Muhurat session and CAS windows"},
+    {"id": "NSE market timings", "url": "https://www.nseindia.com/resources/exchange-communication-holidays", "purpose": "Regular cash-market hours"}
+  ],
+  "regular": {"pre_open": "09:00", "open": "09:15", "close": "15:30", "post_close_start": "15:40", "post_close_end": "16:00"},
+  "holidays": {
+    "2026-01-15": "Maharashtra municipal election",
+    "2026-01-26": "Republic Day",
+    "2026-02-15": "Mahashivratri",
+    "2026-03-03": "Holi",
+    "2026-03-21": "Id-Ul-Fitr",
+    "2026-03-26": "Ram Navami",
+    "2026-03-31": "Mahavir Jayanti",
+    "2026-04-03": "Good Friday",
+    "2026-04-14": "Ambedkar Jayanti",
+    "2026-05-01": "Maharashtra Day",
+    "2026-05-28": "Bakri Id",
+    "2026-06-26": "Muharram",
+    "2026-08-15": "Independence Day",
+    "2026-09-14": "Ganesh Chaturthi",
+    "2026-10-02": "Gandhi Jayanti",
+    "2026-10-20": "Dussehra",
+    "2026-11-08": "Diwali — special Muhurat hours",
+    "2026-11-10": "Diwali Balipratipada",
+    "2026-11-24": "Guru Nanak Jayanti",
+    "2026-12-25": "Christmas"
+  },
+  "special_sessions": {
+    "2026-02-01": {"name": "Union Budget Sunday session", "pre_open": "09:00", "open": "09:15", "close": "15:30", "post_close_start": "15:40", "post_close_end": "16:00", "source": "NSE/CMTR/72349"},
+    "2026-11-08": {"name": "Diwali Muhurat session", "pre_open": "14:05", "open": "14:20", "close": "15:30", "cas_continuous_close": "15:15", "auction_end": "15:35", "post_close_start": "15:50", "post_close_end": "16:00", "source": "NSE/CMTR/76941"}
+  },
+  "note": "Capital-market trading holidays, not bank or settlement holidays. Covers published 2026 notices reviewed on the stated date; later exchange amendments must be added. CAS securities have separate auction windows. No unverified future-year calendar is inferred."
+}

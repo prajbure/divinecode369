@@ -1,0 +1,13 @@
+{
+  "reviewed_on": "2026-11-02",
+  "aliases": {
+    "NSE:LTIM": {"provider_symbol": "LTM", "name_contains": ["LTM", "LTIMINDTREE"], "reason": "NSE symbol changed from LTIM to LTM effective 2026-02-27; same listed issuer.", "kind": "renamed", "source": "https://nsearchives.nseindia.com/content/circulars/CML72948.pdf"},
+    "NSE:REC": {"provider_symbol": "RECLTD", "name_contains": ["REC"], "reason": "Approved shorthand REC resolves to REC Limited's listed NSE symbol RECLTD.", "kind": "alias", "source": "https://nsearchives.nseindia.com/corporate/ixbrl/INTEGRATED_FILING_GOVERNANCE_152035_22042026122116_iXBRL_WEB.html"},
+    "NSE:HFCL": {"provider_symbol": "HFCL-BE", "name_contains": ["HFCL"], "reason": "Same HFCL issuer in NSE BE (trade-for-trade) series; the approved sector entry stays HFCL.", "kind": "series", "source": "https://www.nseindia.com/market-data/lower-band-hitters"},
+    "NSE:STLTECH": {"provider_symbol": "STLTECH-BE", "name_contains": ["STERLITE"], "reason": "Same Sterlite Technologies issuer in NSE BE series; the approved sector entry stays STLTECH.", "kind": "series", "source": "https://www.nseindia.com/get-quote/equity/STLTECH/Sterlite-Technologies-Limited"}
+  },
+  "unavailable": {
+    "NSE:SPICEJET": {"kind": "not_listed_on_nse", "reason": "Issuer disclosure states NSE permission was withdrawn effective 2023-05-02; BSE listing is not substituted for the approved NSE entry.", "source": "https://corporate.spicejet.com/Content/pdf/BSEIntimation_PD_20092024_signed.pdf"},
+    "NSE:TV18BRDCST": {"kind": "suspended", "reason": "Existing approved configuration marks this issuer suspended. Retained in membership; never subscribed as a live instrument.", "source": "https://www.nseindia.com/get-quotes/equity?symbol=TV18BRDCST"}
+  }
+}

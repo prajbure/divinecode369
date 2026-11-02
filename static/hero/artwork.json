@@ -1,0 +1,18 @@
+{
+  "generator": "Built-in image_gen",
+  "transparent_background": true,
+  "assets": [
+    {
+      "id": "bull",
+      "prompt": "Use case: stylized-concept. Asset type: original transparent hero illustration for DIVINE CODE 369 Indian financial terminal. Primary request: a powerful realistic charging bull, premium cinematic 3D rendering, full body, muscular anatomically convincing bull with sweeping horns, facing toward the right, dynamic forward stance. Dark graphite metal and lifelike sculpted material with electric cyan #00D8FF rim lighting and emerald-green #00E68A highlights. Behind and around the bull, a restrained upward glowing financial line and a few green candlestick bars, clearly decorative, no figures, no text, no labels. Consistent art direction for a pair with a bear: eye-level three-quarter view, large centered animal, same scale, cyan top-left key light and subtle colored edge lights, high-detail polish, grounded soft transparent contact shadow. Wide 4:3 composition with generous padding so horns/hooves/chart are not cropped. Genuine transparent background, no scene background, no logo, no watermark, no copyrighted branding. Keep the animal readable against a deep purple/navy website. Realistic sophisticated fintech editorial artwork, not a cartoon, not a UI mockup.",
+      "source": "exec-3e3aa0a6-560e-47b8-a990-3482c4739840.png",
+      "output": "bull-premium.webp"
+    },
+    {
+      "id": "bear",
+      "prompt": "Use case: stylized-concept. Asset type: original transparent hero illustration for DIVINE CODE 369 Indian financial terminal. Primary request: a powerful realistic bear, premium cinematic 3D rendering, full body, muscular anatomically convincing brown bear with a lowered powerful head and deliberate forward stance, facing toward the left. Dark graphite sculpted metal with lifelike fur detail, electric blue #147DFF and cyan #00D8FF top-left key lighting and crimson-red #FF4565 rim highlights. Behind and around the bear, a restrained downward glowing financial line and a few red candlestick bars, clearly decorative, no figures, no text, no labels. Match a cyan/emerald charging bull companion: eye-level three-quarter view, large centered animal, same scale, same lighting quality, high-detail polish, grounded soft transparent contact shadow. Wide 4:3 composition with generous padding so ears/paws/chart are not cropped. Genuine transparent background, no scene background, no logo, no watermark, no copyrighted branding. Realistic sophisticated fintech editorial artwork, not a cartoon, not a UI mockup.",
+      "source": "exec-dac2df5e-dd69-4fb3-8df6-53eae3110e55.png",
+      "output": "bear-premium.webp"
+    }
+  ]
+}

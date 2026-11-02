@@ -1,4 +1,5 @@
 import os
+import json
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -23,3 +24,43 @@ try:
 except ValueError:
     MAX_DIFFERENCE = 10.0
 WATCHLIST_PATH = ROOT / "data" / "watchlist.txt"
+
+
+def enabled(name: str, default: str = "false") -> bool:
+    return os.getenv(name, default).lower() in {"1", "true", "yes"}
+
+
+def integer(name: str, default: int, minimum: int = 1) -> int:
+    try:
+        return max(minimum, int(os.getenv(name, str(default))))
+    except ValueError:
+        return default
+
+
+DATABASE_PATH = Path(os.getenv("DATABASE_PATH", str(ROOT / "data" / "divine.sqlite3")))
+MODEL_DIRECTORY = Path(os.getenv("MODEL_DIRECTORY", str(ROOT / "data" / "models")))
+# Enable only after confirming the account's exchange/provider retention rights.
+DATA_RETENTION_AUTHORIZED = enabled("DATA_RETENTION_AUTHORIZED")
+HISTORICAL_ENABLED = enabled("HISTORICAL_ENABLED")
+INTRADAY_ENABLED = enabled("INTRADAY_ENABLED")
+STREAMING_ENABLED = enabled("STREAMING_ENABLED", "true")
+QUOTE_POLL_SECONDS = integer("QUOTE_POLL_SECONDS", 10, 3)
+QUOTE_STALE_SECONDS = integer("QUOTE_STALE_SECONDS", 45, 10)
+SNAPSHOT_INTERVAL_SECONDS = integer("SNAPSHOT_INTERVAL_SECONDS", 300, 60)
+SNAPSHOT_RETENTION_DAYS = integer("SNAPSHOT_RETENTION_DAYS", 7)
+INTRADAY_RETENTION_DAYS = integer("INTRADAY_RETENTION_DAYS", 30)
+DAILY_RETENTION_DAYS = integer("DAILY_RETENTION_DAYS", 1825, 365)
+MARKET_HOLIDAYS = set(filter(None, os.getenv("MARKET_HOLIDAYS", "").split(",")))
+MARKET_CALENDAR_VERIFIED_THROUGH = os.getenv("MARKET_CALENDAR_VERIFIED_THROUGH", "")
+try:
+    MARKET_SPECIAL_SESSIONS = json.loads(os.getenv("MARKET_SPECIAL_SESSIONS", "{}"))
+    if not isinstance(MARKET_SPECIAL_SESSIONS, dict):
+        MARKET_SPECIAL_SESSIONS = {}
+except ValueError:
+    MARKET_SPECIAL_SESSIONS = {}
+ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "").strip()
+AUTO_RETRAIN_ENABLED = enabled("AUTO_RETRAIN_ENABLED")
+TRAINING_MIN_NEW_SESSIONS = integer("TRAINING_MIN_NEW_SESSIONS", 20, 5)
+BACKTEST_COST_BPS = integer("BACKTEST_COST_BPS", 20, 0)
+HISTORY_AUTO_UPDATE_ENABLED = enabled("HISTORY_AUTO_UPDATE_ENABLED")
+IMPORT_RETRY_LIMIT = integer("IMPORT_RETRY_LIMIT", 3, 1)

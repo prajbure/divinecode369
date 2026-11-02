@@ -1,5 +1,14 @@
-.env
+.env*
+!.env.example
 .venv/
 __pycache__/
 *.py[cod]
 node_modules
+data/*.sqlite3*
+data/models/
+.pytest_cache/
+coverage/
+.qa/
+dist/terminal/
+dist/public/
+DIVINE-CODE-369-Complete-*.zip

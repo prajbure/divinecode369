@@ -62,12 +62,12 @@ def reference_entry_count() -> int:
     return sum(len(group["stocks"]) for group in reference_groups())
 
 
-def run_scan(symbols: list[str] | None = None, *, universe: str = "watchlist") -> dict:
+def run_scan(symbols: list[str] | None = None, *, universe: str = "watchlist", quote_payload: dict | None = None, validated_details: list | None = None) -> dict:
     requested_symbols = list(dict.fromkeys(symbols if symbols is not None else load_watchlist()))
     symbol_status: dict[str, str] = {}
     unavailable_symbols: list[str] = []
     if universe == "reference":
-        instrument_details = stock_names(requested_symbols)
+        instrument_details = validated_details if validated_details is not None else stock_names(requested_symbols)
         symbol_status = {
             item["symbol"]: "valid" if item["is_equity"] else "unavailable"
             for item in instrument_details
@@ -91,7 +91,7 @@ def run_scan(symbols: list[str] | None = None, *, universe: str = "watchlist") -
             "instrument_status": symbol_status,
             "reference_entry_count": reference_entry_count() if universe == "reference" else None,
         }
-    payload = live_quotes(symbols)
+    payload = quote_payload if quote_payload is not None else live_quotes(symbols)
     rows = []
     matches = []
     for q in payload.get("data", []):
@@ -102,13 +102,15 @@ def run_scan(symbols: list[str] | None = None, *, universe: str = "watchlist") -
             open_decimal = Decimal(str(open_price)) if valid else None
             close_decimal = Decimal(str(prev_close)) if valid else None
             difference_decimal = open_decimal - close_decimal if open_decimal is not None and close_decimal is not None else None
-            valid = valid and open_decimal.is_finite() and close_decimal.is_finite()
+            valid = valid and open_decimal.is_finite() and close_decimal.is_finite() and open_decimal > 0 and close_decimal > 0
         except (InvalidOperation, TypeError, ValueError):
             valid = False
             difference_decimal = None
         if not valid or difference_decimal is None:
             continue
         difference = float(difference_decimal)
+        precision = max(2, -open_decimal.as_tuple().exponent, -close_decimal.as_tuple().exponent)
+        difference_display = format(difference_decimal, f".{precision}f")
         matched = difference_decimal.is_zero()
         near_match = not matched and abs(difference_decimal) <= Decimal(str(config.MAX_DIFFERENCE))
         row = {
@@ -117,11 +119,14 @@ def run_scan(symbols: list[str] | None = None, *, universe: str = "watchlist") -
             "prev_close": prev_close,
             "open": open_price,
             "difference": difference,
+            "difference_display": difference_display,
+            "tick_size": q.get("tick_size"),
             "ltp": q.get("ltp"),
             "change_pct": q.get("change_pct"),
             "volume": q.get("volume"),
             "market_status": q.get("market_status"),
             "last_trade_at": q.get("last_trade_at"),
+            "quote_timestamp": q.get("quote_timestamp"),
             "match": matched,
             "near_match": near_match,
             "status": "MATCH" if matched else "NEAR" if near_match else "NO MATCH",

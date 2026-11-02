@@ -1,0 +1,3560 @@
+{
+  "generated_at": "2026-11-02T09:19:23.830930+00:00",
+  "source": "Approved unchanged sector configuration + last verified Kite instrument master + cited issuer/exchange notices",
+  "total_configured_entries": 160,
+  "unique_requested_instruments": 148,
+  "scan_candidates": 147,
+  "verified_kite_instruments": 146,
+  "verified_exact": 142,
+  "verified_aliases": 4,
+  "duplicate_membership_count": 12,
+  "duplicate_memberships": [
+    {
+      "symbol": "NSE:HDFCBANK",
+      "memberships": [
+        {
+          "sector_id": "banking",
+          "sector": "Banking & Financial Services",
+          "entry": 1,
+          "display_name": "HDFC Bank",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 2,
+          "display_name": "HDFC Bank",
+          "configured_status": null
+        }
+      ],
+      "extra_entries": 1
+    },
+    {
+      "symbol": "NSE:ICICIBANK",
+      "memberships": [
+        {
+          "sector_id": "banking",
+          "sector": "Banking & Financial Services",
+          "entry": 2,
+          "display_name": "ICICI Bank",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 3,
+          "display_name": "ICICI Bank",
+          "configured_status": null
+        }
+      ],
+      "extra_entries": 1
+    },
+    {
+      "symbol": "NSE:SBIN",
+      "memberships": [
+        {
+          "sector_id": "banking",
+          "sector": "Banking & Financial Services",
+          "entry": 6,
+          "display_name": "SBI (State Bank of India)",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 9,
+          "display_name": "State Bank of India (SBI)",
+          "configured_status": null
+        }
+      ],
+      "extra_entries": 1
+    },
+    {
+      "symbol": "NSE:TCS",
+      "memberships": [
+        {
+          "sector_id": "it-services",
+          "sector": "IT Services",
+          "entry": 1,
+          "display_name": "TCS (Tata Consultancy Services)",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 5,
+          "display_name": "TCS (Tata Consultancy Services)",
+          "configured_status": null
+        }
+      ],
+      "extra_entries": 1
+    },
+    {
+      "symbol": "NSE:INFY",
+      "memberships": [
+        {
+          "sector_id": "it-services",
+          "sector": "IT Services",
+          "entry": 2,
+          "display_name": "Infosys",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 4,
+          "display_name": "Infosys",
+          "configured_status": null
+        }
+      ],
+      "extra_entries": 1
+    },
+    {
+      "symbol": "NSE:RELIANCE",
+      "memberships": [
+        {
+          "sector_id": "oil-gas",
+          "sector": "Oil & Gas",
+          "entry": 1,
+          "display_name": "Reliance Industries",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 1,
+          "display_name": "Reliance Industries",
+          "configured_status": null
+        }
+      ],
+      "extra_entries": 1
+    },
+    {
+      "symbol": "NSE:BPCL",
+      "memberships": [
+        {
+          "sector_id": "oil-gas",
+          "sector": "Oil & Gas",
+          "entry": 4,
+          "display_name": "Bharat Petroleum Corporation (BPCL)",
+          "configured_status": null
+        },
+        {
+          "sector_id": "oil-gas",
+          "sector": "Oil & Gas",
+          "entry": 8,
+          "display_name": "Bharat Petroleum",
+          "configured_status": null
+        }
+      ],
+      "extra_entries": 1
+    },
+    {
+      "symbol": "NSE:TMPV",
+      "memberships": [
+        {
+          "sector_id": "automobile",
+          "sector": "Automobile",
+          "entry": 3,
+          "display_name": "Tata Motors",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 10,
+          "display_name": "Tata Motors",
+          "configured_status": null
+        }
+      ],
+      "extra_entries": 1
+    },
+    {
+      "symbol": "NSE:ITC",
+      "memberships": [
+        {
+          "sector_id": "fmcg",
+          "sector": "FMCG",
+          "entry": 2,
+          "display_name": "ITC",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 7,
+          "display_name": "ITC",
+          "configured_status": null
+        }
+      ],
+      "extra_entries": 1
+    },
+    {
+      "symbol": "NSE:LT",
+      "memberships": [
+        {
+          "sector_id": "power-infra",
+          "sector": "Power & Infrastructure",
+          "entry": 5,
+          "display_name": "Larsen & Toubro (L&T)",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 8,
+          "display_name": "Larsen & Toubro (L&T)",
+          "configured_status": null
+        }
+      ],
+      "extra_entries": 1
+    },
+    {
+      "symbol": "NSE:LODHA",
+      "memberships": [
+        {
+          "sector_id": "realty",
+          "sector": "Realty (Real Estate)",
+          "entry": 8,
+          "display_name": "Macrotech Developers",
+          "configured_status": null
+        },
+        {
+          "sector_id": "realty",
+          "sector": "Realty (Real Estate)",
+          "entry": 9,
+          "display_name": "Lodha",
+          "configured_status": null
+        }
+      ],
+      "extra_entries": 1
+    },
+    {
+      "symbol": "NSE:BHARTIARTL",
+      "memberships": [
+        {
+          "sector_id": "telecom",
+          "sector": "Telecom",
+          "entry": 1,
+          "display_name": "Bharti Airtel",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 6,
+          "display_name": "Bharti Airtel",
+          "configured_status": null
+        }
+      ],
+      "extra_entries": 1
+    }
+  ],
+  "unavailable_instruments": [
+    {
+      "requested_symbol": "NSE:SPICEJET",
+      "state": "unavailable",
+      "provider_symbol": null,
+      "candidate_provider_symbol": null,
+      "resolution_kind": "not_listed_on_nse",
+      "explanation": "Issuer disclosure states NSE permission was withdrawn effective 2023-05-02; BSE listing is not substituted for the approved NSE entry.",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559325+00:00",
+      "tick_size": null,
+      "token_verified": false,
+      "memberships": [
+        {
+          "sector_id": "telecom",
+          "sector": "Telecom",
+          "entry": 9,
+          "display_name": "SpiceJet",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:TV18BRDCST",
+      "state": "suspended",
+      "provider_symbol": null,
+      "candidate_provider_symbol": null,
+      "resolution_kind": "suspended",
+      "explanation": "Existing approved configuration marks this issuer suspended. Retained in membership; never subscribed as a live instrument.",
+      "source": "https://www.nseindia.com/get-quotes/equity?symbol=TV18BRDCST",
+      "checked_at": null,
+      "tick_size": null,
+      "token_verified": false,
+      "memberships": [
+        {
+          "sector_id": "media",
+          "sector": "Media & Entertainment",
+          "entry": 8,
+          "display_name": "TV18 Broadcast",
+          "configured_status": "suspended"
+        }
+      ]
+    }
+  ],
+  "unresolved_aliases": [],
+  "renamed_or_withdrawn": [
+    {
+      "requested_symbol": "NSE:LTIM",
+      "state": "verified",
+      "provider_symbol": "NSE:LTM",
+      "candidate_provider_symbol": "NSE:LTM",
+      "resolution_kind": "renamed",
+      "explanation": "NSE symbol changed from LTIM to LTM effective 2026-02-27; same listed issuer.",
+      "source": "https://nsearchives.nseindia.com/content/circulars/CML72948.pdf",
+      "checked_at": "2026-11-02T09:13:20.557563+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "it-services",
+          "sector": "IT Services",
+          "entry": 6,
+          "display_name": "LTIMindtree",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:SPICEJET",
+      "state": "unavailable",
+      "provider_symbol": null,
+      "candidate_provider_symbol": null,
+      "resolution_kind": "not_listed_on_nse",
+      "explanation": "Issuer disclosure states NSE permission was withdrawn effective 2023-05-02; BSE listing is not substituted for the approved NSE entry.",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559325+00:00",
+      "tick_size": null,
+      "token_verified": false,
+      "memberships": [
+        {
+          "sector_id": "telecom",
+          "sector": "Telecom",
+          "entry": 9,
+          "display_name": "SpiceJet",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:TV18BRDCST",
+      "state": "suspended",
+      "provider_symbol": null,
+      "candidate_provider_symbol": null,
+      "resolution_kind": "suspended",
+      "explanation": "Existing approved configuration marks this issuer suspended. Retained in membership; never subscribed as a live instrument.",
+      "source": "https://www.nseindia.com/get-quotes/equity?symbol=TV18BRDCST",
+      "checked_at": null,
+      "tick_size": null,
+      "token_verified": false,
+      "memberships": [
+        {
+          "sector_id": "media",
+          "sector": "Media & Entertainment",
+          "entry": 8,
+          "display_name": "TV18 Broadcast",
+          "configured_status": "suspended"
+        }
+      ]
+    }
+  ],
+  "instruments": [
+    {
+      "requested_symbol": "NSE:AARTIIND",
+      "state": "verified",
+      "provider_symbol": "NSE:AARTIIND",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559109+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "chemicals",
+          "sector": "Chemicals",
+          "entry": 7,
+          "display_name": "Aarti Industries",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:ADANIGREEN",
+      "state": "verified",
+      "provider_symbol": "NSE:ADANIGREEN",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558522+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "power-infra",
+          "sector": "Power & Infrastructure",
+          "entry": 4,
+          "display_name": "Adani Green Energy",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:ADANIPOWER",
+      "state": "verified",
+      "provider_symbol": "NSE:ADANIPOWER",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558510+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "power-infra",
+          "sector": "Power & Infrastructure",
+          "entry": 3,
+          "display_name": "Adani Power",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:ALKYLAMINE",
+      "state": "verified",
+      "provider_symbol": "NSE:ALKYLAMINE",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559129+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "chemicals",
+          "sector": "Chemicals",
+          "entry": 9,
+          "display_name": "Alkyl Amines Chemicals",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:ALOKINDS",
+      "state": "verified",
+      "provider_symbol": "NSE:ALOKINDS",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559512+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "textiles",
+          "sector": "Textiles",
+          "entry": 9,
+          "display_name": "Alok Industries",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:AMBER",
+      "state": "verified",
+      "provider_symbol": "NSE:AMBER",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558988+00:00",
+      "tick_size": 0.5,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "consumer-durables",
+          "sector": "Consumer Durables",
+          "entry": 8,
+          "display_name": "Amber Enterprises India",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:ARVIND",
+      "state": "verified",
+      "provider_symbol": "NSE:ARVIND",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559433+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "textiles",
+          "sector": "Textiles",
+          "entry": 1,
+          "display_name": "Arvind",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:ASHOKLEY",
+      "state": "verified",
+      "provider_symbol": "NSE:ASHOKLEY",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557999+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "automobile",
+          "sector": "Automobile",
+          "entry": 8,
+          "display_name": "Ashok Leyland",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:ATUL",
+      "state": "verified",
+      "provider_symbol": "NSE:ATUL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559119+00:00",
+      "tick_size": 0.5,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "chemicals",
+          "sector": "Chemicals",
+          "entry": 8,
+          "display_name": "Atul",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:AUBANK",
+      "state": "verified",
+      "provider_symbol": "NSE:AUBANK",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557390+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "banking",
+          "sector": "Banking & Financial Services",
+          "entry": 9,
+          "display_name": "AU Small Finance Bank",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:AUROPHARMA",
+      "state": "verified",
+      "provider_symbol": "NSE:AUROPHARMA",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558299+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "pharma-healthcare",
+          "sector": "Pharma & Healthcare",
+          "entry": 6,
+          "display_name": "Aurobindo Pharma",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:AXISBANK",
+      "state": "verified",
+      "provider_symbol": "NSE:AXISBANK",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557274+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "banking",
+          "sector": "Banking & Financial Services",
+          "entry": 4,
+          "display_name": "Axis Bank",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:BAJAJ-AUTO",
+      "state": "verified",
+      "provider_symbol": "NSE:BAJAJ-AUTO",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557957+00:00",
+      "tick_size": 1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "automobile",
+          "sector": "Automobile",
+          "entry": 5,
+          "display_name": "Bajaj Auto",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:BALAJITELE",
+      "state": "verified",
+      "provider_symbol": "NSE:BALAJITELE",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559405+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "media",
+          "sector": "Media & Entertainment",
+          "entry": 7,
+          "display_name": "Balaji Telefilms",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:BALKRISIND",
+      "state": "verified",
+      "provider_symbol": "NSE:BALKRISIND",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558035+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "automobile",
+          "sector": "Automobile",
+          "entry": 10,
+          "display_name": "Balkrishna Industries",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:BANDHANBNK",
+      "state": "verified",
+      "provider_symbol": "NSE:BANDHANBNK",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557415+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "banking",
+          "sector": "Banking & Financial Services",
+          "entry": 10,
+          "display_name": "Bandhan Bank",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:BANKBARODA",
+      "state": "verified",
+      "provider_symbol": "NSE:BANKBARODA",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557354+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "banking",
+          "sector": "Banking & Financial Services",
+          "entry": 7,
+          "display_name": "Bank of Baroda (BOB)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:BDL",
+      "state": "verified",
+      "provider_symbol": "NSE:BDL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559540+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "defence",
+          "sector": "Defence",
+          "entry": 2,
+          "display_name": "Bharat Dynamics",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:BEL",
+      "state": "verified",
+      "provider_symbol": "NSE:BEL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559549+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "defence",
+          "sector": "Defence",
+          "entry": 3,
+          "display_name": "Bharat Electronics (BEL)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:BEML",
+      "state": "verified",
+      "provider_symbol": "NSE:BEML",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559576+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "defence",
+          "sector": "Defence",
+          "entry": 6,
+          "display_name": "BEML",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:BHARTIARTL",
+      "state": "verified",
+      "provider_symbol": "NSE:BHARTIARTL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559149+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "telecom",
+          "sector": "Telecom",
+          "entry": 1,
+          "display_name": "Bharti Airtel",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 6,
+          "display_name": "Bharti Airtel",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:BHEL",
+      "state": "verified",
+      "provider_symbol": "NSE:BHEL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558676+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "power-infra",
+          "sector": "Power & Infrastructure",
+          "entry": 10,
+          "display_name": "Bharat Heavy Electricals (BHEL)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:BIOCON",
+      "state": "verified",
+      "provider_symbol": "NSE:BIOCON",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558322+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "pharma-healthcare",
+          "sector": "Pharma & Healthcare",
+          "entry": 8,
+          "display_name": "Biocon",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:BLUESTARCO",
+      "state": "verified",
+      "provider_symbol": "NSE:BLUESTARCO",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558929+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "consumer-durables",
+          "sector": "Consumer Durables",
+          "entry": 3,
+          "display_name": "Blue Star",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:BPCL",
+      "state": "verified",
+      "provider_symbol": "NSE:BPCL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557726+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "oil-gas",
+          "sector": "Oil & Gas",
+          "entry": 4,
+          "display_name": "Bharat Petroleum Corporation (BPCL)",
+          "configured_status": null
+        },
+        {
+          "sector_id": "oil-gas",
+          "sector": "Oil & Gas",
+          "entry": 8,
+          "display_name": "Bharat Petroleum",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:BRIGADE",
+      "state": "verified",
+      "provider_symbol": "NSE:BRIGADE",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558765+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "realty",
+          "sector": "Realty (Real Estate)",
+          "entry": 5,
+          "display_name": "Brigade Enterprises",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:BRITANNIA",
+      "state": "verified",
+      "provider_symbol": "NSE:BRITANNIA",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558084+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "fmcg",
+          "sector": "FMCG",
+          "entry": 4,
+          "display_name": "Britannia Industries",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:CIPLA",
+      "state": "verified",
+      "provider_symbol": "NSE:CIPLA",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558249+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "pharma-healthcare",
+          "sector": "Pharma & Healthcare",
+          "entry": 2,
+          "display_name": "Cipla",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:COALINDIA",
+      "state": "verified",
+      "provider_symbol": "NSE:COALINDIA",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558466+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "metals-mining",
+          "sector": "Metal & Mining",
+          "entry": 9,
+          "display_name": "Coal India",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:COFORGE",
+      "state": "verified",
+      "provider_symbol": "NSE:COFORGE",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557616+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "it-services",
+          "sector": "IT Services",
+          "entry": 8,
+          "display_name": "Coforge",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:COLPAL",
+      "state": "verified",
+      "provider_symbol": "NSE:COLPAL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558162+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "fmcg",
+          "sector": "FMCG",
+          "entry": 10,
+          "display_name": "Colgate-Palmolive India",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:CROMPTON",
+      "state": "verified",
+      "provider_symbol": "NSE:CROMPTON",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558951+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "consumer-durables",
+          "sector": "Consumer Durables",
+          "entry": 5,
+          "display_name": "Crompton Greaves Consumer Electricals",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:DABUR",
+      "state": "verified",
+      "provider_symbol": "NSE:DABUR",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558096+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "fmcg",
+          "sector": "FMCG",
+          "entry": 5,
+          "display_name": "Dabur India",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:DATAPATTNS",
+      "state": "verified",
+      "provider_symbol": "NSE:DATAPATTNS",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559567+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "defence",
+          "sector": "Defence",
+          "entry": 5,
+          "display_name": "Data Patterns (India)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:DEEPAKNTR",
+      "state": "verified",
+      "provider_symbol": "NSE:DEEPAKNTR",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559030+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "chemicals",
+          "sector": "Chemicals",
+          "entry": 2,
+          "display_name": "Deepak Nitrite",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:DEN",
+      "state": "verified",
+      "provider_symbol": "NSE:DEN",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559414+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "media",
+          "sector": "Media & Entertainment",
+          "entry": 9,
+          "display_name": "Den Networks",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:DISHTV",
+      "state": "verified",
+      "provider_symbol": "NSE:DISHTV",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559423+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "media",
+          "sector": "Media & Entertainment",
+          "entry": 10,
+          "display_name": "Dish TV India",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:DIVISLAB",
+      "state": "verified",
+      "provider_symbol": "NSE:DIVISLAB",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558265+00:00",
+      "tick_size": 0.5,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "pharma-healthcare",
+          "sector": "Pharma & Healthcare",
+          "entry": 3,
+          "display_name": "Divi's Laboratories",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:DIXON",
+      "state": "verified",
+      "provider_symbol": "NSE:DIXON",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558977+00:00",
+      "tick_size": 1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "consumer-durables",
+          "sector": "Consumer Durables",
+          "entry": 7,
+          "display_name": "Dixon Technologies",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:DLF",
+      "state": "verified",
+      "provider_symbol": "NSE:DLF",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558687+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "realty",
+          "sector": "Realty (Real Estate)",
+          "entry": 1,
+          "display_name": "DLF",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:DRREDDY",
+      "state": "verified",
+      "provider_symbol": "NSE:DRREDDY",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558276+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "pharma-healthcare",
+          "sector": "Pharma & Healthcare",
+          "entry": 4,
+          "display_name": "Dr. Reddy's Laboratories",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:EICHERMOT",
+      "state": "verified",
+      "provider_symbol": "NSE:EICHERMOT",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557943+00:00",
+      "tick_size": 0.5,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "automobile",
+          "sector": "Automobile",
+          "entry": 4,
+          "display_name": "Eicher Motors",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:EMBDL",
+      "state": "verified",
+      "provider_symbol": "NSE:EMBDL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558899+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "realty",
+          "sector": "Realty (Real Estate)",
+          "entry": 10,
+          "display_name": "Indiabulls Real Estate",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:FLUOROCHEM",
+      "state": "verified",
+      "provider_symbol": "NSE:FLUOROCHEM",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559138+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "chemicals",
+          "sector": "Chemicals",
+          "entry": 10,
+          "display_name": "Gujarat Fluorochemicals",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:GAIL",
+      "state": "verified",
+      "provider_symbol": "NSE:GAIL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557755+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "oil-gas",
+          "sector": "Oil & Gas",
+          "entry": 6,
+          "display_name": "GAIL India",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:GLENMARK",
+      "state": "verified",
+      "provider_symbol": "NSE:GLENMARK",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558344+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "pharma-healthcare",
+          "sector": "Pharma & Healthcare",
+          "entry": 10,
+          "display_name": "Glenmark Pharmaceuticals",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:GODREJCP",
+      "state": "verified",
+      "provider_symbol": "NSE:GODREJCP",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558108+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "fmcg",
+          "sector": "FMCG",
+          "entry": 6,
+          "display_name": "Godrej Consumer Products",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:GODREJPROP",
+      "state": "verified",
+      "provider_symbol": "NSE:GODREJPROP",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558696+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "realty",
+          "sector": "Realty (Real Estate)",
+          "entry": 2,
+          "display_name": "Godrej Properties",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:GOKEX",
+      "state": "verified",
+      "provider_symbol": "NSE:GOKEX",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559503+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "textiles",
+          "sector": "Textiles",
+          "entry": 8,
+          "display_name": "Gokaldas Exports",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:HAL",
+      "state": "verified",
+      "provider_symbol": "NSE:HAL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559530+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "defence",
+          "sector": "Defence",
+          "entry": 1,
+          "display_name": "Hindustan Aeronautics (HAL)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:HAVELLS",
+      "state": "verified",
+      "provider_symbol": "NSE:HAVELLS",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558939+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "consumer-durables",
+          "sector": "Consumer Durables",
+          "entry": 4,
+          "display_name": "Havells India",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:HCLTECH",
+      "state": "verified",
+      "provider_symbol": "NSE:HCLTECH",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557480+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "it-services",
+          "sector": "IT Services",
+          "entry": 3,
+          "display_name": "HCL Technologies",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:HDFCBANK",
+      "state": "verified",
+      "provider_symbol": "NSE:HDFCBANK",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.556809+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "banking",
+          "sector": "Banking & Financial Services",
+          "entry": 1,
+          "display_name": "HDFC Bank",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 2,
+          "display_name": "HDFC Bank",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:HEROMOTOCO",
+      "state": "verified",
+      "provider_symbol": "NSE:HEROMOTOCO",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557974+00:00",
+      "tick_size": 0.5,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "automobile",
+          "sector": "Automobile",
+          "entry": 6,
+          "display_name": "Hero MotoCorp",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:HFCL",
+      "state": "verified",
+      "provider_symbol": "NSE:HFCL-BE",
+      "candidate_provider_symbol": "NSE:HFCL-BE",
+      "resolution_kind": "series",
+      "explanation": "Same HFCL issuer in NSE BE (trade-for-trade) series; the approved sector entry stays HFCL.",
+      "source": "https://www.nseindia.com/market-data/lower-band-hitters",
+      "checked_at": "2026-11-02T09:13:20.559200+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "telecom",
+          "sector": "Telecom",
+          "entry": 6,
+          "display_name": "HFCL",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:HINDALCO",
+      "state": "verified",
+      "provider_symbol": "NSE:HINDALCO",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558374+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "metals-mining",
+          "sector": "Metal & Mining",
+          "entry": 3,
+          "display_name": "Hindalco Industries",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:HINDPETRO",
+      "state": "verified",
+      "provider_symbol": "NSE:HINDPETRO",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557739+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "oil-gas",
+          "sector": "Oil & Gas",
+          "entry": 5,
+          "display_name": "Hindustan Petroleum Corporation (HPCL)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:HINDUNILVR",
+      "state": "verified",
+      "provider_symbol": "NSE:HINDUNILVR",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558046+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "fmcg",
+          "sector": "FMCG",
+          "entry": 1,
+          "display_name": "Hindustan Unilever (HUL)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:HINDZINC",
+      "state": "verified",
+      "provider_symbol": "NSE:HINDZINC",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558455+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "metals-mining",
+          "sector": "Metal & Mining",
+          "entry": 8,
+          "display_name": "Hindustan Zinc",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:ICICIBANK",
+      "state": "verified",
+      "provider_symbol": "NSE:ICICIBANK",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557197+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "banking",
+          "sector": "Banking & Financial Services",
+          "entry": 2,
+          "display_name": "ICICI Bank",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 3,
+          "display_name": "ICICI Bank",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:IDEA",
+      "state": "verified",
+      "provider_symbol": "NSE:IDEA",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559158+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "telecom",
+          "sector": "Telecom",
+          "entry": 2,
+          "display_name": "Vodafone Idea",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:IGL",
+      "state": "verified",
+      "provider_symbol": "NSE:IGL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557873+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "oil-gas",
+          "sector": "Oil & Gas",
+          "entry": 9,
+          "display_name": "Indraprastha Gas",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:INDUSINDBK",
+      "state": "verified",
+      "provider_symbol": "NSE:INDUSINDBK",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557300+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "banking",
+          "sector": "Banking & Financial Services",
+          "entry": 5,
+          "display_name": "IndusInd Bank",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:INDUSTOWER",
+      "state": "verified",
+      "provider_symbol": "NSE:INDUSTOWER",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559169+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "telecom",
+          "sector": "Telecom",
+          "entry": 3,
+          "display_name": "Indus Towers",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:INFY",
+      "state": "verified",
+      "provider_symbol": "NSE:INFY",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557453+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "it-services",
+          "sector": "IT Services",
+          "entry": 2,
+          "display_name": "Infosys",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 4,
+          "display_name": "Infosys",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:IOC",
+      "state": "verified",
+      "provider_symbol": "NSE:IOC",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557708+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "oil-gas",
+          "sector": "Oil & Gas",
+          "entry": 3,
+          "display_name": "Indian Oil Corporation (IOC)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:IRB",
+      "state": "verified",
+      "provider_symbol": "NSE:IRB",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558626+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "power-infra",
+          "sector": "Power & Infrastructure",
+          "entry": 6,
+          "display_name": "IRB Infrastructure Developers",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:ITC",
+      "state": "verified",
+      "provider_symbol": "NSE:ITC",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558060+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "fmcg",
+          "sector": "FMCG",
+          "entry": 2,
+          "display_name": "ITC",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 7,
+          "display_name": "ITC",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:JINDALSTEL",
+      "state": "verified",
+      "provider_symbol": "NSE:JINDALSTEL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558425+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "metals-mining",
+          "sector": "Metal & Mining",
+          "entry": 7,
+          "display_name": "Jindal Steel",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:JSWSTEEL",
+      "state": "verified",
+      "provider_symbol": "NSE:JSWSTEEL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558365+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "metals-mining",
+          "sector": "Metal & Mining",
+          "entry": 2,
+          "display_name": "JSW Steel",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:KOTAKBANK",
+      "state": "verified",
+      "provider_symbol": "NSE:KOTAKBANK",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557250+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "banking",
+          "sector": "Banking & Financial Services",
+          "entry": 3,
+          "display_name": "Kotak Bank",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:KPRMILL",
+      "state": "verified",
+      "provider_symbol": "NSE:KPRMILL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559483+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "textiles",
+          "sector": "Textiles",
+          "entry": 6,
+          "display_name": "KPR Mill",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:LODHA",
+      "state": "verified",
+      "provider_symbol": "NSE:LODHA",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558887+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "realty",
+          "sector": "Realty (Real Estate)",
+          "entry": 8,
+          "display_name": "Macrotech Developers",
+          "configured_status": null
+        },
+        {
+          "sector_id": "realty",
+          "sector": "Realty (Real Estate)",
+          "entry": 9,
+          "display_name": "Lodha",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:LT",
+      "state": "verified",
+      "provider_symbol": "NSE:LT",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558532+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "power-infra",
+          "sector": "Power & Infrastructure",
+          "entry": 5,
+          "display_name": "Larsen & Toubro (L&T)",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 8,
+          "display_name": "Larsen & Toubro (L&T)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:LTIM",
+      "state": "verified",
+      "provider_symbol": "NSE:LTM",
+      "candidate_provider_symbol": "NSE:LTM",
+      "resolution_kind": "renamed",
+      "explanation": "NSE symbol changed from LTIM to LTM effective 2026-02-27; same listed issuer.",
+      "source": "https://nsearchives.nseindia.com/content/circulars/CML72948.pdf",
+      "checked_at": "2026-11-02T09:13:20.557563+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "it-services",
+          "sector": "IT Services",
+          "entry": 6,
+          "display_name": "LTIMindtree",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:LUPIN",
+      "state": "verified",
+      "provider_symbol": "NSE:LUPIN",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558287+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "pharma-healthcare",
+          "sector": "Pharma & Healthcare",
+          "entry": 5,
+          "display_name": "Lupin",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:M&M",
+      "state": "verified",
+      "provider_symbol": "NSE:M&M",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557913+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "automobile",
+          "sector": "Automobile",
+          "entry": 2,
+          "display_name": "Mahindra & Mahindra (M&M)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:MARICO",
+      "state": "verified",
+      "provider_symbol": "NSE:MARICO",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558120+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "fmcg",
+          "sector": "FMCG",
+          "entry": 7,
+          "display_name": "Marico",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:MARUTI",
+      "state": "verified",
+      "provider_symbol": "NSE:MARUTI",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557898+00:00",
+      "tick_size": 1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "automobile",
+          "sector": "Automobile",
+          "entry": 1,
+          "display_name": "Maruti Suzuki",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:MAZDOCK",
+      "state": "verified",
+      "provider_symbol": "NSE:MAZDOCK",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559558+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "defence",
+          "sector": "Defence",
+          "entry": 4,
+          "display_name": "Mazagon Dock Shipbuilders",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:MOTHERSON",
+      "state": "verified",
+      "provider_symbol": "NSE:MOTHERSON",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558015+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "automobile",
+          "sector": "Automobile",
+          "entry": 9,
+          "display_name": "Samvardhana Motherson International",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:MPHASIS",
+      "state": "verified",
+      "provider_symbol": "NSE:MPHASIS",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557637+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "it-services",
+          "sector": "IT Services",
+          "entry": 9,
+          "display_name": "Mphasis",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:MTARTECH",
+      "state": "verified",
+      "provider_symbol": "NSE:MTARTECH",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559604+00:00",
+      "tick_size": 0.5,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "defence",
+          "sector": "Defence",
+          "entry": 9,
+          "display_name": "MTAR Technologies",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:MTNL",
+      "state": "verified",
+      "provider_symbol": "NSE:MTNL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559179+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "telecom",
+          "sector": "Telecom",
+          "entry": 4,
+          "display_name": "Mahanagar Telephone Nigam (MTNL)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:NATIONALUM",
+      "state": "verified",
+      "provider_symbol": "NSE:NATIONALUM",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558476+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "metals-mining",
+          "sector": "Metal & Mining",
+          "entry": 10,
+          "display_name": "National Aluminium Company (NALCO)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:NAVINFLUOR",
+      "state": "verified",
+      "provider_symbol": "NSE:NAVINFLUOR",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559085+00:00",
+      "tick_size": 0.5,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "chemicals",
+          "sector": "Chemicals",
+          "entry": 5,
+          "display_name": "Navin Fluorine International",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:NAZARA",
+      "state": "verified",
+      "provider_symbol": "NSE:NAZARA",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559378+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "media",
+          "sector": "Media & Entertainment",
+          "entry": 4,
+          "display_name": "Nazara Technologies",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:NESTLEIND",
+      "state": "verified",
+      "provider_symbol": "NSE:NESTLEIND",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558073+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "fmcg",
+          "sector": "FMCG",
+          "entry": 3,
+          "display_name": "Nestlé India",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:NETWORK18",
+      "state": "verified",
+      "provider_symbol": "NSE:NETWORK18",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559396+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "media",
+          "sector": "Media & Entertainment",
+          "entry": 6,
+          "display_name": "Network18 Media & Investments",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:NHPC",
+      "state": "verified",
+      "provider_symbol": "NSE:NHPC",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558637+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "power-infra",
+          "sector": "Power & Infrastructure",
+          "entry": 7,
+          "display_name": "NHPC",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:NMDC",
+      "state": "verified",
+      "provider_symbol": "NSE:NMDC",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558414+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "metals-mining",
+          "sector": "Metal & Mining",
+          "entry": 6,
+          "display_name": "NMDC",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:NTPC",
+      "state": "verified",
+      "provider_symbol": "NSE:NTPC",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558487+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "power-infra",
+          "sector": "Power & Infrastructure",
+          "entry": 1,
+          "display_name": "NTPC",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:OBEROIRLTY",
+      "state": "verified",
+      "provider_symbol": "NSE:OBEROIRLTY",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558736+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "realty",
+          "sector": "Realty (Real Estate)",
+          "entry": 3,
+          "display_name": "Oberoi Realty",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:OFSS",
+      "state": "verified",
+      "provider_symbol": "NSE:OFSS",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557657+00:00",
+      "tick_size": 0.5,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "it-services",
+          "sector": "IT Services",
+          "entry": 10,
+          "display_name": "Oracle Financial Services Software",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:OIL",
+      "state": "verified",
+      "provider_symbol": "NSE:OIL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557774+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "oil-gas",
+          "sector": "Oil & Gas",
+          "entry": 7,
+          "display_name": "Oil India",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:ONGC",
+      "state": "verified",
+      "provider_symbol": "NSE:ONGC",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557690+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "oil-gas",
+          "sector": "Oil & Gas",
+          "entry": 2,
+          "display_name": "ONGC",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:PAGEIND",
+      "state": "verified",
+      "provider_symbol": "NSE:PAGEIND",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559493+00:00",
+      "tick_size": 5,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "textiles",
+          "sector": "Textiles",
+          "entry": 7,
+          "display_name": "Page Industries",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:PARAS",
+      "state": "verified",
+      "provider_symbol": "NSE:PARAS",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559585+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "defence",
+          "sector": "Defence",
+          "entry": 7,
+          "display_name": "Paras Defence and Space Technologies",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:PERSISTENT",
+      "state": "verified",
+      "provider_symbol": "NSE:PERSISTENT",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557587+00:00",
+      "tick_size": 0.5,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "it-services",
+          "sector": "IT Services",
+          "entry": 7,
+          "display_name": "Persistent Systems",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:PETRONET",
+      "state": "verified",
+      "provider_symbol": "NSE:PETRONET",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557886+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "oil-gas",
+          "sector": "Oil & Gas",
+          "entry": 10,
+          "display_name": "Petronet LNG",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:PFC",
+      "state": "verified",
+      "provider_symbol": "NSE:PFC",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558666+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "power-infra",
+          "sector": "Power & Infrastructure",
+          "entry": 9,
+          "display_name": "Power Finance Corporation (PFC)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:PHOENIXLTD",
+      "state": "verified",
+      "provider_symbol": "NSE:PHOENIXLTD",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558775+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "realty",
+          "sector": "Realty (Real Estate)",
+          "entry": 6,
+          "display_name": "Phoenix Mills",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:PIIND",
+      "state": "verified",
+      "provider_symbol": "NSE:PIIND",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559075+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "chemicals",
+          "sector": "Chemicals",
+          "entry": 4,
+          "display_name": "PI Industries",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:PNB",
+      "state": "verified",
+      "provider_symbol": "NSE:PNB",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557371+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "banking",
+          "sector": "Banking & Financial Services",
+          "entry": 8,
+          "display_name": "Punjab National Bank (PNB)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:POLYCAB",
+      "state": "verified",
+      "provider_symbol": "NSE:POLYCAB",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558999+00:00",
+      "tick_size": 0.5,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "consumer-durables",
+          "sector": "Consumer Durables",
+          "entry": 9,
+          "display_name": "Polycab India",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:POWERGRID",
+      "state": "verified",
+      "provider_symbol": "NSE:POWERGRID",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558499+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "power-infra",
+          "sector": "Power & Infrastructure",
+          "entry": 2,
+          "display_name": "Power Grid Corporation",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:PREMIERENE",
+      "state": "verified",
+      "provider_symbol": "NSE:PREMIERENE",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559612+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "defence",
+          "sector": "Defence",
+          "entry": 10,
+          "display_name": "Premier Explosives",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:PRESTIGE",
+      "state": "verified",
+      "provider_symbol": "NSE:PRESTIGE",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558754+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "realty",
+          "sector": "Realty (Real Estate)",
+          "entry": 4,
+          "display_name": "Prestige Estates Projects",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:PVRINOX",
+      "state": "verified",
+      "provider_symbol": "NSE:PVRINOX",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559369+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "media",
+          "sector": "Media & Entertainment",
+          "entry": 3,
+          "display_name": "PVR INOX",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:RAILTEL",
+      "state": "verified",
+      "provider_symbol": "NSE:RAILTEL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559223+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "telecom",
+          "sector": "Telecom",
+          "entry": 7,
+          "display_name": "RailTel Corporation of India",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:RAYMOND",
+      "state": "verified",
+      "provider_symbol": "NSE:RAYMOND",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559461+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "textiles",
+          "sector": "Textiles",
+          "entry": 4,
+          "display_name": "Raymond",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:REC",
+      "state": "verified",
+      "provider_symbol": "NSE:RECLTD",
+      "candidate_provider_symbol": "NSE:RECLTD",
+      "resolution_kind": "alias",
+      "explanation": "Approved shorthand REC resolves to REC Limited's listed NSE symbol RECLTD.",
+      "source": "https://nsearchives.nseindia.com/corporate/ixbrl/INTEGRATED_FILING_GOVERNANCE_152035_22042026122116_iXBRL_WEB.html",
+      "checked_at": "2026-11-02T09:13:20.558649+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "power-infra",
+          "sector": "Power & Infrastructure",
+          "entry": 8,
+          "display_name": "REC",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:RELIANCE",
+      "state": "verified",
+      "provider_symbol": "NSE:RELIANCE",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557676+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "oil-gas",
+          "sector": "Oil & Gas",
+          "entry": 1,
+          "display_name": "Reliance Industries",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 1,
+          "display_name": "Reliance Industries",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:RUPA",
+      "state": "verified",
+      "provider_symbol": "NSE:RUPA",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559521+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "textiles",
+          "sector": "Textiles",
+          "entry": 10,
+          "display_name": "Rupa & Company",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:SAIL",
+      "state": "verified",
+      "provider_symbol": "NSE:SAIL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558397+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "metals-mining",
+          "sector": "Metal & Mining",
+          "entry": 5,
+          "display_name": "Steel Authority of India (SAIL)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:SAREGAMA",
+      "state": "verified",
+      "provider_symbol": "NSE:SAREGAMA",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559386+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "media",
+          "sector": "Media & Entertainment",
+          "entry": 5,
+          "display_name": "Saregama India",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:SBIN",
+      "state": "verified",
+      "provider_symbol": "NSE:SBIN",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557334+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "banking",
+          "sector": "Banking & Financial Services",
+          "entry": 6,
+          "display_name": "SBI (State Bank of India)",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 9,
+          "display_name": "State Bank of India (SBI)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:SOBHA",
+      "state": "verified",
+      "provider_symbol": "NSE:SOBHA",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558786+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "realty",
+          "sector": "Realty (Real Estate)",
+          "entry": 7,
+          "display_name": "Sobha",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:SPICEJET",
+      "state": "unavailable",
+      "provider_symbol": null,
+      "candidate_provider_symbol": null,
+      "resolution_kind": "not_listed_on_nse",
+      "explanation": "Issuer disclosure states NSE permission was withdrawn effective 2023-05-02; BSE listing is not substituted for the approved NSE entry.",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559325+00:00",
+      "tick_size": null,
+      "token_verified": false,
+      "memberships": [
+        {
+          "sector_id": "telecom",
+          "sector": "Telecom",
+          "entry": 9,
+          "display_name": "SpiceJet",
+          "configured_status": null
+        }
+      ],
+      "notice_source": "https://corporate.spicejet.com/Content/pdf/BSEIntimation_PD_20092024_signed.pdf"
+    },
+    {
+      "requested_symbol": "NSE:SRF",
+      "state": "verified",
+      "provider_symbol": "NSE:SRF",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559064+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "chemicals",
+          "sector": "Chemicals",
+          "entry": 3,
+          "display_name": "SRF",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:STLTECH",
+      "state": "verified",
+      "provider_symbol": "NSE:STLTECH-BE",
+      "candidate_provider_symbol": "NSE:STLTECH-BE",
+      "resolution_kind": "series",
+      "explanation": "Same Sterlite Technologies issuer in NSE BE series; the approved sector entry stays STLTECH.",
+      "source": "https://www.nseindia.com/get-quote/equity/STLTECH/Sterlite-Technologies-Limited",
+      "checked_at": "2026-11-02T09:13:20.559340+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "telecom",
+          "sector": "Telecom",
+          "entry": 10,
+          "display_name": "Sterlite Technologies",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:SUNPHARMA",
+      "state": "verified",
+      "provider_symbol": "NSE:SUNPHARMA",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558175+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "pharma-healthcare",
+          "sector": "Pharma & Healthcare",
+          "entry": 1,
+          "display_name": "Sun Pharmaceutical Industries",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:SUNTV",
+      "state": "verified",
+      "provider_symbol": "NSE:SUNTV",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559359+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "media",
+          "sector": "Media & Entertainment",
+          "entry": 2,
+          "display_name": "Sun TV Network",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:SYMPHONY",
+      "state": "verified",
+      "provider_symbol": "NSE:SYMPHONY",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559010+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "consumer-durables",
+          "sector": "Consumer Durables",
+          "entry": 10,
+          "display_name": "Symphony",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:TATACHEM",
+      "state": "verified",
+      "provider_symbol": "NSE:TATACHEM",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559096+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "chemicals",
+          "sector": "Chemicals",
+          "entry": 6,
+          "display_name": "Tata Chemicals",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:TATACOMM",
+      "state": "verified",
+      "provider_symbol": "NSE:TATACOMM",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559232+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "telecom",
+          "sector": "Telecom",
+          "entry": 8,
+          "display_name": "Tata Communications",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:TATACONSUM",
+      "state": "verified",
+      "provider_symbol": "NSE:TATACONSUM",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558135+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "fmcg",
+          "sector": "FMCG",
+          "entry": 8,
+          "display_name": "Tata Consumer Products",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:TATASTEEL",
+      "state": "verified",
+      "provider_symbol": "NSE:TATASTEEL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558354+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "metals-mining",
+          "sector": "Metal & Mining",
+          "entry": 1,
+          "display_name": "Tata Steel",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:TCS",
+      "state": "verified",
+      "provider_symbol": "NSE:TCS",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557436+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "it-services",
+          "sector": "IT Services",
+          "entry": 1,
+          "display_name": "TCS (Tata Consultancy Services)",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 5,
+          "display_name": "TCS (Tata Consultancy Services)",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:TECHM",
+      "state": "verified",
+      "provider_symbol": "NSE:TECHM",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557521+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "it-services",
+          "sector": "IT Services",
+          "entry": 5,
+          "display_name": "Tech Mahindra",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:TEJASNET",
+      "state": "verified",
+      "provider_symbol": "NSE:TEJASNET",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559190+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "telecom",
+          "sector": "Telecom",
+          "entry": 5,
+          "display_name": "Tejas Networks",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:TITAN",
+      "state": "verified",
+      "provider_symbol": "NSE:TITAN",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558909+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "consumer-durables",
+          "sector": "Consumer Durables",
+          "entry": 1,
+          "display_name": "Titan Company",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:TMPV",
+      "state": "verified",
+      "provider_symbol": "NSE:TMPV",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557925+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "automobile",
+          "sector": "Automobile",
+          "entry": 3,
+          "display_name": "Tata Motors",
+          "configured_status": null
+        },
+        {
+          "sector_id": "nifty-top-liquid",
+          "sector": "Nifty Top Liquid Stocks (F&O)",
+          "entry": 10,
+          "display_name": "Tata Motors",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:TORNTPHARM",
+      "state": "verified",
+      "provider_symbol": "NSE:TORNTPHARM",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558334+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "pharma-healthcare",
+          "sector": "Pharma & Healthcare",
+          "entry": 9,
+          "display_name": "Torrent Pharmaceuticals",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:TRIDENT",
+      "state": "verified",
+      "provider_symbol": "NSE:TRIDENT",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559451+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "textiles",
+          "sector": "Textiles",
+          "entry": 3,
+          "display_name": "Trident",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:TV18BRDCST",
+      "state": "suspended",
+      "provider_symbol": null,
+      "candidate_provider_symbol": null,
+      "resolution_kind": "suspended",
+      "explanation": "Existing approved configuration marks this issuer suspended. Retained in membership; never subscribed as a live instrument.",
+      "source": "https://www.nseindia.com/get-quotes/equity?symbol=TV18BRDCST",
+      "checked_at": null,
+      "tick_size": null,
+      "token_verified": false,
+      "memberships": [
+        {
+          "sector_id": "media",
+          "sector": "Media & Entertainment",
+          "entry": 8,
+          "display_name": "TV18 Broadcast",
+          "configured_status": "suspended"
+        }
+      ],
+      "notice_source": "https://www.nseindia.com/get-quotes/equity?symbol=TV18BRDCST"
+    },
+    {
+      "requested_symbol": "NSE:TVSMOTOR",
+      "state": "verified",
+      "provider_symbol": "NSE:TVSMOTOR",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557986+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "automobile",
+          "sector": "Automobile",
+          "entry": 7,
+          "display_name": "TVS Motor Company",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:UNITDSPR",
+      "state": "verified",
+      "provider_symbol": "NSE:UNITDSPR",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558150+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "fmcg",
+          "sector": "FMCG",
+          "entry": 9,
+          "display_name": "United Spirits",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:UPL",
+      "state": "verified",
+      "provider_symbol": "NSE:UPL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559020+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "chemicals",
+          "sector": "Chemicals",
+          "entry": 1,
+          "display_name": "UPL",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:VEDL",
+      "state": "verified",
+      "provider_symbol": "NSE:VEDL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558385+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "metals-mining",
+          "sector": "Metal & Mining",
+          "entry": 4,
+          "display_name": "Vedanta",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:VOLTAS",
+      "state": "verified",
+      "provider_symbol": "NSE:VOLTAS",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558919+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "consumer-durables",
+          "sector": "Consumer Durables",
+          "entry": 2,
+          "display_name": "Voltas",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:VTL",
+      "state": "verified",
+      "provider_symbol": "NSE:VTL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559469+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "textiles",
+          "sector": "Textiles",
+          "entry": 5,
+          "display_name": "Vardhman Textiles",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:WELSPUNLIV",
+      "state": "verified",
+      "provider_symbol": "NSE:WELSPUNLIV",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559442+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "textiles",
+          "sector": "Textiles",
+          "entry": 2,
+          "display_name": "Welspun India",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:WHIRLPOOL",
+      "state": "verified",
+      "provider_symbol": "NSE:WHIRLPOOL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558966+00:00",
+      "tick_size": 0.05,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "consumer-durables",
+          "sector": "Consumer Durables",
+          "entry": 6,
+          "display_name": "Whirlpool of India",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:WIPRO",
+      "state": "verified",
+      "provider_symbol": "NSE:WIPRO",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.557499+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "it-services",
+          "sector": "IT Services",
+          "entry": 4,
+          "display_name": "Wipro",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:ZEEL",
+      "state": "verified",
+      "provider_symbol": "NSE:ZEEL",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559350+00:00",
+      "tick_size": 0.01,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "media",
+          "sector": "Media & Entertainment",
+          "entry": 1,
+          "display_name": "Zee Entertainment Enterprises",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:ZENTEC",
+      "state": "verified",
+      "provider_symbol": "NSE:ZENTEC",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.559595+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "defence",
+          "sector": "Defence",
+          "entry": 8,
+          "display_name": "Zen Technologies",
+          "configured_status": null
+        }
+      ]
+    },
+    {
+      "requested_symbol": "NSE:ZYDUSLIFE",
+      "state": "verified",
+      "provider_symbol": "NSE:ZYDUSLIFE",
+      "candidate_provider_symbol": null,
+      "resolution_kind": "exact",
+      "explanation": "Exact configured symbol",
+      "source": "kite:/instruments",
+      "checked_at": "2026-11-02T09:13:20.558310+00:00",
+      "tick_size": 0.1,
+      "token_verified": true,
+      "memberships": [
+        {
+          "sector_id": "pharma-healthcare",
+          "sector": "Pharma & Healthcare",
+          "entry": 7,
+          "display_name": "Zydus Lifesciences",
+          "configured_status": null
+        }
+      ]
+    }
+  ],
+  "note": "Approved membership keys stay unchanged. Verified same-company quote aliases are displayed explicitly. No BSE substitute, new company or invented quote is introduced."
+}
