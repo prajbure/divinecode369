@@ -15,6 +15,8 @@ Open http://127.0.0.1:8000. The existing **Run Open Match Scanner** VS Code task
 
 Keep existing credentials in `.env`. See [.env.example](./.env.example) for documented options; **do not replace a working credential file with the template**. Renew the daily Kite session through **Connect Kite**. Login now uses a short-lived HttpOnly state cookie; begin login in the same browser that receives the callback. Tokens and secrets stay on the server.
 
+The browser that completes Kite login can run opening scans remotely using a signed HttpOnly session cookie, valid for up to 12 hours. Reloads and page navigation preserve that access. A backend restart or a changed Kite session invalidates it; reconnect Kite in that browser when prompted. The cookie authorizes scans only. Watchlist changes, historical imports and model actions still require localhost access or an administrator token.
+
 ## Interface and routes
 
 - `/`: compact IST clock above the live ticker, new bull/bear hero, opening-match statistics, 16 sector cards, the opening scanner, movement chart and AI preview.
@@ -97,7 +99,7 @@ Training can be triggered in the lab; it runs off the HTTP request thread. `AUTO
 ## Security and deployment
 
 - Keep `.env`, SQLite files, model artifacts and admin tokens private and out of Git. The existing credentials were not overwritten.
-- Local mutations require a loopback client and host. Remote mutation/import/training calls require a server-configured `ADMIN_TOKEN`, entered into Settings for that browser tab only or supplied as `Authorization: Bearer …`. Cross-origin mutations are rejected. Tokens are never stored in browser storage.
+- Local mutations require a loopback client and host. Remote opening scans also accept the signed browser session issued after successful Kite login. Other remote mutation/import/training calls require a server-configured `ADMIN_TOKEN`, entered into Settings for that browser tab only or supplied as `Authorization: Bearer …`. Cross-origin mutations are rejected. Provider tokens are never stored in browser storage.
 - Use HTTPS and private network/access control for hosted use. The application is a **single-owner research terminal**, not a multi-user data redistribution service. Read endpoints are not a substitute for a deployment access gateway. Configure trusted proxy/client forwarding correctly; do not expose it publicly without your own access control and provider permission.
 - Provider errors are redacted; secrets remain server-side. Full WebSocket mode is requested only for the approved tokens. Market depth is not requested or advertised as supported.
 - No order placement endpoints exist.

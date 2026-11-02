@@ -6,6 +6,7 @@ import json
 import logging
 import secrets
 import threading
+import time
 from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo
 
@@ -43,6 +44,8 @@ history_lock = threading.Lock()
 index_lock = threading.Lock()
 index_cache = {"cards": [], "as_of": None}
 index_fetched = None
+SCAN_SESSION_SECONDS = 12 * 60 * 60
+_scan_session_key = secrets.token_bytes(32)
 
 
 def scheduled_scan():
@@ -100,7 +103,24 @@ async def security_headers(request: Request, call_next):
     return response
 
 
-def require_admin(request: Request):
+def scan_session_signature(expires: str) -> str:
+    payload = f"scan\n{expires}\n{config.KITE_ACCESS_TOKEN}".encode()
+    return hmac.new(_scan_session_key, payload, "sha256").hexdigest()
+
+
+def has_scan_session(request: Request) -> bool:
+    if not config.KITE_ACCESS_TOKEN:
+        return False
+    try:
+        expires, signature = request.cookies.get("divine_scan_session", "").split(".", 1)
+        return int(expires) > time.time() and hmac.compare_digest(
+            signature.encode(), scan_session_signature(expires).encode()
+        )
+    except (ValueError, TypeError):
+        return False
+
+
+def require_admin(request: Request, *, allow_kite_scan: bool = False):
     origin = request.headers.get("origin")
     if origin and urlsplit(origin).netloc != request.url.netloc:
         raise HTTPException(403, "Cross-origin write requests are not allowed.")
@@ -108,6 +128,14 @@ def require_admin(request: Request):
     if not local:
         supplied = request.headers.get("authorization", "").removeprefix("Bearer ")
         if not config.ADMIN_TOKEN or not hmac.compare_digest(supplied, config.ADMIN_TOKEN):
+            if allow_kite_scan:
+                if has_scan_session(request):
+                    return
+                raise HTTPException(
+                    403,
+                    "Connect Kite in this browser to run an opening scan, or authorize an administrator session in Settings.",
+                    headers={"X-Divine-Auth": "kite-scan-required"},
+                )
             raise HTTPException(403, "Server admin authorization is required. Configure ADMIN_TOKEN or use localhost.")
 
 
@@ -211,12 +239,19 @@ def kite_callback(request: Request, request_token: str | None = None, status: st
         raise HTTPException(502, str(exc)) from exc
     response = RedirectResponse("/")
     response.delete_cookie("kite_oauth_state")
+    expires = str(int(time.time()) + SCAN_SESSION_SECONDS)
+    response.set_cookie(
+        "divine_scan_session", f"{expires}.{scan_session_signature(expires)}",
+        httponly=True, samesite="lax",
+        secure=request.url.scheme == "https" or config.KITE_REDIRECT_URL.startswith("https:"),
+        max_age=SCAN_SESSION_SECONDS,
+    )
     return response
 
 
 @app.post("/api/scan")
 def scan(request: Request):
-    require_admin(request)
+    require_admin(request, allow_kite_scan=True)
     try:
         return market.scan()
     except provider.ProviderError as exc:
