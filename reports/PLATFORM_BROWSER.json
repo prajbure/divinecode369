@@ -1,5 +1,5 @@
 {
-  "passed": 33,
+  "passed": 35,
   "checks": [
     "four IPO phases and three board filters",
     "compact provider cards expose price, GMP and subscription",
@@ -10,6 +10,8 @@
     "search empty state is explicit",
     "allotted phase requires verified stage",
     "guest watchlist stores identifiers only",
+    "theme persists after navigation and syncs with backend",
+    "dark theme restores without changing account access",
     "website watchlist synchronizes with protected backend",
     "cookie mutations still require CSRF",
     "browser approval displays the matching native device code",

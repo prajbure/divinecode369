@@ -56,6 +56,7 @@ class Sector(BaseModel):
     live: int = 0
     stale: int = 0
     stocks: list[Stock] = []
+    member_symbols: list[str] = []
 
 
 class StockPage(BaseModel):
@@ -170,6 +171,8 @@ class Health(BaseModel):
     cache_timestamp: str | None = None
     notifications: str = 'Authenticated inbox; FCM not configured'
     ipo_cache_timestamp: str | None = None
+    unknown: int = 0
+    closed: int = 0
 
 
 class Overview(BaseModel):

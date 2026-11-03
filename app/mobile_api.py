@@ -35,13 +35,23 @@ def ipo_meta(resource):
                   source='IPO Guru · shared Standard cache', message=(meta.get('error') or {}).get('message'))
 
 
+def complete_snapshot(snapshot):
+    """Retain approved identities when the provider has no quote; never invent prices."""
+    universe={'NSE:'+stock[0]:stock[1] for group in reference_groups() for stock in group['stocks']}
+    observed={row['symbol']:row for row in snapshot.get('rows',[])}
+    rows=[{'symbol':symbol,'name':name,'prev_close':None,'open':None,'ltp':None,'change_pct':None,'difference':None,
+           'difference_display':None,'match':False,'near_match':False,'quote_status':'unavailable','quote_timestamp':None,
+           **observed.get(symbol,{})} for symbol,name in universe.items()]
+    return {**snapshot,'rows':rows}
+
+
 def create_mobile_router(resolve):
     """Resolve application singletons on demand, including when tests replace them."""
     router = APIRouter(prefix='/api/v1/mobile', tags=['Mobile v1'],responses={status:{'model':m.APIError} for status in (400,401,403,404,422,429,503)})
 
     def state():
         market, manager, ipo, store, lab = resolve()
-        snap = market.snapshot()
+        snap = complete_snapshot(market.snapshot())
         shared = analytics.build(reference_groups(), snap)
         meta = m.Meta(cache_timestamp=snap.get('as_of'), provider_timestamp=max((r.get('quote_timestamp') for r in snap['rows'] if r.get('quote_timestamp')), default=None),
                       stale=any(r.get('quote_status') == 'stale' for r in snap['rows']), unavailable=not any(r.get('ltp') is not None for r in snap['rows']), source='Kite · shared market pipeline')
@@ -55,13 +65,15 @@ def create_mobile_router(resolve):
                                   'freshness':row.get('quote_status') or 'unavailable', 'provider_timestamp':row.get('quote_timestamp'),
                                   'opening_date':snap.get('opening_date'), 'signal_state':shared['opening'][row['symbol']]['ranges']['fifteen'].get('state', 'unavailable'),
                                   'intelligence':shared['opening'][row['symbol']], 'opportunity':opportunities[row['symbol']]}))
-        sectors = [m.Sector(**{**s, 'memberships':len(g['stocks']), 'unique_symbols':s['total'], 'stocks':[r for r in rows if s['id'] in r.sector_ids]}) for s,g in zip(shared['sectors'],reference_groups())]
+        sectors = [m.Sector(**{**s, 'memberships':len(g['stocks']), 'unique_symbols':s['total'], 'member_symbols':['NSE:'+entry[0] for entry in g['stocks']], 'stocks':[r for r in rows if s['id'] in r.sector_ids]}) for s,g in zip(shared['sectors'],reference_groups())]
         return snap, shared, rows, sectors, meta
 
     def health_value(snap):
+        snap=complete_snapshot(snap)
         manager = resolve()[1]
         connection = manager.snapshot()
-        quality = {key:sum(r.get('quote_status')==key for r in snap['rows']) for key in ('live','stale','unavailable')}
+        quality = {key:sum(r.get('quote_status')==key for r in snap['rows']) for key in ('live','stale','unavailable','closed')}
+        quality['unknown']=sum(r.get('quote_status') not in ('live','stale','unavailable','closed') for r in snap['rows'])
         return m.Health(kite_state=connection.get('kite',{}).get('state','unavailable'), ipo_state=connection.get('ipoguru',{}).get('state','unavailable'),
                         market_state=snap.get('market',{}).get('status','unavailable'), **quality, provider_timestamp=max((r.get('quote_timestamp') for r in snap['rows'] if r.get('quote_timestamp')),default=None), cache_timestamp=snap.get('as_of'),ipo_cache_timestamp=manager.get_overview().get('meta',{}).get('fetched_at'))
 

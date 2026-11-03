@@ -25,6 +25,13 @@ try{
   check('guest watchlist stores identifiers only',await evaluate("JSON.parse(localStorage.getItem('divine-personal-watchlist-v1')).some(v=>v.key==='fixture-ipo-1'&&v.saved)&&!localStorage.getItem('divine-personal-watchlist-v1').includes('gmp')"));
   await navigate(base+'/settings');await wait("!!document.querySelector('#adminLoginForm')");
   await evaluate("document.querySelector('#adminLoginForm [name=username]').value='owner';document.querySelector('#adminLoginForm [name=password]').value='only-for-tests-password-369';document.querySelector('#adminLoginForm').requestSubmit()");await wait("!!document.querySelector('[data-admin-logout]')");
+  await wait("document.querySelector('#platformPreferenceState')?.textContent.includes('Preferences sync')");
+  await evaluate("document.querySelector('#platformPreferences').elements.theme.value='light';document.querySelector('#platformPreferences').requestSubmit()");await wait("document.querySelector('#toast').textContent.includes('Preferences synced')");
+  await navigate(base+'/ipo');await wait("document.querySelectorAll('[data-ipo-card]').length===2");
+  check('theme persists after navigation and syncs with backend',await evaluate("document.documentElement.dataset.theme==='light'&&localStorage.getItem('divine-theme')==='light'&&fetch('/api/v1/mobile/preferences').then(r=>r.json()).then(v=>v.theme==='light')"));
+  await navigate(base+'/settings');await wait("document.querySelector('#platformPreferenceState')?.textContent.includes('Preferences sync')");
+  await evaluate("document.querySelector('#platformPreferences').elements.theme.value='dark';document.querySelector('#platformPreferences').requestSubmit()");await wait("document.querySelector('#toast').textContent.includes('Preferences synced')");
+  check('dark theme restores without changing account access',await evaluate("document.documentElement.dataset.theme==='dark'&&!!document.querySelector('[data-admin-logout]')"));
   await navigate(base+'/watchlists');await wait("document.querySelector('#personalContent').textContent.includes('Aurora')");
   check('website watchlist synchronizes with protected backend',await evaluate("fetch('/api/v1/mobile/watchlist').then(r=>r.json()).then(v=>v.items.some(x=>x.key==='fixture-ipo-1'&&x.saved))"));
   check('cookie mutations still require CSRF',await evaluate("fetch('/api/v1/mobile/watchlist',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({kind:'ipo',key:'fixture-ipo-0',label:'Fixture'})}).then(r=>r.status===403)"));

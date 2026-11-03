@@ -94,7 +94,9 @@ data class Health(
     val `provider_timestamp`: String? = null,
     val `cache_timestamp`: String? = null,
     val `notifications`: String = "Authenticated inbox; FCM not configured",
-    val `ipo_cache_timestamp`: String? = null
+    val `ipo_cache_timestamp`: String? = null,
+    val `unknown`: Int = 0,
+    val `closed`: Int = 0
 )
 
 @Serializable
@@ -244,7 +246,8 @@ data class Sector(
     val `strength`: Double? = null,
     val `live`: Int = 0,
     val `stale`: Int = 0,
-    val `stocks`: List<Stock> = emptyList()
+    val `stocks`: List<Stock> = emptyList(),
+    val `member_symbols`: List<String> = emptyList()
 )
 
 @Serializable

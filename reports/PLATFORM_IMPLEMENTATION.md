@@ -35,7 +35,7 @@ Stage 1 gate: 45 existing preservation, sector, scan-auth and IPO tests passed (
 | 3 | Shared typed IPO contract and premium IPO screens | API and web verified; native screens implemented, device validation pending |
 | 4 | Shared scanner/sector/stock analytics and native screens | Original files unchanged; 20 analytics parity fixtures pass; native execution pending |
 | 5 | Synchronized personal data, alerts, settings | Server/browser behavior verified; Room/Keystore/notification execution pending |
-| 6 | Concise responsive website and mobile IPO cards | 33 real Chrome checks pass at phone/tablet/desktop widths |
+| 6 | Concise responsive website and mobile IPO cards | 35 real Chrome checks pass at phone/tablet/desktop widths |
 | 7 | Security, contract, browser, native tests | Python/JS/browser/source checks pass; Android compilation/lint/tests not completed |
 | 8 | Debug APK, installation, release preparation | Actual build blocked by unaccepted SDK licenses; no APK or release artifact |
 
@@ -68,11 +68,11 @@ This platform change does not grant an Android credential access to `/api/scan`,
 | --- | --- |
 | Initial preservation gate | 45 tests passed, 3.170 s |
 | Repeated stage API/preservation gates | 60, then 62 tests passed as features were added |
-| Final full Python suite | 179 tests passed, 32.092 s |
-| Final focused mobile/events/parity checks | 24 passed, 7.223 s; includes compressed real ASGI snapshot and uncompressed authentication response |
+| Final full Python suite | 180 tests passed, 30.868 s |
+| Focused mobile/events/parity gate | 24 passed, 7.223 s before the final cold-start case; final full suite includes that additional regression |
 | JavaScript formatting, intelligence, IPO, clock and admin request helpers | 79 checks passed (10 + 35 + 17 + 5 + 12) |
 | Real Chrome HTTPS administrator regression | 20 checks passed, including simulated cross-site provider navigation and exactly one exchange |
-| Real Chrome platform journey | 33 checks passed: device code/approval, PKCE scoped access/logout, cookie CSRF, IPO filters/details/watchlist/alerts, 320/375/768/1440 px layout, sectors and clock |
+| Real Chrome platform journey | 35 checks passed: device code/approval, PKCE scoped access/logout, cookie CSRF, IPO filters/details/watchlist/alerts, preference synchronization, 320/375/768/1440 px layout, sectors and clock |
 | Client/source preservation and secret checks | 13 passed; [audit JSON](PLATFORM_AUDIT.json) |
 | Website packaging | `npm run build` passed; packages the actual FastAPI-served static UI |
 | Kotlin syntax parser | 20 Kotlin files, zero syntax errors; this is not Android compilation |
@@ -82,6 +82,10 @@ This platform change does not grant an Android credential access to `/api/scan`,
 | Live provider exchange, trading, IPO applications | Not performed |
 
 Browser evidence is in [PLATFORM_BROWSER.json](PLATFORM_BROWSER.json), [phone fixture capture](platform-ipo-phone-fixture.png) and [desktop fixture capture](platform-ipo-desktop-fixture.png). Fixture companies are explicitly labeled TEST FIXTURE; they are not live IPO validation. Live deployment checks are recorded separately after deployment.
+
+Production verification found a cold-start adapter defect: when Kite awaited login, the raw quote pipeline had zero rows and the mobile adapter omitted configured stock identities. The correction supplies approved names with null prices and explicit unavailable flags; it performs no provider fetch and does not manufacture quotes. The ordered `member_symbols` arrays preserve all 160 memberships, including two repeated memberships within baskets, while per-basket quote lists and financial metrics remain unique. All 148 unique stock identities remain accessible before Kite login. Health counts now include missing, unknown and closed observations correctly. Website theme preferences also survive a full page load and honor the system choice.
+
+Initial deployment `b29b83d125945e6a5c01aadb66921750fc08876a` passed 37 production public-read/asset/authorization checks and 43 live administrator-session checks. [Production API report](PLATFORM_PRODUCTION.json) and [production authorization report](PLATFORM_PRODUCTION_AUTH.json) record exact timestamps and results. A final recheck follows the cold-start correction. IPO Guru was connected; Kite required official login, so no live quote validation is claimed.
 
 The original scanner SHA-256 is `cedf41dd728d97b9221261fc8af7772ca005d016e542f7f5c86983b76e699f6d`. The original sector JSON SHA-256 remains `61a211782942ffa56623e6dcf552f9952847300f07fdb157b61399e8bf564cad`. Neither file was edited.
 

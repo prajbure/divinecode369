@@ -1,4 +1,4 @@
-import {personalShell,mountPersonalPage,mountPlatformSettings} from './platform-personal.js';
+import {personalShell,mountPersonalPage,mountPlatformSettings,initializePlatformPreferences} from './platform-personal.js';
 import {adminRequest,initializeAdminSession,mountAdminSession} from './admin-auth.js';
 import {initializeConnections,receiveConnections,mountConnections,connectionPage} from './connections.js';
 import {startISTClock} from './clock.js';
@@ -6,6 +6,7 @@ import {ipoShell,mountIPO,updateIPOFreshness,refreshIPOFromBackend} from './ipo.
 import {compareOpeningPriority} from './intelligence-core.js';
 import { mountCommandCenter, updateCommandCenter } from './command-center.js';
 import { openingDifference } from './financial-format.js';
+initializePlatformPreferences();
 const $ = (id) => document.getElementById(id);
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const number = v => typeof v === 'number' && Number.isFinite(v);

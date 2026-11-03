@@ -176,5 +176,26 @@ class MobileTests(unittest.TestCase):
         auth_response=self.client.get('/auth/admin/session',headers={'Accept-Encoding':'gzip'})
         self.assertNotIn('content-encoding',auth_response.headers)
 
+    def test_cold_start_retains_every_stock_with_explicit_unavailable_values(self):
+        snapshot={**main.market.snapshot(),'rows':[]}
+        with patch.object(main.market,'snapshot',return_value=snapshot),patch('app.provider.live_quotes') as provider:
+            sectors=self.client.get('/api/v1/mobile/sectors').json()
+            stocks=[r for sector in sectors['items'] for r in sector['stocks']]
+            from app.scanner import reference_groups
+            self.assertEqual(sum(len(s['member_symbols']) for s in sectors['items']),160)
+            self.assertEqual(len(stocks),158) # Two repeated memberships within baskets; quotes remain unique.
+            for actual,approved in zip(sectors['items'],reference_groups()):
+                self.assertEqual(actual['member_symbols'],['NSE:'+entry[0] for entry in approved['stocks']])
+            self.assertEqual(len({r['symbol'] for r in stocks}),148)
+            self.assertTrue(all(r['ltp'] is None and r['open'] is None and r['freshness']=='unavailable' for r in stocks))
+            self.assertTrue(sectors['meta']['unavailable'])
+            result=self.client.get('/api/v1/mobile/scanner?match=universe&page_size=100').json()
+            self.assertEqual(result['total'],148);self.assertEqual(len(result['items']),100)
+            stock=self.client.get('/api/v1/mobile/stocks/RELIANCE')
+            self.assertEqual(stock.status_code,200);self.assertIsNone(stock.json()['ltp'])
+            health=self.client.get('/api/v1/mobile/health').json()
+            self.assertEqual(health['unavailable'],148);self.assertEqual(health['live'],0)
+            provider.assert_not_called()
+
 
 if __name__=='__main__':unittest.main()

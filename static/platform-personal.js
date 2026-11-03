@@ -1,6 +1,11 @@
 import {adminRequest,refreshAdminSession} from './admin-auth.js';
 import {escapeHTML as esc,fmt,istStamp} from './ipo-core.js';
 const key='divine-personal-watchlist-v1';
+let themeListening=false;
+export function initializePlatformPreferences(){
+  const update=()=>{let choice='dark';try{choice=localStorage.getItem('divine-theme')||'dark';}catch{}document.documentElement.dataset.theme=choice==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):choice==='light'?'light':'dark';};
+  update();if(!themeListening){matchMedia('(prefers-color-scheme: dark)').addEventListener('change',update);themeListening=true;}
+}
 const targetPath=v=>v.kind==='stock'?'/stocks/'+encodeURIComponent((v.symbol||'').replace(/^NSE:/,'')):'/ipo/details/'+encodeURIComponent(v.ipo_slug);
 const targetLabel=v=>v.kind==='stock'?v.symbol:v.ipo_slug;
 let saved=[];try{const value=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(value))saved=value.filter(v=>['ipo','stock'].includes(v.kind)&&typeof v.key==='string'&&typeof v.label==='string'&&v.key.length<=150&&v.label.length<=150).slice(0,1000);}catch{}
@@ -53,7 +58,7 @@ export async function mountPlatformSettings(notice){
   document.getElementById('main').append(panel);
   const form=panel.querySelector('form'),state=panel.querySelector('#platformPreferenceState');
   let signedIn=false;
-  function apply(value){form.elements.theme.value=value.theme;form.elements.density.value=value.density;form.elements.notifications.checked=value.notifications;document.documentElement.dataset.density=value.density;document.documentElement.dataset.theme=value.theme;try{localStorage.setItem('divine-density',value.density);localStorage.setItem('divine-theme',value.theme);}catch{}}
+  function apply(value){form.elements.theme.value=value.theme;form.elements.density.value=value.density;form.elements.notifications.checked=value.notifications;document.documentElement.dataset.density=value.density;document.documentElement.dataset.theme=value.theme;try{localStorage.setItem('divine-density',value.density);localStorage.setItem('divine-theme',value.theme);}catch{}initializePlatformPreferences();}
   async function devices(){
     const target=panel.querySelector('#approvedDevices');
     try{const result=await adminRequest('/auth/mobile/sessions');if(!panel.isConnected)return;target.innerHTML=result.items.map(device=>`<div class="setting-row"><span>${esc(device.device)}<small>Expires ${esc(new Date(device.expires*1000).toLocaleString('en-IN',{timeZone:'Asia/Kolkata'}))} IST</small></span><button class="ghost" data-revoke-device="${esc(device.id)}">Revoke</button></div>`).join('')||'<p>No approved devices.</p>';}catch(error){target.textContent=error.message;}

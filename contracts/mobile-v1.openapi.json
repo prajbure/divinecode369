@@ -3598,6 +3598,16 @@
               }
             ],
             "title": "Ipo Cache Timestamp"
+          },
+          "unknown": {
+            "type": "integer",
+            "title": "Unknown",
+            "default": 0
+          },
+          "closed": {
+            "type": "integer",
+            "title": "Closed",
+            "default": 0
           }
         },
         "type": "object",
@@ -4403,6 +4413,14 @@
             },
             "type": "array",
             "title": "Stocks",
+            "default": []
+          },
+          "member_symbols": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Member Symbols",
             "default": []
           }
         },
