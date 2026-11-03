@@ -255,7 +255,7 @@ def kite_login_start(request: Request):
 
 @app.get("/auth/kite/callback")
 def kite_callback(request: Request, request_token: str | None = None, status: str | None = None, state: str | None = None):
-    require_admin(request)
+    admin_auth.require_admin(request, oauth_callback=True)
     cookie = request.cookies.get("kite_oauth_state", "")
     if status != "success" or not request_token or not state or not cookie or not hmac.compare_digest(state.encode(), cookie.encode()):
         raise HTTPException(400, "Kite login was not completed or the login state expired. Start login again.")

@@ -28,6 +28,9 @@ try {
   let serial = 0;
   const pending = new Map();
   const errors = [];
+  const callbackRequests = new Set();
+  const navigationHeaders = new Map();
+  let callbackStatus;
   const send = (method, params={}) => new Promise((resolve, reject) => {
     const id = ++serial;
     const timer = setTimeout(() => { pending.delete(id); reject(Error('CDP timeout: '+method)); }, 15000);
@@ -41,6 +44,15 @@ try {
       clearTimeout(task.timer); pending.delete(message.id);
       message.error ? task.reject(Error(message.error.message)) : task.resolve(message.result);
     } else if (message.method === 'Runtime.exceptionThrown') errors.push(message.params.exceptionDetails.text);
+    else if (message.method === 'Network.requestWillBeSent') {
+      if (message.params.request.url.startsWith('https://localhost:8443/auth/kite/callback')) callbackRequests.add(message.params.requestId);
+      if (message.params.redirectResponse?.url.startsWith('https://localhost:8443/auth/kite/callback')) callbackStatus = message.params.redirectResponse.status;
+    } else if (message.method === 'Network.requestWillBeSentExtraInfo') {
+      const headers = Object.fromEntries(Object.entries(message.params.headers).map(([key,value])=>[key.toLowerCase(),value]));
+      const history = navigationHeaders.get(message.params.requestId) || [];
+      history.push({site:headers['sec-fetch-site'],mode:headers['sec-fetch-mode'],dest:headers['sec-fetch-dest']});
+      navigationHeaders.set(message.params.requestId, history);
+    }
   };
   const evaluate = async expression => {
     const result = await send('Runtime.evaluate', {expression, awaitPromise:true, returnByValue:true});
@@ -75,6 +87,19 @@ try {
   check('authenticated request without CSRF is rejected', await evaluate("fetch('/api/scan',{method:'POST'}).then(r=>r.status===403)"));
   check('shared frontend request sends working cookie and CSRF proof', await evaluate("import('/static/admin-auth.js').then(m=>m.adminRequest('/api/scan',{method:'POST'})).then(r=>Array.isArray(r.rows))"));
   check('provider recheck works through the same protected request flow', await evaluate("import('/static/admin-auth.js').then(m=>m.adminRequest('/api/connections/kite/recheck',{method:'POST'})).then(r=>!!r.kite)"));
+
+  await evaluate("import('/static/admin-auth.js').then(m=>m.adminRequest('/auth/kite/login',{method:'POST'})).then(()=>true)");
+  const oauthState = (await send('Network.getCookies')).cookies.find(value=>value.name==='kite_oauth_state').value;
+  // A different HTTPS site generates the browser's real cross-site navigation headers.
+  await send('Page.navigate', {url:'https://127.0.0.1:8443/_test/provider-return?state='+encodeURIComponent(oauthState)});
+  await wait("!!document.querySelector('#providerReturn')");
+  await evaluate("document.querySelector('#providerReturn').click()");
+  await wait("location.hostname==='localhost'&&location.pathname==='/'&&document.querySelectorAll('.sector-card').length===16");
+  check('provider return uses real cross-site top-level browser navigation', [...callbackRequests].some(id=>(navigationHeaders.get(id)||[]).some(headers=>headers.site==='cross-site'&&headers.mode==='navigate'&&headers.dest==='document')));
+  check('valid cross-site provider callback redirects successfully', callbackStatus === 307);
+  check('provider callback exchanges and accepts its code exactly once', await evaluate("fetch('/_test/provider-calls').then(r=>r.json()).then(r=>r.exchanges===1&&r.accepted===1)"));
+  await send('Page.navigate', {url:'https://localhost:8443/settings'});
+  await wait("!!document.querySelector('[data-admin-logout]')");
   await send('Page.reload');
   await wait("!!document.querySelector('[data-admin-logout]')");
   check('reload retains the administrator session', true);

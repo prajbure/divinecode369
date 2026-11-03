@@ -196,12 +196,82 @@ class AdminAuthorizationTests(unittest.TestCase):
                 self.assertEqual(self.client.get('/auth/kite/callback', params=params).status_code, 400)
                 self.assertEqual(exchange.call_count, 1)
 
+    def test_cross_site_callback_fetch_and_iframe_are_rejected_without_consuming_state(self):
+        with patch.multiple(config, KITE_API_KEY='test-kite-key', KITE_REDIRECT_URL=ORIGIN + '/auth/kite/callback'):
+            sign_in(self.client)
+            self.client.post('/auth/kite/login')
+            state = self.client.cookies['kite_oauth_state']
+            params = {'request_token': 'test-request', 'status': 'success', 'state': state}
+            del self.client.headers['Origin']
+            with patch('app.provider.create_kite_session', return_value='provider-secret') as exchange, patch.object(main.connections, 'accept_kite'):
+                for mode, dest in [('cors', 'empty'), ('no-cors', 'empty'), ('navigate', 'iframe'), ('navigate', 'empty')]:
+                    with self.subTest(mode=mode, dest=dest):
+                        response = self.client.get('/auth/kite/callback', params=params,
+                            headers={'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': mode, 'Sec-Fetch-Dest': dest})
+                        self.assertEqual(response.status_code, 403)
+                exchange.assert_not_called()
+                response = self.client.get('/auth/kite/callback', params=params,
+                    headers={'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Dest': 'document'}, follow_redirects=False)
+                self.assertEqual(response.status_code, 307)
+                exchange.assert_called_once()
+
+    def test_cross_site_callback_still_requires_authentication_and_valid_state(self):
+        headers = {'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Dest': 'document'}
+        params = {'request_token': 'test-request', 'status': 'success', 'state': 'invalid-state'}
+        with patch('app.provider.create_kite_session') as exchange:
+            self.assertEqual(self.client.get('/auth/kite/callback', params=params, headers=headers).status_code, 401)
+            sign_in(self.client)
+            del self.client.headers['Origin']
+            self.assertEqual(self.client.get('/auth/kite/callback', params=params, headers=headers).status_code, 400)
+            self.client.cookies.set('kite_oauth_state', 'invalid-state')
+            # Matching cookie/query alone cannot create the server-side OAuth state.
+            self.assertEqual(self.client.get('/auth/kite/callback', params=params, headers=headers).status_code, 400)
+            exchange.assert_not_called()
+
+    def test_cross_site_navigation_exception_does_not_apply_to_other_admin_routes(self):
+        sign_in(self.client)
+        headers = {'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Dest': 'document'}
+        for path in ['/auth/admin/session', '/api/journal', '/api/intelligence/context/NSE:HDFCBANK']:
+            self.assertEqual(self.client.get(path, headers=headers).status_code, 403)
+        self.assertEqual(self.client.post('/api/connections/kite/disconnect', headers=headers).status_code, 403)
+        self.assertEqual(self.client.post('/auth/kite/login', headers=headers).status_code, 403)
+
+    def test_cross_site_callback_cannot_replay_or_ignore_origin_check(self):
+        headers = {'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Dest': 'document'}
+        with patch.multiple(config, KITE_API_KEY='test-kite-key', KITE_REDIRECT_URL=ORIGIN + '/auth/kite/callback'):
+            sign_in(self.client)
+            self.client.post('/auth/kite/login')
+            state = self.client.cookies['kite_oauth_state']
+            params = {'request_token': 'test-request', 'status': 'success', 'state': state}
+            del self.client.headers['Origin']
+            with patch('app.provider.create_kite_session', return_value='provider-secret') as exchange, patch.object(main.connections, 'accept_kite'):
+                result = self.client.get('/auth/kite/callback', params=params, headers={**headers, 'Origin': 'https://untrusted.example'})
+                self.assertEqual(result.status_code, 403)
+                exchange.assert_not_called()
+                self.assertEqual(self.client.get('/auth/kite/callback', params=params, headers=headers, follow_redirects=False).status_code, 307)
+                self.client.cookies.set('kite_oauth_state', state)
+                self.assertEqual(self.client.get('/auth/kite/callback', params=params, headers=headers).status_code, 400)
+                exchange.assert_called_once()
+
     def test_callback_rejected_after_logout(self):
         sign_in(self.client)
         self.client.post('/auth/admin/logout')
         with patch('app.provider.create_kite_session') as exchange:
             self.assertEqual(self.client.get('/auth/kite/callback?status=success&request_token=x&state=y').status_code, 401)
             exchange.assert_not_called()
+
+    def test_kite_callback_accepts_cross_site_document_navigation(self):
+        with patch.multiple(config, KITE_API_KEY='test-kite-key', KITE_REDIRECT_URL=ORIGIN + '/auth/kite/callback'):
+            sign_in(self.client)
+            self.client.post('/auth/kite/login')
+            state = self.client.cookies['kite_oauth_state']
+            del self.client.headers['Origin']
+            with patch('app.provider.create_kite_session', return_value='provider-secret') as exchange, patch.object(main.connections, 'accept_kite') as accept:
+                response = self.client.get('/auth/kite/callback', params={'request_token': 'test-request', 'status': 'success', 'state': state},
+                    headers={'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Dest': 'document'}, follow_redirects=False)
+                self.assertEqual(response.status_code, 307, response.text)
+                exchange.assert_called_once_with('test-request')
+                accept.assert_called_once_with('provider-secret')
 
     def test_oauth_state_is_bound_to_the_admin_session(self):
         with patch.multiple(config, KITE_API_KEY='test-kite-key', KITE_REDIRECT_URL=ORIGIN + '/auth/kite/callback'):

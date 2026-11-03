@@ -83,10 +83,19 @@ class AdminAuth:
         finally:
             db.close()
 
-    def transport(self, request):
+    def transport(self, request, *, oauth_callback=False):
         if request.url.scheme != "https":
             raise HTTPException(403, "Administrator authentication requires HTTPS.")
-        if request.headers.get("sec-fetch-site") == "cross-site":
+        # An OAuth provider must navigate back from its own site. Only the exact
+        # callback's top-level GET may use that path; session + single-use state
+        # are still mandatory before any provider credential exchange.
+        oauth_navigation = (
+            oauth_callback and request.method == "GET"
+            and request.url.path == "/auth/kite/callback"
+            and request.headers.get("sec-fetch-mode") == "navigate"
+            and request.headers.get("sec-fetch-dest") == "document"
+        )
+        if request.headers.get("sec-fetch-site") == "cross-site" and not oauth_navigation:
             raise HTTPException(403, "Cross-site administrator requests are not allowed.")
         origin = request.headers.get("origin")
         if origin and origin != config.ADMIN_ORIGIN:
@@ -113,8 +122,8 @@ class AdminAuth:
         if not request.headers.get("origin") or not hmac.compare_digest(supplied.encode(), self.csrf(request.cookies.get(COOKIE, "")).encode()):
             raise HTTPException(403, "CSRF verification failed. Reload the page and try again.")
 
-    def require_admin(self, request: Request):
-        self.transport(request)
+    def require_admin(self, request: Request, *, oauth_callback=False):
+        self.transport(request, oauth_callback=oauth_callback)
         session = self.session(request)
         if not session or not session["authenticated"]:
             raise HTTPException(401, "Sign in as an administrator in Settings to continue.", headers={"X-Divine-Auth": "admin-login-required"})
@@ -153,7 +162,7 @@ class AdminAuth:
             db.execute("INSERT INTO admin_oauth VALUES (?, ?, ?)", (digest(state), session["id"], time.time() + 600))
 
     def consume_oauth(self, request, state):
-        session = self.require_admin(request)
+        session = self.require_admin(request, oauth_callback=True)
         with self.database() as db:
             deleted = db.execute("DELETE FROM admin_oauth WHERE state = ? AND session = ?", (digest(state), session["id"])).rowcount
         if deleted != 1:
