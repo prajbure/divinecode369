@@ -6,8 +6,6 @@ import json
 import logging
 import secrets
 import threading
-import time
-from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo
 
 from fastapi import FastAPI, HTTPException, Request
@@ -27,6 +25,7 @@ from .ipoguru import IPOGuruClient
 from .ipo_service import IPOService
 from .connections import ConnectionManager
 from .logging_filters import install as install_credential_filters,remember_secret
+from .admin_auth import auth as admin_auth, router as admin_router
 
 
 class RedactAuthAccessLog(logging.Filter):
@@ -51,8 +50,6 @@ history_lock = threading.Lock()
 index_lock = threading.Lock()
 index_cache = {"cards": [], "as_of": None}
 index_fetched = None
-SCAN_SESSION_SECONDS = 12 * 60 * 60
-_scan_session_key = secrets.token_bytes(32)
 
 
 def scheduled_scan():
@@ -99,53 +96,32 @@ async def lifespan(app):
 
 app = FastAPI(title="DIVINE CODE 369 — Market Intelligence", version="2.1.0", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory=str(config.ROOT / "static")), name="static")
+app.include_router(admin_router)
 
 
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
-    response = await call_next(request)
+    try:
+        # All API mutations are administrative, including future provider/credential endpoints.
+        if request.url.path.startswith("/api/") and request.method not in {"GET", "HEAD", "OPTIONS"}:
+            require_admin(request)
+        response = await call_next(request)
+    except HTTPException as error:
+        response = JSONResponse({"detail": error.detail}, status_code=error.status_code, headers=error.headers)
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Referrer-Policy"] = "same-origin"
     response.headers["X-Frame-Options"] = "DENY"
     if request.url.path.startswith(("/api/", "/auth/")):
         response.headers["Cache-Control"] = "no-store"
+    if request.url.path.startswith("/auth/"):
+        response.headers["Referrer-Policy"] = "no-referrer"
+    if request.url.scheme == "https":
+        response.headers["Strict-Transport-Security"] = "max-age=31536000"
     return response
 
 
-def scan_session_signature(expires: str) -> str:
-    payload = f"scan\n{expires}\n{config.KITE_ACCESS_TOKEN}".encode()
-    return hmac.new(_scan_session_key, payload, "sha256").hexdigest()
-
-
-def has_scan_session(request: Request) -> bool:
-    if not config.KITE_ACCESS_TOKEN:
-        return False
-    try:
-        expires, signature = request.cookies.get("divine_scan_session", "").split(".", 1)
-        return int(expires) > time.time() and hmac.compare_digest(
-            signature.encode(), scan_session_signature(expires).encode()
-        )
-    except (ValueError, TypeError):
-        return False
-
-
-def require_admin(request: Request, *, allow_kite_scan: bool = False):
-    origin = request.headers.get("origin")
-    if origin and urlsplit(origin).netloc != request.url.netloc:
-        raise HTTPException(403, "Cross-origin write requests are not allowed.")
-    local = request.client and request.client.host in {"127.0.0.1", "::1", "testclient"} and request.url.hostname in {"127.0.0.1", "localhost", "::1", "testserver"}
-    if not local:
-        supplied = request.headers.get("authorization", "").removeprefix("Bearer ")
-        if not config.ADMIN_TOKEN or not hmac.compare_digest(supplied, config.ADMIN_TOKEN):
-            if allow_kite_scan:
-                if has_scan_session(request):
-                    return
-                raise HTTPException(
-                    403,
-                    "Connect Kite in this browser to run an opening scan, or authorize an administrator session in Settings.",
-                    headers={"X-Divine-Auth": "kite-scan-required"},
-                )
-            raise HTTPException(403, "Server admin authorization is required. Configure ADMIN_TOKEN or use localhost.")
+def require_admin(request: Request):
+    return admin_auth.require_admin(request)
 
 
 def home_response():
@@ -261,19 +237,29 @@ def market_overview():
 
 @app.get("/auth/kite/login")
 def kite_login():
+    # Old bookmarks remain useful; provider changes start only through a CSRF-protected POST.
+    return RedirectResponse("/settings?connect=kite", status_code=303)
+
+
+@app.post("/auth/kite/login")
+def kite_login_start(request: Request):
+    require_admin(request)
     if not config.KITE_API_KEY or not config.KITE_REDIRECT_URL:
         raise HTTPException(503, "Configure KITE_API_KEY and KITE_REDIRECT_URL first.")
     state = secrets.token_urlsafe(32)
-    response = RedirectResponse(f"https://kite.zerodha.com/connect/login?v=3&api_key={config.KITE_API_KEY}&redirect_params=state%3D{state}")
-    response.set_cookie("kite_oauth_state", state, httponly=True, samesite="lax", secure=config.KITE_REDIRECT_URL.startswith("https:"), max_age=600)
+    admin_auth.start_oauth(request, state)
+    response = JSONResponse({"redirect_url": f"https://kite.zerodha.com/connect/login?v=3&api_key={config.KITE_API_KEY}&redirect_params=state%3D{state}"})
+    response.set_cookie("kite_oauth_state", state, httponly=True, samesite="lax", secure=True, max_age=600)
     return response
 
 
 @app.get("/auth/kite/callback")
 def kite_callback(request: Request, request_token: str | None = None, status: str | None = None, state: str | None = None):
+    require_admin(request)
     cookie = request.cookies.get("kite_oauth_state", "")
-    if status != "success" or not request_token or not state or not cookie or not hmac.compare_digest(state, cookie):
+    if status != "success" or not request_token or not state or not cookie or not hmac.compare_digest(state.encode(), cookie.encode()):
         raise HTTPException(400, "Kite login was not completed or the login state expired. Start login again.")
+    admin_auth.consume_oauth(request, state)
     try:
         remember_secret(request_token)
         token=provider.create_kite_session(request_token)
@@ -281,20 +267,13 @@ def kite_callback(request: Request, request_token: str | None = None, status: st
     except provider.ProviderError as exc:
         raise HTTPException(502, str(exc)) from exc
     response = RedirectResponse("/")
-    response.delete_cookie("kite_oauth_state")
-    expires = str(int(time.time()) + SCAN_SESSION_SECONDS)
-    response.set_cookie(
-        "divine_scan_session", f"{expires}.{scan_session_signature(expires)}",
-        httponly=True, samesite="lax",
-        secure=request.url.scheme == "https" or config.KITE_REDIRECT_URL.startswith("https:"),
-        max_age=SCAN_SESSION_SECONDS,
-    )
+    response.delete_cookie("kite_oauth_state", secure=True, httponly=True, samesite="lax")
     return response
 
 
 @app.post("/api/scan")
 def scan(request: Request):
-    require_admin(request, allow_kite_scan=True)
+    require_admin(request)
     try:
         return market.scan()
     except provider.ProviderError as exc:
@@ -368,7 +347,7 @@ def settings():
             "quote_poll_seconds": config.QUOTE_POLL_SECONDS, "snapshot_interval_seconds": config.SNAPSHOT_INTERVAL_SECONDS,
             "snapshot_retention_days": config.SNAPSHOT_RETENTION_DAYS, "daily_retention_days": config.DAILY_RETENTION_DAYS,
             "intraday_retention_days": config.INTRADAY_RETENTION_DAYS, "auto_retrain_enabled": config.AUTO_RETRAIN_ENABLED,
-            "training_min_new_sessions": config.TRAINING_MIN_NEW_SESSIONS, "admin_token_configured": bool(config.ADMIN_TOKEN),
+            "training_min_new_sessions": config.TRAINING_MIN_NEW_SESSIONS, "admin_login_configured": admin_auth.configured,
             "coverage": store.overview(), "market_calendar": session_state(), "market_depth": "Not requested; account capability unverified.",
             "historical_note": "Historical access and retention rights are separate capabilities. Confirm provider/exchange terms before enabling storage."}
 

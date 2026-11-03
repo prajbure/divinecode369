@@ -59,6 +59,12 @@ try:
 except ValueError:
     MARKET_SPECIAL_SESSIONS = {}
 ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "").strip()
+# ADMIN_TOKEN is a backend-only session key, never a browser credential.
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "").strip()
+ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH", "").strip()
+ADMIN_ORIGIN = os.getenv("ADMIN_ORIGIN", "https://divinecode369.in").rstrip("/")
+ADMIN_SESSION_SECONDS = min(integer("ADMIN_SESSION_SECONDS", 28800, 300), 86400)
+ADMIN_SESSION_DATABASE_PATH = DATABASE_PATH.parent / ".private" / "admin-sessions.sqlite3"
 AUTO_RETRAIN_ENABLED = enabled("AUTO_RETRAIN_ENABLED")
 TRAINING_MIN_NEW_SESSIONS = integer("TRAINING_MIN_NEW_SESSIONS", 20, 5)
 BACKTEST_COST_BPS = integer("BACKTEST_COST_BPS", 20, 0)

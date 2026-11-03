@@ -13,9 +13,9 @@ Use Python 3.10+ and the project virtual environment:
 
 Open http://127.0.0.1:8000. The existing **Run Open Match Scanner** VS Code task starts this same application. `npm run dev` also starts the existing Python backend, with reload enabled; it no longer opens the unrelated legacy React marketing frontend.
 
-Keep existing credentials in `.env`. See [.env.example](./.env.example) for documented options; **do not replace a working credential file with the template**. Renew the daily Kite session through **Connect Kite**. Login now uses a short-lived HttpOnly state cookie; begin login in the same browser that receives the callback. Tokens and secrets stay on the server.
+Keep existing credentials in `.env`; do not replace a working credential file. Configure administrator login using the [admin authentication guide](./reports/ADMIN_AUTH.md), sign in under **Settings**, then renew the daily Kite session through **Connect Kite**. Provider login uses a short-lived, single-use state bound to that administrator session. Tokens and secrets stay on the server.
 
-The browser that completes Kite login can run opening scans remotely using a signed HttpOnly session cookie, valid for up to 12 hours. Reloads and page navigation preserve that access. A backend restart or a changed Kite session invalidates it; reconnect Kite in that browser when prompted. The cookie authorizes scans only. Watchlist changes, historical imports and model actions still require localhost access or an administrator token.
+Administrator login uses an opaque Secure, HttpOnly, SameSite=Lax cookie over HTTPS. Sessions expire after eight hours by default and are revoked on logout or credential rotation. Scans, watchlist changes, provider controls, imports and model actions require administrator login and CSRF protection. Dashboard quotes, sectors and read-only IPO pages remain public; the journal and stored intelligence retain their administrator access requirement. Localhost grants no authentication exemption.
 
 ## Interface and routes
 
@@ -99,7 +99,7 @@ Training can be triggered in the lab; it runs off the HTTP request thread. `AUTO
 ## Security and deployment
 
 - Keep `.env`, SQLite files, model artifacts and admin tokens private and out of Git. The existing credentials were not overwritten.
-- Local mutations require a loopback client and host. Remote opening scans also accept the signed browser session issued after successful Kite login. Other remote mutation/import/training calls require a server-configured `ADMIN_TOKEN`, entered into Settings for that browser tab only or supplied as `Authorization: Bearer …`. Cross-origin mutations are rejected. Provider tokens are never stored in browser storage.
+- `ADMIN_TOKEN` is exclusively a backend session key. Set a separate administrator username and password hash; no bearer-token browser flow is supported. API mutations require an authenticated cookie, a session-bound CSRF header and the configured HTTPS origin. Provider tokens are never stored in browser storage. See the [deployment and testing details](./reports/ADMIN_AUTH.md).
 - Use HTTPS and private network/access control for hosted use. The application is a **single-owner research terminal**, not a multi-user data redistribution service. Read endpoints are not a substitute for a deployment access gateway. Configure trusted proxy/client forwarding correctly; do not expose it publicly without your own access control and provider permission.
 - Provider errors are redacted; secrets remain server-side. Full WebSocket mode is requested only for the approved tokens. Market depth is not requested or advertised as supported.
 - No order placement endpoints exist.

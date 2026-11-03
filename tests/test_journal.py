@@ -57,16 +57,20 @@ class JournalTests(unittest.TestCase):
         self.assertIn("'=HYPERLINK",self.journal.export())
 
     def test_journal_and_context_routes_keep_access_and_retention_gates(self):
+        from app.admin_auth import router as admin_router
+        from tests.auth_helpers import ORIGIN, admin_environment, sign_in
         app=FastAPI();app.include_router(create_router(self.store,main.require_admin))
-        with TestClient(app,base_url='http://localhost',client=('127.0.0.1',1000)) as client,patch.object(config,'DATA_RETENTION_AUTHORIZED',False):
+        app.include_router(admin_router)
+        with admin_environment(self.temp.name),TestClient(app,base_url=ORIGIN,client=('127.0.0.1',1000)) as client,patch.object(config,'DATA_RETENTION_AUTHORIZED',False):
+            sign_in(client)
             self.assertEqual(client.post('/api/journal',json=self.body()).status_code,201)
             self.assertEqual(client.get('/api/journal').json()['analytics']['realized_pnl'],'90.00')
             self.assertEqual(client.get('/api/journal/export').status_code,200)
             with patch('app.provider.historical_candles') as download:
                 self.assertFalse(client.get('/api/intelligence/context/NSE:HDFCBANK').json()['enabled']);download.assert_not_called()
         with TestClient(app,base_url='https://remote.example',client=('198.51.100.1',1000)) as client,patch.object(config,'ADMIN_TOKEN',''):
-            self.assertEqual(client.get('/api/journal').status_code,403)
-            self.assertEqual(client.post('/api/journal',json=self.body()).status_code,403)
+            self.assertEqual(client.get('/api/journal').status_code,401)
+            self.assertEqual(client.post('/api/journal',json=self.body()).status_code,401)
 
 
 if __name__=='__main__':unittest.main()

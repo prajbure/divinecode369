@@ -33,6 +33,6 @@ export function initializeConnections(api,notify){
     const button=event.target.closest('[data-connection-action]');if(!button)return;
     button.disabled=true;
     try{const action=button.dataset.connectionAction;if(action==='ipo/recheck'){const value=await api('/api/ipo/verify',{method:'POST'});notice(value.meta?.error?.message||'Configured IPO Guru account checked.',!!value.meta?.error);await refreshConnections();}else{receiveConnections(await api('/api/connections/'+action,{method:'POST'}));notice(action.endsWith('disconnect')?'Kite disconnected and the saved session cleared.':'Kite recheck queued.');}}
-    catch(error){notice(error.message,true);}finally{if(button.isConnected)button.disabled=false;}
+    catch(error){notice(error.message,true,error.action);}finally{if(button.isConnected)button.disabled=false;}
   });
 }

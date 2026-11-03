@@ -6,6 +6,16 @@ services:
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /api/status
     envVars:
+      - key: ADMIN_TOKEN
+        generateValue: true
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD_HASH
+        sync: false
+      - key: ADMIN_ORIGIN
+        value: https://divinecode369.in
+      - key: ADMIN_SESSION_SECONDS
+        value: "28800"
       - key: KITE_API_KEY
         sync: false
       - key: KITE_API_SECRET

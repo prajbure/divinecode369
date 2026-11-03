@@ -188,18 +188,24 @@ class ApiTests(unittest.TestCase):
         from app import main
         cls.main=main
         cls.tmp=tempfile.TemporaryDirectory()
+        from tests.auth_helpers import admin_environment
+        cls.admin_environment=admin_environment(cls.tmp.name)
+        cls.admin_environment.__enter__()
         cls.store=Store(Path(cls.tmp.name)/'api.sqlite3')
         cls.market=MarketService(cls.store)
         cls.lab=PredictionLab(cls.store)
         cls.patches=[patch.object(main,'store',cls.store),patch.object(main,'market',cls.market),patch.object(main,'lab',cls.lab),patch.object(cls.market,'start'),patch.object(main.connections,'start'),patch.object(main.connections,'stop'),patch.object(config,'KITE_ACCESS_TOKEN',''),patch.object(config,'DATA_RETENTION_AUTHORIZED',False),patch.object(config,'HISTORICAL_ENABLED',False)]
         for p in cls.patches:p.start()
-        cls.client=TestClient(main.app)
+        cls.client=TestClient(main.app,base_url='https://terminal.example')
         cls.client.__enter__()
+        from tests.auth_helpers import sign_in
+        sign_in(cls.client)
 
     @classmethod
     def tearDownClass(cls):
         cls.client.__exit__(None,None,None)
         for p in reversed(cls.patches):p.stop()
+        cls.admin_environment.__exit__(None,None,None)
         cls.tmp.cleanup()
 
     def test_all_pages_and_assets(self):
@@ -225,11 +231,11 @@ class ApiTests(unittest.TestCase):
             historical.assert_not_called()
 
     def test_auth_state_and_session_exchange(self):
-        with patch.object(config,'KITE_API_KEY','test-public-id'),patch.object(config,'KITE_REDIRECT_URL','http://localhost/auth/kite/callback'):
-            login=self.client.get('/auth/kite/login',follow_redirects=False)
-            self.assertEqual(login.status_code,307)
+        with patch.object(config,'KITE_API_KEY','test-public-id'),patch.object(config,'KITE_REDIRECT_URL','https://terminal.example/auth/kite/callback'):
+            login=self.client.post('/auth/kite/login')
+            self.assertEqual(login.status_code,200)
             cookie=login.cookies['kite_oauth_state']
-            self.assertIn('redirect_params=state%3D',login.headers['location'])
+            self.assertIn('redirect_params=state%3D',login.json()['redirect_url'])
             self.assertEqual(self.client.get('/auth/kite/callback?request_token=test&status=success&state=invalid').status_code,400)
             with patch('app.provider.create_kite_session',return_value='server-only') as exchange, patch.object(self.main.connections,'accept_kite'):
                 response=self.client.get('/auth/kite/callback',params={'request_token':'test','status':'success','state':cookie},follow_redirects=False)
