@@ -1,3 +1,4 @@
+import {premiumShell,mountPremium,enhanceDetail} from './ipo-premium.js';
 import {validNumber as num,escapeHTML as esc,fmt,rupees,percent,tone,istStamp,dayLabel,dailyChart,IPOAlerts,DEFAULT_IPO_ALERTS,sourceFreshness,listingComparison} from './ipo-core.js';
 
 const tabs=[['','Overview'],['gmp','GMP Tracker'],['subscription','Subscription'],['allotment','Allotment'],['listings','Listing Performance'],['compare','Compare'],['calendar','Calendar'],['research','Research Radar'],['alerts','Alerts']];
@@ -27,20 +28,22 @@ function readable(value){
 function freshnessMarkup(value){return `<span class="ipo-badge" data-ipo-asof="${esc(value?.as_of||'')}">${sourceFreshness(value?.as_of)} source freshness</span><small>${esc(istStamp(value?.as_of))}</small>`;}
 let freshnessMinute=-1;
 export function updateIPOFreshness(now=new Date()){
-  if(!document.getElementById('ipoTerminal'))return;
+  if(!document.getElementById('ipoTerminal')&&!document.getElementById('premiumIPO'))return;
   const minute=Math.floor(Number(now)/60000);if(minute===freshnessMinute)return;freshnessMinute=minute;
   for(const node of document.querySelectorAll('[data-ipo-asof]'))node.textContent=sourceFreshness(node.dataset.ipoAsof,now)+' source freshness';
 }
 function resourceNotice(resource){return resource?.meta?.error?`<div class="notice error">${esc(resource.meta.error.message)}${resource.meta.cache_stale?' Showing stale cached data.':''}</div>`:'';}
 
 export function ipoShell(){
+  if(location.pathname==='/ipo')return premiumShell();
   const screen=location.pathname.split('/')[2]||'';
-  return `<div id="ipoTerminal" class="ipo-terminal"><div class="ipo-topline"><div><p class="kicker">DIVINE CODE 369 · PRIMARY MARKETS</p><h1>IPO Intelligence</h1><p>Your dedicated IPO research terminal. Mainboard &amp; SME.</p></div><div class="ipo-actions"><button class="primary" id="ipoRefresh">Refresh data</button></div></div><nav class="ipo-nav" aria-label="IPO screens">${tabs.map(([path,label])=>`<a href="/ipo${path?'/'+path:''}" data-route class="${screen===path?'active':''}" ${screen===path?'aria-current="page"':''}>${label}</a>`).join('')}</nav>${warning}<div id="ipoHealth" class="ipo-health" role="status">Checking IPO provider configuration…</div><div id="ipoContent">${empty('Loading the IPO workspace…')}</div><footer class="ipo-credit"><a href="https://www.ipoguru.in/" target="_blank" rel="noopener noreferrer">Data by IPO Guru — https://www.ipoguru.in/</a><span>Developed by ER PRAJWAL AMBURE · Personal research</span></footer></div>`;
+  return `<div id="ipoTerminal" class="ipo-terminal"><div class="ipo-topline"><div><p class="kicker">DIVINE CODE 369 · PRIMARY MARKETS</p><h1>IPO Intelligence</h1></div><div class="ipo-actions"><button class="primary" id="ipoRefresh">Refresh data</button></div></div><details class="ipo-research-tools"><summary>Research tools</summary><nav class="ipo-nav" aria-label="IPO screens">${tabs.map(([path,label])=>`<a href="/ipo${path?'/'+path:''}" data-route class="${screen===path?'active':''}" ${screen===path?'aria-current="page"':''}>${label}</a>`).join('')}</nav></details><details class="ipo-risk"><summary>GMP is unofficial · Research only</summary>${warning}</details><details class="ipo-provider-diagnostics"><summary>Provider diagnostics</summary><div id="ipoHealth" class="ipo-health" role="status">Checking provider…</div></details><div id="ipoContent">${empty('Loading the IPO workspace…')}</div><footer class="ipo-credit"><a href="https://www.ipoguru.in/" target="_blank" rel="noopener noreferrer">Data by IPO Guru — https://www.ipoguru.in/</a><span>Developed by ER PRAJWAL AMBURE · Personal research</span></footer></div>`;
 }
 
 let refreshCurrentIPO=null;
 export function refreshIPOFromBackend(){refreshCurrentIPO?.();}
 export function mountIPO({api,notice}){
+  if(location.pathname==='/ipo'){refreshCurrentIPO=mountPremium({api,notice});return;}
   const root=document.getElementById('ipoTerminal');
   if(!root){refreshCurrentIPO=null;return;}
   const screen=location.pathname.split('/')[2]||'';
@@ -52,7 +55,7 @@ export function mountIPO({api,notice}){
     return pending.get(path);
   }
   function health(provider,meta){
-    if(!alive())return;
+    if(!provider||!alive())return;
     root.querySelector('#ipoHealth').innerHTML=`<span><strong>${provider?.verified?'Verified '+esc(provider.plan||'plan'):provider?.configured?'Awaiting account verification':'Provider not configured'}</strong></span><span>${provider?.quota?`${esc(provider.quota.remaining)} requests remaining · ${esc(provider.limits.per_day)}/day · ${esc(provider.limits.per_minute)}/minute`:'Request budget available after /me verification'}</span><span>${meta?.fetched_at?'Last successful fetch: '+esc(istStamp(meta.fetched_at)):'No successful IPO data refresh yet'}</span><span>${meta?.cache_stale?'Stale cached response':meta?.cache_hit?'Shared cached response':'Automatic backend refresh'} · ${esc(Math.round((provider?.cache_seconds||900)/60))} min baseline cache</span>`;
   }
   function runAlerts(rows){
@@ -139,7 +142,7 @@ export function mountIPO({api,notice}){
         const slug=decodeURIComponent(location.pathname.split('/')[3]||'');
         if(!isSlug(slug)){content.innerHTML=empty('Invalid IPO identifier.');return;}
         focusSlug=slug;const detail=await get('/api/ipo/details/'+slug);if(!alive()||version!==generation)return;
-        content.innerHTML=detailView(detail);health(detail.provider,detail.meta);return;
+        content.innerHTML=detailView(detail);enhanceDetail(root,detail,notice);health(detail.provider,detail.meta);return;
       }
       overview=await get('/api/ipo/overview');if(!alive()||version!==generation)return;
       health(overview.provider,overview.meta);focusSlug=overview.rows.some(v=>v.slug===focusSlug)?focusSlug:overview.rows[0]?.slug||'';
@@ -154,7 +157,7 @@ export function mountIPO({api,notice}){
     if(button.id==='ipoClear'){filter=query=board='';sort='schedule';overviewView();}
     if(button.dataset.ipoListing){
       const slug=button.dataset.ipoListing,ipo=overview.rows.find(v=>v.slug===slug),target=root.querySelector('#ipoListing-'+slug);button.disabled=true;
-      try{const resource=await get('/api/ipo/details/'+slug+'/history');if(!alive())return;const result=listingComparison(ipo,resource.data);target.innerHTML=resourceNotice(resource)+(result.available?'<p>Unofficial GMP arithmetic from '+esc(dayLabel(result.date))+': <strong>'+rupees(result.estimate)+'</strong> ('+percent(result.estimate_gain)+').</p><p>Actual exchange listing: <strong>'+rupees(result.actual)+'</strong> ('+percent(result.actual_gain)+').</p><small>Archived daily reading; not a forecast captured by this app. Provider corrections may revise archived values.</small>':empty(result.reason));health(resource.provider,resource.meta);}catch(error){if(alive())target.innerHTML=empty(error.message);}finally{if(alive())button.disabled=false;}
+      try{const resource=await get('/api/v1/mobile/ipos/'+slug+'/listing-comparison');if(!alive())return;const result=resource.data;target.innerHTML=resourceNotice(resource)+(result.available?'<p>Unofficial GMP arithmetic from '+esc(dayLabel(result.date))+': <strong>'+rupees(result.estimate)+'</strong> ('+percent(result.estimate_gain)+').</p><p>Actual exchange listing: <strong>'+rupees(result.actual)+'</strong> ('+percent(result.actual_gain)+').</p><small>Archived daily reading; not a forecast captured by this app. Provider corrections may revise archived values.</small>':empty(result.reason));health(resource.provider,resource.meta);}catch(error){if(alive())target.innerHTML=empty(error.message);}finally{if(alive())button.disabled=false;}
     }
     if(button.dataset.ipoResource)loadResource(focusSlug,button.dataset.ipoResource,root.querySelector('#ipoDetailResource'));
     if(button.dataset.ipoRemove){selected=selected.filter(v=>v!==button.dataset.ipoRemove);saveLocal('divine-ipo-compare',selected);comparisonView();}

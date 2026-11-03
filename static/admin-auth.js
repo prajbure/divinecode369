@@ -73,7 +73,7 @@ export function initializeAdminSession(notice) {
       form.elements.password.value = '';
       session = await adminRequest('/auth/admin/login', {method:'POST', body});
       paintSession();
-      notify('Administrator signed in.');
+      notify('Administrator signed in.');window.dispatchEvent(new Event('divine-account-change'));
     } catch (error) { notify(error.message, true, error.action); }
     finally { button.disabled = false; }
   });
@@ -90,7 +90,7 @@ export function initializeAdminSession(notice) {
         await adminRequest('/auth/admin/logout', {method:'POST'});
         session = null;
         await mountAdminSession();
-        notify('Administrator signed out.');
+        notify('Administrator signed out.');window.dispatchEvent(new Event('divine-account-change'));
       } else {
         const result = await adminRequest('/auth/kite/login', {method:'POST'});
         const target = new URL(result.redirect_url);

@@ -28,6 +28,7 @@ class CredentialFilter(logging.Filter):
             if isinstance(value,bytes):return scrub(value.decode('utf-8',errors='replace')).encode()
             if not isinstance(value,str):return value
             for secret in secrets:value=value.replace(secret,'[redacted]')
+            value = re.sub(r'dc_(?:access|refresh)_[A-Za-z0-9_-]+','[redacted]',value)
             value = re.sub(r'(?i)((?:api_key|api_secret|access_token|request_token|admin_token|password|csrf_token)=)[^&\s]+',r'\1[redacted]',value)
             return re.sub(r'(?i)((?:authorization|cookie|set-cookie)\s*[:=]\s*)[^\r\n]+',r'\1[redacted]',value)
         # Preserve Uvicorn's five positional access-log fields for its formatter.

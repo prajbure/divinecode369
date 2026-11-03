@@ -1,0 +1,12 @@
+<resources>
+    <style name="Theme.Divine" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:windowLightStatusBar">false</item><item name="android:windowLightNavigationBar">false</item>
+        <item name="android:statusBarColor">@color/midnight</item><item name="android:navigationBarColor">@color/midnight</item>
+        <item name="android:windowBackground">@color/midnight</item>
+    </style>
+    <style name="Theme.Divine.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/midnight</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_brand</item>
+        <item name="postSplashScreenTheme">@style/Theme.Divine</item>
+    </style>
+</resources>

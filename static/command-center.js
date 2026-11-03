@@ -1,6 +1,12 @@
-import {sectorMetrics,marketRegime,finite,openingIntelligence,VolumeTracker,opportunity,DEFAULT_WEIGHTS,validateWeights} from './intelligence-core.js';
+import {finite,DEFAULT_WEIGHTS,validateWeights} from './intelligence-core.js';
 import {mountPersonalTools,updatePersonalTools} from './personal-tools.js';
-const volumeTracker=new VolumeTracker(),candleContexts=new Map();
+const volumeTracker={results:new Map()},candleContexts=new Map();
+let customIntelligence=null,customPending=false,customFetched=0;
+async function refreshSharedIntelligence(){
+  if(customPending||!latestContext)return;
+  customPending=true;
+  try{const params=new URLSearchParams({weights:JSON.stringify(weights),context_symbols:[...candleContexts.keys()].join(',')});customIntelligence=await latestContext.api('/api/v1/mobile/intelligence?'+params);customFetched=Date.now();updateCommandCenter(latestContext);}catch(error){latestContext.notice(error.message,true);}finally{customPending=false;}
+}
 let latestContext,transport;
 let benchmark=null;
 let weights={...DEFAULT_WEIGHTS};try{weights=validateWeights(JSON.parse(localStorage.getItem('divine-radar-weights')||'{}'));}catch{}
@@ -28,10 +34,13 @@ export function updateCommandCenter(context){
   const started=performance.now();
   const {groups,quotes}=context;latestContext=context;
   if(!groups.length)return;
-  if(transport!==undefined&&transport!==quotes.transport)volumeTracker.reset();transport=quotes.transport;
-  for(const row of quotes.rows||[])volumeTracker.observe(row);
-  const regime=marketRegime(groups,quotes.rows||[],benchmark);
-  const analyses=new Map((quotes.rows||[]).map(r=>[r.symbol,openingIntelligence(r,candleContexts.get(r.symbol),quotes.market)]));
+  const custom=Object.keys(DEFAULT_WEIGHTS).some(k=>weights[k]!==DEFAULT_WEIGHTS[k])||candleContexts.size;
+  if(custom&&Date.now()-customFetched>5000)refreshSharedIntelligence();
+  const shared=custom&&customIntelligence?customIntelligence:quotes.intelligence;
+  if(!shared)return;
+  const regime=shared.regime;
+  const analyses=new Map(Object.entries(shared.opening));
+  volumeTracker.results=new Map(Object.entries(shared.volumes));
   updatePersonalTools(context,regime.sectors,volumeTracker.results,analyses);
   const allSymbols=new Set(groups.flatMap(g=>g.stocks.map(s=>'NSE:'+s[0]))),received=new Set((quotes.rows||[]).filter(r=>finite(r.ltp)&&r.ltp>0).map(r=>r.symbol));
   const missing=[...allSymbols].filter(symbol=>!received.has(symbol)),counts={live:0,stale:0,closed:0,unknown:0,unavailable:0};
@@ -42,7 +51,7 @@ export function updateCommandCenter(context){
   replace('qualityContent',`<div class="health-grid">${metric('Kite session',quotes.error?'Provider error — reconnect':quotes.token_configured?'Configured; see quote freshness':'Not connected')}${metric('Browser feed',context.feed||'Connecting')}${metric('Actual transport',quotes.transport||'Unavailable')}${metric('Last received streaming tick',timestamp(quotes.last_received_tick))}${metric('Active streaming subscriptions',quotes.active_subscriptions??'Unavailable')}${metric('Latest provider timestamp',timestamp(providerStamp))}${metric('Live / stale / closed',`${counts.live} / ${counts.stale} / ${counts.closed}`)}${metric('Unknown timestamp / missing quotes',`${counts.unknown} / ${missing.length}`)}${metric('Official NSE session',quotes.market?.label||'Unavailable')}${metric('Last market refresh',timestamp(quotes.as_of))}${metric('Last opening scan',timestamp(quotes.scan_as_of))}</div><p class="advanced-note">${esc(quotes.error||quotes.stream_error||'No provider error reported. A configured session or connected socket alone does not establish freshness.')}</p><details><summary>Unavailable configured symbols (${missing.length})</summary>${list(missing)}</details>`);
   if(document.getElementById('opportunityRows')){
     const raw=new Map((quotes.rows||[]).map(r=>[r.symbol,r]));
-    let results=(quotes.rows||[]).map(r=>opportunity(r,groups,regime.sectors,analyses.get(r.symbol),volumeTracker.results.get(r.symbol),weights));
+    let results=shared.opportunities;
     results=results.filter(r=>{const original=raw.get(r.symbol);return (!radarFilters.query||`${r.symbol} ${r.sectors.join(' ')}`.toLowerCase().includes(radarFilters.query.toLowerCase()))&&(r.score??0)>=radarFilters.min&&(radarFilters.condition==='all'||radarFilters.condition==='exact'&&original.match||radarFilters.condition==='near'&&original.near_match||radarFilters.condition==='fresh'&&r.quality==='live'||radarFilters.condition==='contradictions'&&r.contradictory.length);});
     const magnitude=v=>finite(v)?Math.abs(v):Infinity;
     results.sort((a,b)=>radarFilters.sort==='gap'?(b.gap_pct===null?-Infinity:Math.abs(b.gap_pct))-(a.gap_pct===null?-Infinity:Math.abs(a.gap_pct)):radarFilters.sort==='difference'?magnitude(a.difference)-magnitude(b.difference):(b.score??-1)-(a.score??-1)||a.symbol.localeCompare(b.symbol));
@@ -51,7 +60,7 @@ export function updateCommandCenter(context){
   replace('regimeContent',`<h3>${esc(regime.label)}</h3><p class="advanced-note">${esc(regime.scope)}</p>${list(regime.observations)}<details><summary>Contradictions, coverage and rules</summary>${list(regime.contradictions)}${list(regime.unavailable)}<p class="advanced-note">${esc(regime.rules)}</p></details>`);
   replace('strengthRadar',regime.sectors.map(s=>`<div class="radar-row"><a href="/sectors/${esc(s.id)}" data-route>${esc(s.name)}</a><div class="radar-track" role="${s.strength===null?'img':'meter'}" aria-label="${esc(s.name)} relative strength${s.strength===null?' unavailable':''}" aria-valuemin="0" aria-valuemax="100" ${s.strength===null?'':`aria-valuenow="${Math.round(s.strength)}"`}><div class="radar-bar" style="width:${s.strength??0}%"></div></div><strong>${fixed(s.strength)}</strong><small>${s.available}/${s.total} quotes · ${esc(s.participation)}</small></div>`).join(''));
   const group=groups.find(g=>g.id===location.pathname.split('/')[2]);
-  if(group){const s=sectorMetrics(group,quotes.rows||[]);replace('sectorIntelligence',`<div class="health-grid">${metric('Advancing',s.advancing)}${metric('Declining',s.declining)}${metric('Unchanged',s.unchanged)}${metric('Average movement',fixed(s.average,'%'))}${metric('Median movement',fixed(s.median,'%'))}${metric('Advance breadth',fixed(s.breadth===null?null:s.breadth*100,'%'))}${metric('Gap up / down / flat',`${s.gap_up} / ${s.gap_down} / ${s.flat}`)}${metric('Fresh / stale / unavailable',`${s.live} / ${s.stale} / ${s.unavailable}`)}${metric('Strongest',s.strongest?.symbol||'Unavailable')}${metric('Weakest',s.weakest?.symbol||'Unavailable')}${metric('Volume / valid VWAP coverage',`${s.volume_available} / ${s.vwap_available}`)}${metric('Dispersion (percentage points)',fixed(s.dispersion))}${metric('Constituents with traded volume',fixed(s.volume_participation===null?null:s.volume_participation*100,'%'))}${metric('Above / below supplied VWAP',`${s.above_vwap} / ${s.below_vwap}`)}</div><p class="advanced-note">${esc(s.participation)}. Top-two absolute-movement share: ${fixed(s.concentration===null?null:s.concentration*100,'%')}. ${s.total} unique constituents; missing quotes are excluded from denominators. Closed/stale observations remain labeled.</p>`);}
+  if(group){const s=regime.sectors.find(s=>s.id===group.id);replace('sectorIntelligence',`<div class="health-grid">${metric('Advancing',s.advancing)}${metric('Declining',s.declining)}${metric('Unchanged',s.unchanged)}${metric('Average movement',fixed(s.average,'%'))}${metric('Median movement',fixed(s.median,'%'))}${metric('Advance breadth',fixed(s.breadth===null?null:s.breadth*100,'%'))}${metric('Gap up / down / flat',`${s.gap_up} / ${s.gap_down} / ${s.flat}`)}${metric('Fresh / stale / unavailable',`${s.live} / ${s.stale} / ${s.unavailable}`)}${metric('Strongest',s.strongest?.symbol||'Unavailable')}${metric('Weakest',s.weakest?.symbol||'Unavailable')}${metric('Volume / valid VWAP coverage',`${s.volume_available} / ${s.vwap_available}`)}${metric('Dispersion (percentage points)',fixed(s.dispersion))}${metric('Constituents with traded volume',fixed(s.volume_participation===null?null:s.volume_participation*100,'%'))}${metric('Above / below supplied VWAP',`${s.above_vwap} / ${s.below_vwap}`)}</div><p class="advanced-note">${esc(s.participation)}. Top-two absolute-movement share: ${fixed(s.concentration===null?null:s.concentration*100,'%')}. ${s.total} unique constituents; missing quotes are excluded from denominators. Closed/stale observations remain labeled.</p>`);}
   let selected=quotes.rows||[];
   if(group){const symbols=new Set(group.stocks.map(s=>'NSE:'+s[0]));selected=selected.filter(r=>symbols.has(r.symbol));}
   if(location.pathname.startsWith('/stocks/'))selected=selected.filter(r=>r.symbol==='NSE:'+decodeURIComponent(location.pathname.split('/')[2]));
@@ -64,9 +73,9 @@ export function updateCommandCenter(context){
 }
 document.addEventListener('click',async event=>{
   const benchmarkButton=event.target.closest('#loadBenchmarkContext');
-  if(benchmarkButton){benchmarkButton.disabled=true;try{const data=await latestContext.api('/api/market-overview'),vix=data.cards.find(r=>r.symbol==='NSE:INDIA VIX');benchmark=vix?{vix:vix.price,quote_timestamp:vix.quote_timestamp,quote_status:latestContext.quotes.market.is_open?'live':'closed'}:null;document.getElementById('benchmarkNotice').textContent=benchmark?'Benchmark fetched; classification still checks provider freshness and session state.':'Kite returned no valid VIX quote.';updateCommandCenter(latestContext);}catch(error){latestContext.notice(error.message,true);}finally{if(benchmarkButton.isConnected)benchmarkButton.disabled=false;}return;}
-  if(event.target.closest('#saveRadarWeights')){try{const raw=Object.fromEntries([...document.querySelectorAll('[data-radar-weight]')].map(input=>[input.dataset.radarWeight,Number(input.value)]));weights=validateWeights(raw);try{localStorage.setItem('divine-radar-weights',JSON.stringify(weights));}catch{}updateCommandCenter(latestContext);latestContext.notice('Relevance weights updated.');}catch(error){latestContext.notice(error.message,true);}return;}
+  if(benchmarkButton){benchmarkButton.disabled=true;try{const data=await latestContext.api('/api/market-overview'),vix=data.cards.find(r=>r.symbol==='NSE:INDIA VIX');benchmark=vix?{vix:vix.price,quote_timestamp:vix.quote_timestamp,quote_status:latestContext.quotes.market.is_open?'live':'closed'}:null;document.getElementById('benchmarkNotice').textContent=benchmark?'Benchmark fetched; classification still checks provider freshness and session state.':'Kite returned no valid VIX quote.';refreshSharedIntelligence();}catch(error){latestContext.notice(error.message,true);}finally{if(benchmarkButton.isConnected)benchmarkButton.disabled=false;}return;}
+  if(event.target.closest('#saveRadarWeights')){try{const raw=Object.fromEntries([...document.querySelectorAll('[data-radar-weight]')].map(input=>[input.dataset.radarWeight,Number(input.value)]));weights=validateWeights(raw);try{localStorage.setItem('divine-radar-weights',JSON.stringify(weights));}catch{}customFetched=0;refreshSharedIntelligence();latestContext.notice('Relevance weights updated.');}catch(error){latestContext.notice(error.message,true);}return;}
   const button=event.target.closest('#loadCandleContext');if(!button||!latestContext)return;
   button.disabled=true;
-  try{const symbol=document.getElementById('contextSymbol').value;const result=await latestContext.api('/api/intelligence/context/'+encodeURIComponent(symbol));candleContexts.delete(symbol);candleContexts.set(symbol,result);if(candleContexts.size>8)candleContexts.delete(candleContexts.keys().next().value);document.getElementById('contextNotice').textContent=result.reason;updateCommandCenter(latestContext);}catch(error){latestContext.notice(error.message,true);}finally{if(button.isConnected)button.disabled=false;}
+  try{const symbol=document.getElementById('contextSymbol').value;const result=await latestContext.api('/api/intelligence/context/'+encodeURIComponent(symbol));candleContexts.delete(symbol);candleContexts.set(symbol,result);if(candleContexts.size>8)candleContexts.delete(candleContexts.keys().next().value);document.getElementById('contextNotice').textContent=result.reason;customFetched=0;refreshSharedIntelligence();}catch(error){latestContext.notice(error.message,true);}finally{if(button.isConnected)button.disabled=false;}
 });

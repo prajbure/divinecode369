@@ -1,0 +1,58 @@
+{
+  "checks": [
+    {
+      "check": "16 sectors and 160 memberships",
+      "passed": true
+    },
+    {
+      "check": "Approved universe original byte hash",
+      "passed": true
+    },
+    {
+      "check": "Original scanner byte hash",
+      "passed": true
+    },
+    {
+      "check": "ADMIN_TOKEN value absent from browser/native/contract sources",
+      "passed": true
+    },
+    {
+      "check": "ADMIN_PASSWORD_HASH value absent from browser/native/contract sources",
+      "passed": true
+    },
+    {
+      "check": "KITE_API_SECRET value absent from browser/native/contract sources",
+      "passed": true
+    },
+    {
+      "check": "KITE_ACCESS_TOKEN value absent from browser/native/contract sources",
+      "passed": true
+    },
+    {
+      "check": "IPOGURU_API_KEY value absent from browser/native/contract sources",
+      "passed": true
+    },
+    {
+      "check": "Configured owner password absent from client sources",
+      "passed": true
+    },
+    {
+      "check": "No signing keystore in Android source tree",
+      "passed": true
+    },
+    {
+      "check": "Mobile contract declares both credential types",
+      "passed": true
+    },
+    {
+      "check": "Protected mobile writes declare scoped auth",
+      "passed": true
+    },
+    {
+      "check": "Native network disallows cleartext",
+      "passed": true
+    }
+  ],
+  "passed": 13,
+  "scope": "Source and preservation checks only. No APK exists, so packaged APK secret inspection was not performed."
+}

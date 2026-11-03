@@ -12,4 +12,10 @@ coverage/
 .qa/
 dist/terminal/
 dist/public/
+dist/android/
+android/.gradle/
+android/**/build/
+android/local.properties
+*.jks
+*.keystore
 DIVINE-CODE-369-Complete-*.zip

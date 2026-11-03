@@ -11,6 +11,7 @@ from zoneinfo import ZoneInfo
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse, StreamingResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.exceptions import RequestValidationError
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 
@@ -26,6 +27,8 @@ from .ipo_service import IPOService
 from .connections import ConnectionManager
 from .logging_filters import install as install_credential_filters,remember_secret
 from .admin_auth import auth as admin_auth, router as admin_router
+from .mobile_auth import router as mobile_auth_router, personal_identity, request_limits
+from .market_intelligence import analytics
 
 
 class RedactAuthAccessLog(logging.Filter):
@@ -75,6 +78,21 @@ def incremental_maintenance():
         app.state.imports.schedule_incremental()
 
 
+def personal_alerts():
+    from .personal import evaluate
+    from .ipo_service import normalize_subscription
+    cached = connections.get_overview()
+    # Observe only resources already fetched by the shared provider scheduler.
+    with ipo_service.client.lock:
+        subscriptions = {path.split('/')[2]: normalize_subscription(value[1]) for path,value in ipo_service.client.cache.items()
+                         if path.startswith('/ipos/') and path.endswith('/subscription')}
+    evaluate(cached, subscriptions=subscriptions,market=market.snapshot())
+
+
+def sample_market_analytics():
+    analytics.observe_snapshot(market.snapshot())
+
+
 @asynccontextmanager
 async def lifespan(app):
     store.initialize(reference_groups())
@@ -84,6 +102,8 @@ async def lifespan(app):
     scheduler.add_job(scheduled_scan, CronTrigger(minute="*", second=5, timezone=ZoneInfo(config.APP_TIMEZONE)), id="daily_scan", replace_existing=True)
     scheduler.add_job(incremental_maintenance, CronTrigger(hour=18, minute=20, timezone=ZoneInfo(config.APP_TIMEZONE)), id="incremental_history", replace_existing=True)
     scheduler.add_job(daily_maintenance, CronTrigger(hour=18, minute=30, timezone=ZoneInfo(config.APP_TIMEZONE)), id="maintenance", replace_existing=True)
+    scheduler.add_job(personal_alerts, 'interval', minutes=1, id='personal_alerts', replace_existing=True)
+    scheduler.add_job(sample_market_analytics,'interval',seconds=5,id='market_analytics',replace_existing=True,coalesce=True,max_instances=1)
     scheduler.start()
     connections.start()
     market.start()
@@ -95,25 +115,46 @@ async def lifespan(app):
 
 
 app = FastAPI(title="DIVINE CODE 369 — Market Intelligence", version="2.1.0", lifespan=lifespan)
+from .mobile_compression import SnapshotCompression
+app.add_middleware(SnapshotCompression,minimum_size=1000,compresslevel=5)
 app.mount("/static", StaticFiles(directory=str(config.ROOT / "static")), name="static")
 app.include_router(admin_router)
+app.include_router(mobile_auth_router)
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_error(request:Request, error:RequestValidationError):
+    if request.url.path.startswith(('/auth/mobile/', '/api/v1/mobile/')):
+        return JSONResponse({'detail':'Invalid request. Check the field format and limits.','code':'invalid_request'},status_code=422)
+    from fastapi.exception_handlers import request_validation_exception_handler
+    return await request_validation_exception_handler(request,error)
+
+
+@app.exception_handler(HTTPException)
+async def api_error(request:Request,error:HTTPException):
+    return JSONResponse({'detail':error.detail,'code':{401:'authentication_required',403:'forbidden',404:'not_found',429:'rate_limited'}.get(error.status_code,'request_failed')},status_code=error.status_code,headers=error.headers)
 
 
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
     try:
-        # All API mutations are administrative, including future provider/credential endpoints.
+        if request.url.path.startswith(('/api/v1/mobile/','/auth/mobile/')) and not request_limits.allow(request.client.host if request.client else 'unknown',request.method not in {'GET','HEAD','OPTIONS'}):
+            raise HTTPException(429,'Request limit reached.',headers={'Retry-After':'60'})
+        # Only explicitly enumerated personal-data routes accept scoped mobile credentials.
         if request.url.path.startswith("/api/") and request.method not in {"GET", "HEAD", "OPTIONS"}:
-            require_admin(request)
+            path = request.url.path
+            personal_route = path in {'/api/v1/mobile/watchlist','/api/v1/mobile/alerts','/api/v1/mobile/preferences'} or (path.startswith('/api/v1/mobile/alerts/') and request.method == 'DELETE')
+            if personal_route: personal_identity(request)
+            else: require_admin(request)
         response = await call_next(request)
     except HTTPException as error:
-        response = JSONResponse({"detail": error.detail}, status_code=error.status_code, headers=error.headers)
+        response = JSONResponse({"detail": error.detail, 'code':{401:'authentication_required',403:'forbidden',429:'rate_limited'}.get(error.status_code,'request_failed')}, status_code=error.status_code, headers=error.headers)
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Referrer-Policy"] = "same-origin"
     response.headers["X-Frame-Options"] = "DENY"
     if request.url.path.startswith(("/api/", "/auth/")):
         response.headers["Cache-Control"] = "no-store"
-    if request.url.path.startswith("/auth/"):
+    if request.url.path.startswith("/auth/") or request.url.path=='/mobile/connect':
         response.headers["Referrer-Policy"] = "no-referrer"
     if request.url.scheme == "https":
         response.headers["Strict-Transport-Security"] = "max-age=31536000"
@@ -133,6 +174,25 @@ app.include_router(create_router(store, require_admin))
 
 from .ipo_routes import create_ipo_router
 app.include_router(create_ipo_router(require_admin, home_response, service=ipo_service, manager=connections))
+
+from .mobile_api import create_mobile_router
+app.include_router(create_mobile_router(lambda: (market, connections, ipo_service, store, lab)))
+from .mobile_openapi import install as install_mobile_openapi
+install_mobile_openapi(app)
+
+
+@app.get('/mobile/connect', response_class=HTMLResponse)
+def mobile_connect():
+    return HTMLResponse((config.ROOT/'static'/'mobile-connect.html').read_text(encoding='utf-8'),headers={'Cache-Control':'no-store','Referrer-Policy':'no-referrer'})
+
+
+@app.get('/.well-known/assetlinks.json')
+def android_links():
+    import re
+    certificate=config.ANDROID_APP_SHA256_CERTIFICATE
+    if not re.fullmatch(r'(?:[A-Fa-f0-9]{2}:){31}[A-Fa-f0-9]{2}',certificate):
+        return []
+    return [{'relation':['delegate_permission/common.handle_all_urls'],'target':{'namespace':'android_app','package_name':config.ANDROID_APP_ID,'sha256_cert_fingerprints':[certificate.upper()]}}]
 
 @app.get('/connections',response_class=HTMLResponse)
 @app.get('/health',response_class=HTMLResponse)
@@ -165,8 +225,15 @@ def recheck_kite(request:Request):
 @app.get("/ai-predictions", response_class=HTMLResponse)
 @app.get("/history", response_class=HTMLResponse)
 @app.get("/settings", response_class=HTMLResponse)
+@app.get("/watchlists", response_class=HTMLResponse)
+@app.get("/alerts", response_class=HTMLResponse)
 def home():
     return home_response()
+
+
+@app.get('/privacy',response_class=HTMLResponse)
+def privacy():
+    return HTMLResponse((config.ROOT/'static'/'privacy.html').read_text(encoding='utf-8'))
 
 
 @app.get("/sectors/{sector_id}", response_class=HTMLResponse)
@@ -185,7 +252,7 @@ def stock_page(symbol: str):
 
 @app.get("/api/status")
 def status():
-    snap = market.snapshot()
+    snap = shared_snapshot()
     return {"watchlist": load_watchlist(), "latest": {**market.scan_result, "rows": snap["rows"], "universe": "reference"},
             "error": snap["error"], "scheduled_time": "Official NSE session opening, including published special sessions, Asia/Kolkata",
             "tolerance": 0, "max_difference": config.MAX_DIFFERENCE, "token_configured": bool(config.KITE_ACCESS_TOKEN), "market": snap,"connections":connections.snapshot()}
@@ -193,7 +260,13 @@ def status():
 
 @app.get("/api/quotes")
 def quotes():
-    return market.snapshot()
+    return shared_snapshot()
+
+
+def shared_snapshot():
+    snap=market.snapshot()
+    snap['intelligence']=analytics.build(reference_groups(),snap)
+    return snap
 
 
 @app.get("/api/stream")
@@ -203,7 +276,7 @@ async def stream(request: Request):
         previous = None
         counter = 0
         while not await request.is_disconnected():
-            snap = await asyncio.to_thread(market.snapshot)
+            snap = await asyncio.to_thread(shared_snapshot)
             key = (snap["sequence"], tuple(r["quote_status"] for r in snap["rows"]), snap["market"]["status"])
             if previous != key:
                 yield f"id: {snap['sequence']}\nevent: quotes\ndata: {json.dumps(snap, allow_nan=False)}\n\n"
@@ -230,6 +303,8 @@ def market_overview():
             result = provider.live_quotes(symbols)
             index_cache = {"cards": [{"symbol": r["symbol"], "price": r["ltp"], "change_pct": r["change_pct"], "open": r["open"], "prev_close": r["prev_close"], "quote_timestamp": r.get("quote_timestamp")} for r in result["data"]], "as_of": now.isoformat()}
             index_fetched = now
+            vix=next((r for r in index_cache['cards'] if r['symbol']=='NSE:INDIA VIX'),None)
+            analytics.benchmark={'vix':vix['price'],'quote_timestamp':vix.get('quote_timestamp'),'quote_status':'live' if session_state()['is_open'] else 'closed'} if vix else None
             return index_cache
         except provider.ProviderError as exc:
             raise HTTPException(502, str(exc)) from exc
