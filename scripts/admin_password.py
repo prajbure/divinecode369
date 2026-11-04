@@ -8,7 +8,7 @@ from app.admin_auth import hash_password
 
 
 def main():
-    password = getpass("Administrator password (at least 14 characters): ")
+    password = getpass("Administrator password (at least 8 characters): ")
     if password != getpass("Confirm administrator password: "):
         raise SystemExit("Passwords do not match.")
     try:

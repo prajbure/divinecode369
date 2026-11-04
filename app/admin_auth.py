@@ -19,8 +19,8 @@ LOGIN_WINDOW = 900
 
 
 def hash_password(password: str) -> str:
-    if not 14 <= len(password) <= 1024:
-        raise ValueError("Use an administrator password of 14 to 1024 characters.")
+    if not 8 <= len(password) <= 1024:
+        raise ValueError("Use an administrator password of 8 to 1024 characters.")
     salt = secrets.token_hex(16)
     # OWASP's 16 MiB / p=5 scrypt profile also fits smaller hosting instances.
     digest = hashlib.scrypt(password.encode(), salt=bytes.fromhex(salt), n=16384, r=8, p=5).hex()
