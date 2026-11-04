@@ -1,17 +1,21 @@
 // Read-only production verification. Does not log in, scan, or contact providers directly.
 import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {readFile,writeFile} from 'node:fs/promises';
 import {browser,sleep} from './browser_client.mjs';
 const base='https://divinecode369.in',checks=[];
 const hash=data=>createHash('sha256').update(data).digest('hex');
+const sourceCommit=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
+// Compare deployment bytes to Git blobs, not a Windows CRLF working copy.
+const source=name=>execFileSync('git',['show',sourceCommit+':'+name],{maxBuffer:4*1024*1024});
 const check=(label,value)=>{assert.ok(value,label);checks.push(label);console.log('PASS '+label);};
 const fetchAsset=async name=>{
   const response=await fetch(base+'/'+name+'?dashboard_verify='+Date.now(),{signal:AbortSignal.timeout(20000)});
   if(!response.ok)throw Error(`${name}: HTTP ${response.status}`);
   return Buffer.from(await response.arrayBuffer());
 };
-const desired=hash(await readFile('static/app.js'));
+const desired=hash(source('static/app.js'));
 const attempts=process.argv.includes('--wait')?120:1;
 let deployed=false;
 for(let i=0;i<attempts;i++){
@@ -22,7 +26,7 @@ for(let i=0;i<attempts;i++){
 }
 check('production serves the exact tested application JavaScript',deployed);
 for(const name of ['static/scanner-view.js','static/scanner-view.css','static/sector-universe.json'])
-  check(name+' matches the tested source',hash(await fetchAsset(name))===hash(await readFile(name)));
+  check(name+' matches the tested source',hash(await fetchAsset(name))===hash(source(name)));
 const overview=await(await fetch(base+'/api/v1/mobile/overview')).json();
 check('shared Android overview endpoint remains available',overview.meta?.api_version==='1'&&Array.isArray(overview.sectors));
 const statusResponse=await fetch(base+'/auth/admin/session');
@@ -57,10 +61,10 @@ try{
   check('production mobile scanner retains one sticky IST clock and no page overflow',await evaluate("document.querySelectorAll('#headerClock').length===1&&document.documentElement.scrollWidth<=innerWidth"));
   await navigate(base+'/settings');await wait("!!document.querySelector('#adminLoginForm')");
   check('production Settings still presents administrator login',true);
-  await navigate(base+'/ipo');await wait("!!document.querySelector('#ipoTerminal')");
+  await navigate(base+'/ipo');await wait("!!document.querySelector('#premiumIPO')");
   check('production IPO Intelligence still loads independently',true);
   check('no production browser JavaScript exceptions',chrome.errors.length===0);
-  const result={url:base,checked_at:new Date().toISOString(),passed:checks.length,checks,application_sha256:desired};
+  const result={url:base,checked_at:new Date().toISOString(),source_commit:sourceCommit,passed:checks.length,checks,application_sha256:desired};
   await writeFile('.qa/dashboard-production-results.json',JSON.stringify(result,null,2));
   console.log(`${checks.length} production dashboard checks passed.`);
 }finally{chrome?.close();}
