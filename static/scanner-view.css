@@ -1,0 +1,32 @@
+/* Scoped additions to the existing market workspace. */
+#dashboardStats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.stat-link { display: block; cursor: pointer; color: inherit; text-decoration: none; min-height: 136px; padding-right: 34px; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+.stat-link:hover { transform: translateY(-3px); border-color: var(--accent, var(--cyan)); box-shadow: 0 8px 24px #00182b66; }
+.stat-link:active { transform: translateY(0); background: #143653; }
+.stat-link:focus-visible { outline: 3px solid var(--cyan); outline-offset: 4px; }
+.stat-link .stat-direction { position: absolute; top: 16px; right: 14px; font-size: 20px; color: var(--accent, var(--cyan)); }
+.scanner-context { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 12px 0; color: var(--muted); font-size: var(--secondary-size, 14px); }
+.scanner-context .ghost { min-height: 44px; }
+.scanner-loading { color: var(--cyan); }
+.scanner-loading::before { content: ''; display: inline-block; width: 10px; height: 10px; margin-right: 8px; border: 2px solid #336682; border-top-color: var(--cyan); border-radius: 50%; animation: scanner-spin .8s linear infinite; }
+.scanner-panel .stock-sectors { white-space: normal; min-width: 160px; max-width: 260px; line-height: 1.5; }
+.scanner-panel tr.scanner-exact { background: #00d8ff08; }
+.scanner-panel tr.scanner-exact td:first-child { box-shadow: inset 3px 0 var(--cyan); }
+.scanner-panel .match-badge.exact { color: var(--cyan); border-color: #00d8ff70; background: #00d8ff12; }
+.scanner-panel tr.scanner-near td:first-child { box-shadow: inset 3px 0 var(--gold); }
+.scanner-panel .filter-tabs button, .scanner-panel th button, .scanner-panel .pagination button { min-height: 44px; }
+.scanner-panel a:focus-visible, .scanner-panel button:focus-visible, .scanner-panel select:focus-visible, .scanner-panel input:focus-visible, .scanner-panel .table-wrap:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.scanner-panel #sectorFilter { max-width: 260px; }
+@keyframes scanner-spin { to { transform: rotate(360deg); } }
+@media (max-width: 900px) { #dashboardStats { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 650px) {
+  #dashboardStats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat-link { min-height: 130px; }
+  .stat-link .stat-direction { font-size: 17px; right: 9px; }
+  .scanner-panel .panel-head { align-items: flex-start; flex-wrap: wrap; }
+  .scanner-panel .table-tools > label { min-width: 0; }
+  .scanner-panel .table-tools .search { flex-basis: 100%; }
+  .scanner-panel #sectorFilter { max-width: min(260px, calc(100vw - 72px)); }
+  .scanner-context { gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .stat-link { transition: none; } .stat-link:hover { transform: none; } .scanner-loading::before { animation: none; } }

@@ -73,7 +73,7 @@ try {
   await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
   await evaluate("document.querySelector('a[href=\"/sectors/banking\"].sector-card').click()");
   await wait("location.pathname==='/sectors/banking'&&!!document.querySelector('#stockBody')");
-  check('sector route has eight financial columns',await evaluate("document.querySelectorAll('.scanner-panel thead th').length===8"));
+  check('sector route includes all eleven financial columns',await evaluate("document.querySelectorAll('.scanner-panel thead th').length===11"));
   check('ten configured sector entries',await evaluate("document.querySelectorAll('#stockBody tr').length===10"));
   check('sticky table headings',await evaluate("getComputedStyle(document.querySelector('th')).position==='sticky'"));
   check('desktop headings are larger and high contrast',await evaluate("parseFloat(getComputedStyle(document.querySelector('th')).fontSize)>=15&&Number(getComputedStyle(document.querySelector('th')).fontWeight)>=700"));
@@ -104,7 +104,7 @@ try {
     await evaluate("scrollTo(0,document.body.scrollHeight)");
     check('sticky header clock at sector bottom '+id,await evaluate("(()=>{const h=document.querySelector('.topbar').getBoundingClientRect(),c=document.querySelector('#headerClock').getBoundingClientRect();return h.top===0&&c.top>=0&&c.bottom<=innerHeight&&c.left>=0&&c.right<=innerWidth;})()"));
     await evaluate('scrollTo(0,0)');
-    check('sector route '+id,await evaluate(`location.pathname===${JSON.stringify('/sectors/'+id)}&&document.querySelectorAll('.scanner-panel thead th').length===8&&document.documentElement.scrollWidth<=innerWidth`));
+    check('sector route '+id,await evaluate(`location.pathname===${JSON.stringify('/sectors/'+id)}&&document.querySelectorAll('.scanner-panel thead th').length===11&&document.documentElement.scrollWidth<=innerWidth`));
   }
   await evaluate("document.querySelector('nav a[href=\"/ai-predictions\"]').click()");
   await wait("!!document.querySelector('#aiContent .ai-empty')||!!document.querySelector('#aiContent table')");

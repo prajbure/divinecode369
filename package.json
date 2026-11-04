@@ -10,6 +10,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "build:legacy": "vite build --config vite.config.ts --outDir .qa/legacy-build",
     "test:frontend": "node tests/frontend.mjs",
+    "test:dashboard": "node tests/dashboard.mjs",
+    "test:dashboard:browser": "node tests/dashboard_browser.mjs",
+    "test:dashboard:production": "node tests/dashboard_production.mjs",
     "test:browser": "node tests/browser.mjs",
     "reconcile": "node scripts/reconcile.mjs"
   },
